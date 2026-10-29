@@ -1,0 +1,28 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>优化提示词 · CANN SIG</title><style>*{box-sizing:border-box}body{margin:0;font-family:'HarmonyOS Sans SC','PingFang SC','Microsoft YaHei',sans-serif;color:#192333;background:#f5f7fa;line-height:1.7}header{padding:18px max(24px,calc((100vw - 1000px)/2));background:white;border-bottom:1px solid #dce4ef}header a{color:#1476ff;text-decoration:none;font-weight:700}main{max-width:1000px;margin:28px auto 70px;padding:36px 46px;background:white;border:1px solid #dce4ef;border-radius:14px}h1{font-size:30px}h2{font-size:23px;margin-top:42px;border-bottom:1px solid #e5eaf2;padding-bottom:9px}h3{font-size:18px;margin-top:28px}p,li{font-size:15px}ul,ol{padding-left:25px}li{margin:5px 0}a{color:#1168df}code{background:#edf3ff;padding:2px 4px;border-radius:4px}strong{color:#182742}.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:14px;margin:16px 0}th,td{text-align:left;vertical-align:top;border:1px solid #dce4ef;padding:10px 12px;min-width:120px}th{background:#f1f5fc}tr:nth-child(even) td{background:#fbfcff}@media(max-width:700px){main{margin:0;padding:24px 18px;border-radius:0}h1{font-size:25px}}</style></head><body><header><a href="../">← 返回资料首页</a></header><main><h1>SIG 运营看板：存量界面优化提示词</h1>
+<h2>目标</h2>
+<p>在现有 <code>SIG运营看板-平台风格设计稿-v1.html</code> 的业务交互上优化首屏理解与任务导航，让首次进入的 SIG 成员和运营角色能迅速知道“我能做什么、从哪里开始、如何跟进”。以 <code>SIG运营看板诉求方提供的草图.html</code> 的五步业务路径作为需求来源，保留低保真已经形成的四页能力结构。</p>
+<h2>设计系统（可替换槽位）</h2>
+<p>当前采用<strong>输入稿自带的 opencann-frontend / DevUI 视觉基线</strong>：蓝色品牌色、HarmonyOS Sans SC 字体、玻璃卡片、页签和表格样式。沿用已有 CSS token 和组件，不另建配色、字体、按钮体系。优化应作为单文件 HTML 内联 CSS/JS 增量实现。</p>
+<h2>角色与场景</h2>
+<p>SIG Maintainer/Committer：本 SIG 资源申请、跟进和成果查看。运营管理员：跨 SIG 总览、代提申请与查看自己提交的申请。运营审核员、营销审核员、运营操作员：在申请与审批/资源配置中处理各自任务。严格沿用原型 <code>canSeeView</code> 权限函数；无权限动作不显示。</p>
+<h2>§B 当前 UI 问题诊断</h2>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>视图</th><th>问题</th><th>证据</th><th>目标状态</th></tr></thead><tbody><tr><td>F01</td><td>运营总览</td><td>首屏直接进入 SIG 选择和目标计划，行动入口弱。</td><td>原 HTML <code>view-promo</code> 开头。</td><td>第一屏出现主任务、当前视角和两个快捷动作。</td></tr><tr><td>F02</td><td>跨视图</td><td>原草图五步路径在低保真四页中不显性。</td><td>草图 <code>path-strip</code>、低保真 <code>pageTabs</code>。</td><td>五步路径可点击，文字解释统一资源申请入口。</td></tr><tr><td>F03</td><td>资源申请</td><td>首步完整职责段落在表单前，扫描成本高。</td><td><code>ra-flow-intro</code>。</td><td>保留阶段链，细则放在可展开说明。</td></tr><tr><td>F04</td><td>运营总览</td><td>角色切换后缺乏任务范围提示。</td><td><code>PERSONAS</code> 与原总览布局。</td><td>当前角色说明随切换更新。</td></tr><tr><td>F05</td><td>通用</td><td>新入口若继续使用非语义 div 会增加键盘障碍。</td><td>原页签与菜单。</td><td>新动作使用 button、focus-visible；后续工程化再统一旧控件。</td></tr></tbody></table></div>
+<h2>§C 问题到可验收目标</h2>
+<ol><li>总览新增“从发起推广到复盘成果”任务区，主按钮进入资源申请，次按钮进入申请与审批。按钮权限随角色变化，不产生无权限死路。</li><li>五步路径保留：了解 SIG 运营、SIG 上线、仓库开源、运营资源申请、计划与目标。上线与仓开源进入同一个资源申请页，计划与目标定位到总览中的目标区。</li><li>申请首步继续展示审批阶段链；超过一段的职责说明默认折叠，点开能完整阅读。基础信息前给一句操作提示。</li><li>角色提示区区分运营管理员与本 SIG 成员，明确跨 SIG 或本 SIG 的作用范围。所有示例数字均标为演示数据。</li><li>新增卡片和按钮可键盘聚焦，焦点清晰可见；窄屏时新卡片自动换列，不产生横向溢出。</li></ol>
+<h2>§D 跨视图一致性约束</h2>
+<ul><li>保留四页页签顺序：运营总览、资源申请、申请与审批、资源配置。</li><li>保留现有审批状态、排期、资源配置和目标数据结构；不改电子流逻辑。</li><li>文案统一使用“SIG”“资源申请”“申请与审批”“运营总览”。</li><li>新增页面入口复用原 <code>switchView</code>；角色判断复用 <code>canSeeView</code>。</li></ul>
+<h2>§E 各视图要求</h2>
+<h3>运营总览</h3>
+<p>任务入口置于 SIG 选择与报表上方。用一条简洁流程说明“申请 → 审批 → 执行反馈 → 复盘”。五步路径是业务地图，不是五套业务表单。</p>
+<h3>资源申请</h3>
+<p>首步保持基本信息优先、后续资源和素材的三步向导。长说明通过原生 <code>details</code> 折叠。必填、字符数和错误反馈沿用当前逻辑。</p>
+<h3>申请与审批</h3>
+<p>沿用“我提交的／待我处理／我已处理”结构、列表筛选、审批链；从总览提供直达入口。</p>
+<h3>资源配置</h3>
+<p>不改宣传方式 × 媒体的行级配置和审批规则。</p>
+<h2>§F 状态覆盖</h2>
+<ul><li>无权限：动作隐藏，沿用已有无权限页。</li><li>暂无申请或目标：保留原型空态；真实接入时增加明确下一步操作。</li><li>已驳回、审核中、已通过：继续使用原状态机，不将“已通过”误表示为全流程结束。</li><li>加载与接口错误：当前是静态原型，没有真实接口；工程阶段依接口契约补齐，不以假数据冒充真实状态。</li></ul>
+<h2>输出</h2>
+<p>交付 <code>optimized-demo/index.html</code>：单文件、CSS 和 JS 内联、可双击查看。首次打开默认运营总览；角色切换、资源申请和申请与审批仍可使用。保留源文件原有业务示例与交互功能。</p>
+<h2>待确认</h2>
+<p>正式角色矩阵、驳回/撤回/重提规则、反馈指标口径、后端字段与权限接口。未确认前不在 Demo 中新增审批业务规则。</p></main></body></html>

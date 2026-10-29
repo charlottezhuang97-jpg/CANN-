@@ -1,0 +1,2165 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CANN SIG 运营协作平台 · 交互原型</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 2 28 9v14L16 30 4 23V9z' fill='%230C1B2E'/%3E%3Cpath d='M16 7 24 11.5v9L16 25 8 20.5v-9z' fill='%232F6BFF'/%3E%3Ccircle cx='16' cy='16' r='3.6' fill='%230FB5A6'/%3E%3C/svg%3E">
+<style>
+/* ===== Token ===== */
+:root{
+  --bg:#F3F5F9; --card:#FFFFFF; --line:#E3E8F0; --line-2:#EFF2F7;
+  --ink:#0F1F33; --ink-2:#33475F; --muted:#6B7C92; --faint:#C3CDDA;
+  --navy:#0C1B2E; --navy-2:#132742; --navy-3:#1A3352;
+  --brand:#2F6BFF; --brand-d:#1E4FD8; --brand-bg:#EAF1FF;
+  --teal:#0FB5A6; --teal-d:#0B8F83; --teal-bg:#E4F8F5;
+  --cyan:#0EA5E9; --cyan-bg:#E8F6FE;
+  --amber:#E8930C; --amber-bg:#FFF6E6;
+  --green:#16A34A; --green-bg:#E9F9EF;
+  --red:#DC4C4C; --red-bg:#FDECEC;
+  --purple:#7C5CE0; --purple-bg:#F1EBFE;
+  --orange:#EA7A2E; --orange-bg:#FDF0E6;
+  --rose:#E4576C; --rose-bg:#FDEBEE;
+  --radius:12px;
+  --shadow:0 1px 2px rgba(15,31,51,.05),0 8px 24px rgba(15,31,51,.07);
+  --shadow-lg:0 6px 16px rgba(15,31,51,.10),0 24px 64px rgba(15,31,51,.14);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{font-size:16px}
+body{font-family:'Noto Sans SC','PingFang SC','Hiragino Sans GB','Microsoft YaHei',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;font-size:inherit}
+input,select,textarea{font-family:inherit;font-size:14px;color:var(--ink)}
+a{color:var(--brand);text-decoration:none}
+.hidden{display:none!important}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@keyframes popIn{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:none}}
+@keyframes slideUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes toastIn{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:none}}
+
+/* ===== 通用组件 ===== */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:9px 16px;border-radius:8px;font-size:14px;font-weight:500;transition:all .15s;white-space:nowrap}
+.btn:active{transform:translateY(1px)}
+.btn-pri{background:var(--brand);color:#fff}
+.btn-pri:hover{background:var(--brand-d)}
+.btn-teal{background:var(--teal);color:#fff}
+.btn-teal:hover{background:var(--teal-d)}
+.btn-sec{background:#fff;border:1px solid var(--line);color:var(--ink-2)}
+.btn-sec:hover{border-color:#B9C6DB;background:#F8FAFD}
+.btn-ghost{color:var(--brand);padding:6px 10px;font-size:13px}
+.btn-ghost:hover{background:var(--brand-bg);border-radius:6px}
+.btn-sm{padding:6px 12px;font-size:13px}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:2px 10px;border-radius:20px;font-size:12px;font-weight:500;white-space:nowrap}
+.badge .dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+.badge-blue{background:var(--brand-bg);color:var(--brand)}
+.badge-green{background:var(--green-bg);color:var(--green)}
+.badge-amber{background:var(--amber-bg);color:var(--amber)}
+.badge-gray{background:#EEF2F7;color:#66788D}
+.badge-red{background:var(--red-bg);color:var(--red)}
+.badge-purple{background:var(--purple-bg);color:var(--purple)}
+.badge-teal{background:var(--teal-bg);color:var(--teal-d)}
+.badge-cyan{background:var(--cyan-bg);color:var(--cyan)}
+.badge-orange{background:var(--orange-bg);color:var(--orange)}
+.badge-rose{background:var(--rose-bg);color:var(--rose)}
+.card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+.card-pad{padding:22px}
+.sec-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.sec-title{font-size:16px;font-weight:700;display:flex;align-items:center;gap:8px}
+.sec-title .bar{width:4px;height:16px;border-radius:2px;background:var(--brand)}
+.sec-sub{font-size:12.5px;color:var(--muted);margin-top:3px;font-weight:400}
+.muted{color:var(--muted)}
+.small{font-size:12.5px}
+.divider{height:1px;background:var(--line);margin:18px 0}
+.res-dot{width:8px;height:8px;border-radius:3px;flex:none}
+.res-dot.r-blue{background:var(--brand)} .res-dot.r-purple{background:var(--purple)}
+.res-dot.r-orange{background:var(--orange)} .res-dot.r-teal{background:var(--teal)}
+.res-dot.r-green{background:var(--green)} .res-dot.r-rose{background:var(--rose)}
+.res-dot.r-cyan{background:var(--cyan)} .res-dot.r-amber{background:var(--amber)}
+
+/* ===== 登录页 ===== */
+.login-wrap{position:fixed;inset:0;z-index:100;display:grid;grid-template-columns:1.15fr .85fr}
+.login-left{position:relative;overflow:hidden;background:linear-gradient(155deg,#0A1526 0%,#0F2440 46%,#0E3E5C 78%,#0B5565 100%);color:#fff;padding:64px 72px;display:flex;flex-direction:column;justify-content:center}
+.login-left .grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);background-size:44px 44px}
+.login-left .glow{position:absolute;width:560px;height:560px;border-radius:50%;background:radial-gradient(circle,rgba(47,107,255,.34),rgba(15,181,166,.14) 55%,transparent 70%);top:-160px;right:-120px;filter:blur(6px)}
+.login-left .glow2{position:absolute;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(15,181,166,.20),transparent 65%);bottom:-150px;left:-100px}
+.login-hex{position:absolute;opacity:.5}
+.login-brand{display:flex;align-items:center;gap:14px;position:relative;z-index:2}
+.login-brand .logo{width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,#2F6BFF,#0FB5A6);display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(47,107,255,.4)}
+.login-brand h1{font-size:24px;font-weight:700;letter-spacing:.5px}
+.login-brand p{font-size:12.5px;color:#9FB8DE;margin-top:3px;letter-spacing:1px}
+.login-hero{margin-top:44px;position:relative;z-index:2}
+.login-hero h2{font-size:34px;line-height:1.4;font-weight:800;max-width:560px}
+.login-hero h2 em{font-style:normal;background:linear-gradient(90deg,#7FA7FF,#38D6C4);-webkit-background-clip:text;background-clip:text;color:transparent}
+.login-hero p{font-size:14.5px;color:#A9BDDC;line-height:1.9;margin-top:16px;max-width:540px}
+.login-steps{display:flex;gap:8px;margin-top:34px;flex-wrap:wrap;position:relative;z-index:2}
+.login-step{display:flex;align-items:center;gap:8px;padding:8px 14px;border:1px solid rgba(255,255,255,.14);border-radius:30px;font-size:12.5px;color:#C9D8F0;background:rgba(255,255,255,.05)}
+.login-step .n{width:18px;height:18px;border-radius:50%;background:rgba(47,107,255,.75);color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;font-weight:700}
+.login-foot{position:relative;z-index:2;margin-top:auto;font-size:12px;color:#7E96BC;padding-top:40px}
+.login-right{background:#fff;display:flex;align-items:center;justify-content:center;padding:40px}
+.login-card{width:400px}
+.login-card .logo-line{display:flex;align-items:center;gap:10px;margin-bottom:26px}
+.login-card .logo-line .mini-logo{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,#2F6BFF,#0FB5A6);display:flex;align-items:center;justify-content:center}
+.login-card h3{font-size:20px;font-weight:700}
+.login-card .sub{font-size:13px;color:var(--muted);margin:6px 0 28px}
+.login-field{margin-bottom:18px}
+.login-field label{display:block;font-size:13px;font-weight:600;color:var(--ink-2);margin-bottom:7px}
+.login-hint{font-size:12px;color:var(--muted);margin-top:12px;line-height:1.7}
+.login-hint b{color:var(--ink-2)}
+.login-btn{width:100%;padding:12px;border-radius:10px;background:linear-gradient(90deg,#2F6BFF,#1E9FD8);color:#fff;font-size:15px;font-weight:600;margin-top:8px;box-shadow:0 8px 20px rgba(47,107,255,.3)}
+.login-btn:hover{filter:brightness(1.06)}
+
+/* ===== 应用外壳 ===== */
+.app{display:flex;min-height:100vh}
+.sidebar{width:236px;background:var(--navy);color:#A9BADA;display:flex;flex-direction:column;position:fixed;top:0;bottom:0;left:0;z-index:30}
+.side-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:36px 36px;pointer-events:none}
+.side-brand{display:flex;align-items:center;gap:11px;padding:20px 18px 16px;border-bottom:1px solid var(--navy-line,rgba(255,255,255,.07));position:relative;z-index:1}
+.side-brand .logo{width:38px;height:38px;border-radius:11px;background:linear-gradient(135deg,#2F6BFF,#0FB5A6);display:flex;align-items:center;justify-content:center;flex:none;box-shadow:0 4px 14px rgba(47,107,255,.35)}
+.side-brand .t1{font-size:15px;font-weight:700;color:#EAF0FA;line-height:1.25}
+.side-brand .t2{font-size:10.5px;color:#7E96BC;letter-spacing:1.5px;margin-top:2px}
+.side-nav{padding:14px 0;flex:1;overflow-y:auto;position:relative;z-index:1}
+.nav-group-label{font-size:10.5px;color:#5F7BA6;letter-spacing:1.5px;padding:14px 24px 6px;font-weight:600}
+.nav-item{display:flex;align-items:center;gap:11px;padding:10px 14px;margin:2px 10px;border-radius:9px;font-size:13.5px;color:#A9BADA;cursor:pointer;position:relative;transition:all .14s;user-select:none}
+.nav-item svg{flex:none}
+.nav-item:hover{background:rgba(255,255,255,.07);color:#E6EEFB}
+.nav-item.active{background:rgba(47,107,255,.17);color:#fff;font-weight:600}
+.nav-item.active::before{content:"";position:absolute;left:-10px;top:9px;bottom:9px;width:3px;border-radius:3px;background:var(--brand)}
+.nav-item .cnt{margin-left:auto;min-width:20px;height:20px;padding:0 6px;border-radius:10px;background:rgba(47,107,255,.85);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.side-foot{padding:14px 18px;border-top:1px solid rgba(255,255,255,.07);font-size:11px;color:#5F7BA6;position:relative;z-index:1;line-height:1.7}
+.main{flex:1;margin-left:236px;display:flex;flex-direction:column;min-width:0}
+.topbar{height:62px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:14px;padding:0 26px;position:sticky;top:0;z-index:20}
+.page-title{font-size:16px;font-weight:700;display:flex;align-items:center;gap:10px}
+.page-title .crumb{font-size:12px;color:var(--muted);font-weight:400;display:flex;gap:6px;align-items:center}
+.topbar-right{margin-left:auto;display:flex;align-items:center;gap:14px}
+.role-switch{display:flex;align-items:center;gap:8px;background:#F5F7FB;border:1px solid var(--line);border-radius:9px;padding:4px 6px 4px 12px;font-size:12.5px;color:var(--muted)}
+.role-switch select{border:none;background:transparent;font-size:13px;font-weight:600;color:var(--ink);outline:none;padding:4px 6px;cursor:pointer}
+.bell-btn{position:relative;width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--ink-2);border:1px solid transparent}
+.bell-btn:hover{background:#F5F7FB;border-color:var(--line)}
+.bell-btn .bdg{position:absolute;top:5px;right:5px;min-width:16px;height:16px;border-radius:8px;background:var(--red);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;padding:0 4px}
+.user-chip{display:flex;align-items:center;gap:10px;padding:5px 10px 5px 5px;border-radius:30px;border:1px solid var(--line);background:#fff}
+.user-chip .avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#2F6BFF,#0FB5A6);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.user-chip .uname{font-size:13px;font-weight:600;line-height:1.2}
+.user-chip .urole{font-size:11px;color:var(--muted)}
+.bell-panel{position:absolute;top:52px;right:0;width:340px;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow-lg);z-index:40;overflow:hidden}
+.bell-panel .bp-head{padding:14px 16px;font-size:14px;font-weight:700;border-bottom:1px solid var(--line-2);display:flex;justify-content:space-between;align-items:center}
+.bell-panel .bp-item{padding:12px 16px;border-bottom:1px solid var(--line-2);font-size:13px;cursor:pointer;display:flex;gap:10px;align-items:flex-start}
+.bell-panel .bp-item:hover{background:#FAFCFE}
+.bell-panel .bp-item .t{font-weight:600;margin-bottom:2px}
+.bell-panel .bp-item .d{font-size:12px;color:var(--muted)}
+.bell-panel .bp-item .dot{width:7px;height:7px;border-radius:50%;background:var(--brand);margin-top:5px;flex:none}
+.bell-panel .bp-item.read .dot{background:#D3DBE7}
+.view{max-width:1200px;margin:0 auto;padding:26px 26px 60px;width:100%;animation:fadeIn .22s ease}
+
+/* ===== 了解 sig 运营 ===== */
+.learn-hero{background:linear-gradient(120deg,#0C1B2E 0%,#14305A 55%,#0E5A6B 100%);border-radius:16px;color:#fff;padding:34px 38px;position:relative;overflow:hidden}
+.learn-hero .glow{position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(47,107,255,.35),transparent 65%);right:-80px;top:-140px}
+.learn-hero h2{font-size:25px;font-weight:800;position:relative;z-index:1}
+.learn-hero p{font-size:13.5px;color:#C3D4EE;margin-top:10px;line-height:1.9;max-width:780px;position:relative;z-index:1}
+.learn-hero .hero-actions{margin-top:22px;display:flex;gap:12px;position:relative;z-index:1}
+.path-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:0;margin-top:20px;background:#fff;border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+.path-node{padding:18px 14px;text-align:center;position:relative;cursor:pointer;transition:background .15s}
+.path-node:hover{background:#F8FAFD}
+.path-node:not(:last-child)::after{content:"";position:absolute;right:-1px;top:26%;bottom:26%;width:1px;background:var(--line)}
+.path-node .pn-ico{width:38px;height:38px;margin:0 auto 10px;border-radius:11px;display:flex;align-items:center;justify-content:center}
+.path-node .pn-name{font-size:13.5px;font-weight:700}
+.path-node .pn-desc{font-size:11.5px;color:var(--muted);margin-top:5px;line-height:1.55}
+.path-node .pn-no{font-size:10px;color:var(--faint);font-weight:700;letter-spacing:1px;margin-bottom:4px}
+.cols-2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.matrix-row{display:flex;gap:16px;padding:16px 18px;border-bottom:1px solid var(--line-2);align-items:flex-start}
+.matrix-row:last-child{border-bottom:none}
+.matrix-row .m-org{width:170px;flex:none}
+.matrix-row .m-org .on{font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px}
+.matrix-row .m-org .ot{font-size:11px;color:var(--teal-d);background:var(--teal-bg);padding:2px 8px;border-radius:12px;display:inline-block;margin-top:5px}
+.matrix-row .m-duty{flex:1;font-size:13px;color:var(--ink-2);line-height:1.7}
+.matrix-row .m-duty .d-t{font-size:11px;color:var(--faint);font-weight:600;letter-spacing:.5px;margin-bottom:2px}
+.matrix-row .m-mail{flex:none;text-align:right}
+.matrix-row .m-mail .mn{font-size:13px;font-weight:600}
+.matrix-row .m-mail .ml{font-size:11px;color:var(--muted);margin-top:2px}
+
+/* ===== 标签页 & 表单 ===== */
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-bottom:20px;overflow-x:auto}
+.tab{padding:11px 16px;font-size:13.5px;color:var(--muted);border-bottom:2px solid transparent;cursor:pointer;display:inline-flex;gap:7px;align-items:center;white-space:nowrap;transition:color .14s;user-select:none}
+.tab:hover{color:var(--ink)}
+.tab.active{color:var(--brand);border-bottom-color:var(--brand);font-weight:600}
+.field{margin-bottom:16px}
+.field label{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--ink-2);margin-bottom:7px}
+.field .req{color:var(--red)}
+.field .hint{font-size:12px;color:var(--muted);font-weight:400}
+.input,.select,.textarea{width:100%;padding:9px 12px;border:1px solid var(--line);border-radius:8px;background:#fff;transition:border .14s,box-shadow .14s}
+.input:focus,.select:focus,.textarea:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 3px rgba(47,107,255,.12)}
+.textarea{resize:vertical;min-height:128px;line-height:1.7}
+.char-count{font-size:11.5px;color:var(--muted);text-align:right;margin-top:5px}
+.char-count.over{color:var(--red);font-weight:600}
+.suggest-chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:8px}
+.suggest-chip{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border:1px dashed #C7D4EC;border-radius:20px;font-size:12px;color:var(--brand);cursor:pointer;background:var(--brand-bg);transition:.13s}
+.suggest-chip:hover{background:#DCE8FF;border-style:solid}
+.check-group{display:flex;flex-wrap:wrap;gap:10px}
+.check-box{display:flex;align-items:center;gap:7px;padding:7px 13px;border:1px solid var(--line);border-radius:8px;font-size:13px;cursor:pointer;background:#fff;transition:.13s;user-select:none}
+.check-box input{display:none}
+.check-box.on{border-color:var(--brand);background:var(--brand-bg);color:var(--brand);font-weight:600}
+.form-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:8px}
+
+/* ===== 资源选择卡 ===== */
+.res-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.res-card{border:1.5px solid var(--line);border-radius:12px;padding:18px 16px;cursor:pointer;background:#fff;transition:all .15s;position:relative;user-select:none}
+.res-card:hover{border-color:#BECBF0;box-shadow:var(--shadow);transform:translateY(-1px)}
+.res-card.sel{border-color:var(--brand);background:#F7FAFF;box-shadow:0 0 0 3px rgba(47,107,255,.10)}
+.res-card .rc-ico{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;margin-bottom:11px}
+.res-card .rc-name{font-size:14.5px;font-weight:700;display:flex;align-items:center;gap:8px}
+.res-card .rc-desc{font-size:12px;color:var(--muted);line-height:1.6;margin-top:6px}
+.res-card .rc-check{position:absolute;top:12px;right:12px;width:20px;height:20px;border-radius:50%;border:1.5px solid var(--line);display:flex;align-items:center;justify-content:center;transition:.13s}
+.res-card.sel .rc-check{background:var(--brand);border-color:var(--brand);color:#fff}
+.res-panel{margin-top:18px;border:1px solid var(--line);border-radius:12px;background:#FAFCFE;padding:20px}
+
+/* ===== 表格 ===== */
+.table{width:100%;border-collapse:collapse;table-layout:fixed}
+.table th{font-size:11.5px;color:var(--muted);font-weight:600;text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);background:#F8FAFD;letter-spacing:.3px}
+.table td{padding:13px 12px;border-bottom:1px solid var(--line-2);font-size:13px;vertical-align:middle}
+.table tr:last-child td{border-bottom:none}
+.table tbody tr{transition:background .12s}
+.table tbody tr:hover{background:#FAFCFE}
+.t-title{font-weight:600;color:var(--ink)}
+.t-sub{font-size:11.5px;color:var(--muted);margin-top:3px}
+.rev-chain{display:flex;align-items:center;gap:4px}
+.rev-node{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:6px;font-size:11.5px;background:#EEF2F7;color:#66788D}
+.rev-node.pass{background:var(--green-bg);color:var(--green)}
+.rev-node.fail{background:var(--red-bg);color:var(--red)}
+.rev-node.cur{background:var(--amber-bg);color:var(--amber)}
+.rev-node .req-b{font-size:9px;padding:1px 4px;border-radius:4px;background:rgba(0,0,0,.06)}
+.rev-arrow{color:var(--faint);font-size:12px}
+.empty-state{padding:44px 20px;text-align:center;color:var(--muted)}
+.empty-state .es-ico{width:52px;height:52px;margin:0 auto 14px;border-radius:14px;background:#EEF2F7;display:flex;align-items:center;justify-content:center;color:#9FB0C8}
+
+/* ===== 日历 ===== */
+.cal-toolbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.cal-toggle{display:inline-flex;background:#EEF2F7;border-radius:9px;padding:3px}
+.cal-toggle button{padding:6px 16px;font-size:12.5px;border-radius:7px;color:var(--muted);font-weight:600;transition:.13s}
+.cal-toggle button.on{background:#fff;color:var(--ink);box-shadow:0 1px 4px rgba(15,31,51,.12)}
+.cal-nav{display:flex;align-items:center;gap:6px}
+.cal-nav .ym{font-size:15px;font-weight:700;min-width:110px;text-align:center}
+.icon-btn{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--ink-2);border:1px solid var(--line);background:#fff}
+.icon-btn:hover{background:#F5F7FB;border-color:#C4CEDA}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:10px}
+.cal-dow{font-size:11px;color:var(--muted);text-align:center;padding:6px 0;font-weight:600}
+.cal-dow-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:4px}
+.cal-day{height:46px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer;border:1px solid transparent;transition:.12s;position:relative}
+.cal-day:hover{background:#EDF3FF;border-color:#D4E2FB}
+.cal-day.other{color:var(--faint)}
+.cal-day.sel{background:var(--brand);color:#fff;font-weight:600;box-shadow:0 3px 10px rgba(47,107,255,.35)}
+.cal-day.today::after{content:"";position:absolute;bottom:5px;left:50%;transform:translateX(-50%);width:4px;height:4px;border-radius:50%;background:var(--teal)}
+.cal-day.sel.today::after{background:#fff}
+.cal-day.dis{color:var(--faint);cursor:not-allowed}
+.cal-day.dis:hover{background:none;border-color:transparent}
+.year-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:16px}
+.mini-month{border:1px solid var(--line);border-radius:11px;padding:12px;background:#fff;transition:.13s}
+.mini-month:hover{box-shadow:var(--shadow)}
+.mini-month .mm-head{font-size:12.5px;font-weight:700;text-align:center;margin-bottom:8px;color:var(--ink-2)}
+.mini-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.mini-dow{font-size:9px;color:var(--faint);text-align:center;padding:2px 0;font-weight:600}
+.mini-day{height:22px;font-size:10.5px;border-radius:5px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.1s;color:#4A5E76}
+.mini-day:hover{background:#EDF3FF}
+.mini-day.other{color:#D5DCE7}
+.mini-day.sel{background:var(--brand);color:#fff;font-weight:700}
+.sel-summary{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:14px;min-height:34px}
+.sel-chip{display:inline-flex;align-items:center;gap:6px;padding:5px 8px 5px 12px;background:var(--brand-bg);color:var(--brand);border-radius:8px;font-size:12.5px;font-weight:600}
+.sel-chip .x{width:16px;height:16px;border-radius:50%;background:#D7E5FF;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:11px}
+.sel-chip .x:hover{background:var(--brand);color:#fff}
+
+/* ===== 审核卡片 ===== */
+.review-item{border:1px solid var(--line);border-radius:12px;background:#fff;padding:18px 20px;margin-bottom:12px;box-shadow:var(--shadow)}
+.review-item .ri-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.review-item .ri-title{font-size:14.5px;font-weight:700}
+.review-item .ri-meta{font-size:12px;color:var(--muted)}
+.review-item .ri-actions{margin-left:auto;display:flex;gap:8px}
+.review-item .ri-body{margin-top:12px;font-size:13px;color:var(--ink-2);line-height:1.75;background:#F8FAFD;border:1px solid var(--line-2);border-radius:9px;padding:12px 14px}
+.reason-box{margin-top:12px;display:flex;gap:8px;align-items:flex-start}
+.reason-box textarea{flex:1;min-height:64px}
+.prog-track{display:flex;align-items:center;margin-top:14px;flex-wrap:wrap;gap:6px}
+.pg-node{display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:7px;font-size:12px;font-weight:600;background:#EEF2F7;color:#66788D}
+.pg-node.done{background:var(--green-bg);color:var(--green)}
+.pg-node.cur{background:var(--amber-bg);color:var(--amber)}
+.pg-node.blocked{background:var(--red-bg);color:var(--red)}
+.pg-node .st{width:15px;height:15px;border-radius:50%;background:currentColor;color:#fff;display:flex;align-items:center;justify-content:center;font-size:9px}
+.pg-node.done .st{background:var(--green)} .pg-node.cur .st{background:var(--amber)} .pg-node.blocked .st{background:var(--red)}
+
+/* ===== 计划与目标 ===== */
+.stat-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:22px}
+.stat-card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px 20px;box-shadow:var(--shadow)}
+.stat-card .sc-v{font-size:26px;font-weight:800;margin-top:6px;letter-spacing:.5px}
+.stat-card .sc-l{font-size:12.5px;color:var(--muted);display:flex;align-items:center;gap:7px}
+.goal-card{border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin-bottom:14px;background:#fff;box-shadow:var(--shadow)}
+.goal-card .gc-head{display:flex;align-items:flex-start;gap:12px}
+.goal-card .gc-tag{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex:none;font-size:13px;font-weight:800;color:#fff}
+.kr-row{display:flex;align-items:center;gap:12px;padding:9px 0;font-size:13px}
+.kr-row .kr-name{flex:1;color:var(--ink-2)}
+.kr-row .kr-pct{width:44px;text-align:right;font-weight:700;color:var(--ink)}
+.progress{flex:none;width:190px;height:7px;background:#E9EEF6;border-radius:5px;overflow:hidden}
+.progress i{display:block;height:100%;border-radius:5px;background:linear-gradient(90deg,var(--brand),var(--teal));transition:width .6s}
+.plan-row{display:flex;align-items:center;gap:14px;padding:14px 18px;border-bottom:1px solid var(--line-2);font-size:13.5px}
+.plan-row:last-child{border-bottom:none}
+.plan-row .pl-name{flex:1;min-width:0}
+.plan-row .pl-name .pn{font-weight:600}
+.plan-row .pl-name .pd{font-size:11.5px;color:var(--muted);margin-top:2px}
+
+/* ===== 模态框 ===== */
+.modal-overlay{position:fixed;inset:0;background:rgba(10,20,36,.55);z-index:80;display:flex;align-items:flex-start;justify-content:center;padding:48px 20px;overflow-y:auto;animation:fadeIn .18s ease}
+.modal{background:#fff;border-radius:16px;box-shadow:var(--shadow-lg);width:100%;animation:popIn .2s ease;display:flex;flex-direction:column;max-height:calc(100vh - 96px)}
+.modal-lg{max-width:1060px}
+.modal-md{max-width:640px}
+.modal-sm{max-width:440px}
+.modal-head{display:flex;align-items:center;gap:12px;padding:20px 24px 16px;border-bottom:1px solid var(--line-2);flex:none}
+.modal-head h3{font-size:17px;font-weight:700;flex:1}
+.modal-close{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;color:var(--muted);border:1px solid var(--line)}
+.modal-close:hover{background:#F5F7FB;color:var(--ink)}
+.modal-body{padding:22px 24px;overflow-y:auto;flex:1}
+.modal-foot{padding:14px 24px;border-top:1px solid var(--line-2);display:flex;justify-content:flex-end;gap:10px;flex:none}
+.pano-tabs{display:flex;gap:2px;margin-bottom:16px;border-bottom:1px solid var(--line)}
+.pano-tabs button{padding:9px 18px;font-size:13.5px;color:var(--muted);border-bottom:2px solid transparent;font-weight:600}
+.pano-tabs button.on{color:var(--brand);border-bottom-color:var(--brand)}
+.pano-stage{display:flex;gap:18px;align-items:stretch}
+.pano-map{flex:1.35;min-width:0}
+.pano-info{flex:1;min-width:0}
+.pano-node{transition:.15s}
+.pano-node:hover{filter:brightness(1.06)}
+.pano-node.clicked{filter:brightness(.96)}
+.pano-node text{user-select:none}
+.pano-node .label{fill:#fff;font-size:13px;font-weight:600}
+.pano-node .sub{fill:rgba(255,255,255,.75);font-size:10.5px}
+.pano-chip{fill:#fff;stroke:#E3E8F0}
+.pano-chip .cl{fill:#0F1F33;font-size:11.5px;font-weight:600}
+.pano-chip:hover{stroke:#2F6BFF;stroke-width:1.5}
+.pano-chip.clicked{stroke:#2F6BFF;stroke-width:2;fill:#F0F5FF}
+.info-card{border:1px solid var(--line);border-radius:12px;padding:18px;background:#FBFCFE;min-height:100%}
+.info-card .ic-ico{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;margin-bottom:12px}
+.info-card h4{font-size:16px;font-weight:700}
+.info-card .ic-tag{font-size:11px;color:var(--teal-d);background:var(--teal-bg);display:inline-block;padding:2px 9px;border-radius:12px;margin-top:7px}
+.info-card p{font-size:13px;color:var(--ink-2);line-height:1.9;margin-top:12px}
+.info-card .ic-list{margin-top:10px}
+.info-card .ic-list li{font-size:12.5px;color:var(--muted);line-height:1.8;margin-left:18px}
+.attach-list{margin-top:8px;display:flex;flex-direction:column;gap:6px}
+.attach-file{display:flex;align-items:center;gap:9px;padding:8px 12px;background:#fff;border:1px solid var(--line);border-radius:8px;font-size:12.5px}
+.attach-file .fn{flex:1;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.attach-file .fs{color:var(--muted);font-size:11.5px}
+
+/* ===== Toast ===== */
+.toast-root{position:fixed;top:22px;right:22px;z-index:120;display:flex;flex-direction:column;gap:10px}
+.toast{display:flex;align-items:center;gap:11px;background:#0F1F33;color:#fff;padding:12px 18px;border-radius:11px;font-size:13.5px;box-shadow:0 10px 30px rgba(15,31,51,.3);animation:toastIn .2s ease;max-width:400px}
+.toast .t-ico{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:none}
+.toast.ok .t-ico{background:var(--green)} .toast.err .t-ico{background:var(--red)} .toast.info .t-ico{background:var(--brand)}
+.toast.out{opacity:0;transform:translateY(-8px);transition:.25s}
+
+/* ===== 响应式 ===== */
+@media (max-width:1100px){
+  .res-cards{grid-template-columns:repeat(2,1fr)}
+  .stat-cards{grid-template-columns:repeat(2,1fr)}
+  .path-strip{grid-template-columns:repeat(2,1fr)}
+  .path-node:nth-child(5){grid-column:span 2}
+  .cols-2{grid-template-columns:1fr}
+  .pano-stage{flex-direction:column}
+}
+@media (max-width:860px){
+  .sidebar{width:70px}
+  .side-brand .txt,.nav-item span:not(.cnt),.nav-group-label,.side-foot{display:none}
+  .nav-item{justify-content:center;padding:12px 8px;margin:2px 8px}
+  .nav-item.active::before{left:-8px}
+  .nav-item .cnt{position:absolute;top:4px;right:4px;min-width:16px;height:16px;font-size:9px;padding:0 4px}
+  .main{margin-left:70px}
+  .topbar{padding:0 14px}
+  .view{padding:18px 14px 50px}
+  .login-wrap{grid-template-columns:1fr}
+  .login-left{display:none}
+  .login-right{padding:24px 20px}
+  .login-card{width:100%;max-width:400px}
+  .year-grid{grid-template-columns:repeat(2,1fr)}
+  .res-cards{grid-template-columns:1fr}
+  .stat-cards{grid-template-columns:1fr 1fr}
+  .matrix-row{flex-direction:column;gap:10px}
+  .matrix-row .m-mail{text-align:left}
+  .user-chip .uname,.user-chip .urole{display:none}
+  .input,.select,.textarea{font-size:16px}
+  .tab{font-size:14px;padding:10px 12px}
+  .btn{font-size:14px}
+  .topbar{flex-wrap:wrap;height:auto;padding:10px 14px;gap:8px}
+  .view{padding:16px 14px 50px}
+}
+</style>
+</head>
+<body>
+
+<!-- ========== 登录页 ========== -->
+<div class="login-wrap" id="loginWrap">
+  <div class="login-left">
+    <div class="grid-bg"></div>
+    <div class="glow"></div>
+    <div class="glow2"></div>
+    <svg class="login-hex" style="top:64px;right:40px;width:120px;height:120px" viewBox="0 0 100 100" fill="none" stroke="rgba(127,167,255,.35)" stroke-width="1.5">
+      <path d="M50 5 92 28v44L50 95 8 72V28z"/><path d="M50 22 76 35v30L50 78 24 65V35z"/>
+      <circle cx="50" cy="50" r="10" fill="rgba(15,181,166,.5)" stroke="none"/>
+    </svg>
+    <svg class="login-hex" style="bottom:120px;left:-30px;width:90px;height:90px;opacity:.3" viewBox="0 0 100 100" fill="none" stroke="rgba(15,181,166,.6)" stroke-width="1.5">
+      <path d="M50 5 92 28v44L50 95 8 72V28z"/><path d="M50 22 76 35v30L50 78 24 65V35z"/>
+    </svg>
+    <div class="login-brand">
+      <div class="logo">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M12 2 21 7v10l-9 5-9-5V7z" fill="rgba(255,255,255,.22)"/><path d="M12 5.5 18 9v6l-6 3.5L6 15V9z" fill="#fff"/><circle cx="12" cy="12" r="2.2" fill="#0FB5A6"/></svg>
+      </div>
+      <div>
+        <h1>CANN SIG 运营协作平台</h1>
+        <p>COMMUNITY SIG OPERATIONS COLLABORATION</p>
+      </div>
+    </div>
+    <div class="login-hero">
+      <h2>让每一个 SIG 都能 <em>从 0 到 1</em><br>被看见、被运营、被支撑</h2>
+      <p>CANN 社区围绕开源 SIG 的运营路径，沉淀了一整套与平台运营团队协作的环节与互动流程：从认识运营体系、上线推广、仓开源，到申请推广资源、制定并跟踪运营计划与目标。</p>
+      <div class="login-steps">
+        <div class="login-step"><span class="n">1</span>了解 sig 运营</div>
+        <div class="login-step"><span class="n">2</span>sig 上线</div>
+        <div class="login-step"><span class="n">3</span>仓开源</div>
+        <div class="login-step"><span class="n">4</span>运营资源申请</div>
+        <div class="login-step"><span class="n">5</span>计划与目标管理</div>
+      </div>
+    </div>
+    <div class="login-foot">原型演示环境 · 数据均为示例数据，用于交互流程走查</div>
+  </div>
+  <div class="login-right">
+    <div class="login-card">
+      <div class="logo-line">
+        <div class="mini-logo"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2 21 7v10l-9 5-9-5V7z" fill="rgba(255,255,255,.25)"/><path d="M12 5.5 18 9v6l-6 3.5L6 15V9z" fill="#fff"/><circle cx="12" cy="12" r="2.2" fill="#0FB5A6"/></svg></div>
+        <div>
+          <h3>登录运营平台</h3>
+          <div class="sub">登录后默认进入「了解 sig 运营」工作台</div>
+        </div>
+      </div>
+      <div class="login-field">
+        <label>账号</label>
+        <input class="input" id="loginAccount" value="运营专员-王思远" readonly style="background:#F7F9FC">
+      </div>
+      <div class="login-field">
+        <label>演示视角（登录后可随时切换）</label>
+        <select class="select" id="loginRole">
+          <option value="ops" selected>运营专员</option>
+          <option value="sig">SIG Maintainer</option>
+          <option value="op">运营负责人</option>
+          <option value="mkt">营销负责人</option>
+          <option value="comm">社区管理员</option>
+        </select>
+      </div>
+      <button class="login-btn" id="loginBtn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/></svg>
+        进入工作台
+      </button>
+      <div class="login-hint">演示环境说明：运营专员可提交 sig 上线 / 仓开源 / 资源申请并查看待发布清单；切换审核角色可在「审核中心」模拟通过 / 驳回。无需输入密码，点击登录即可。</div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== 应用外壳 ========== -->
+<div class="app hidden" id="app">
+  <aside class="sidebar">
+    <div class="side-bg"></div>
+    <div class="side-brand">
+      <div class="logo"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2 21 7v10l-9 5-9-5V7z" fill="rgba(255,255,255,.22)"/><path d="M12 5.5 18 9v6l-6 3.5L6 15V9z" fill="#fff"/><circle cx="12" cy="12" r="2.2" fill="#0FB5A6"/></svg></div>
+      <div class="txt">
+        <div class="t1">CANN SIG 运营协作</div>
+        <div class="t2">COMMUNITY OPS</div>
+      </div>
+    </div>
+    <nav class="side-nav">
+      <div class="nav-group-label">运营路径</div>
+      <div class="nav-item active" data-view="learn">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M16.2 7.8l-2.1 6.3-6.3 2.1 2.1-6.3z"/></svg>
+        <span>了解 sig 运营</span>
+      </div>
+      <div class="nav-item" data-view="launch">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg>
+        <span>sig 上线</span>
+      </div>
+      <div class="nav-item" data-view="repo">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2.5"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="9" r="2.5"/><path d="M6 8.5v7M18 11.5c0 4-4 4.5-8 4.5"/></svg>
+        <span>仓开源</span>
+      </div>
+      <div class="nav-item" data-view="resource">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="17" rx="2.5"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/><path d="M8 14h4M8 17h7"/></svg>
+        <span>运营资源申请</span>
+      </div>
+      <div class="nav-item" data-view="plan">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/></svg>
+        <span>计划与目标管理</span>
+      </div>
+      <div class="nav-group-label">协作与后台</div>
+      <div class="nav-item" data-view="review">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5l7.5 3v6c0 5-3.2 8.4-7.5 10-4.3-1.6-7.5-5-7.5-10v-6z"/><path d="M8.8 12l2.2 2.2 4.2-4.4"/></svg>
+        <span>审核中心 / 后台</span>
+        <span class="cnt hidden" id="reviewNavCnt">0</span>
+      </div>
+    </nav>
+    <div class="side-foot">原型 v1.0 · 演示数据<br>仅用于运营协作流程走查</div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div class="page-title">
+        <span id="pageTitle">了解 sig 运营</span>
+        <span class="crumb" id="pageCrumb">运营路径 / 第 1 步</span>
+      </div>
+      <div class="topbar-right">
+        <div class="role-switch">
+          <span>当前视角</span>
+          <select id="roleSelect">
+            <option value="ops">运营专员</option>
+            <option value="sig">SIG Maintainer</option>
+            <option value="op">运营负责人</option>
+            <option value="mkt">营销负责人</option>
+            <option value="comm">社区管理员</option>
+          </select>
+        </div>
+        <div style="position:relative">
+          <button class="bell-btn" id="bellBtn" aria-label="通知">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 8-3 8h18s-3-1-3-8"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+            <span class="bdg" id="bellBdg">3</span>
+          </button>
+          <div class="bell-panel hidden" id="bellPanel"></div>
+        </div>
+        <div class="user-chip">
+          <div class="avatar" id="userAvatar">王</div>
+          <div>
+            <div class="uname" id="userName">王思远</div>
+            <div class="urole" id="userRole">运营专员</div>
+          </div>
+        </div>
+      </div>
+    </header>
+    <main id="viewRoot">
+      <section class="view" id="view-learn">
+        <div class="learn-hero">
+          <div class="glow"></div>
+          <h2>了解 CANN 社区 sig 运营</h2>
+          <p>CANN 社区为开源 SIG 提供了一条可复用的运营路径：从认知运营体系与支撑组织开始，完成 sig 上线与仓开源推广，按日历申请公众号、视频号、媒体等渠道资源与奖品，再以运营计划与目标管理闭环跟踪成果。本页是你在本平台的起点——先看清全景，再开始协作。</p>
+          <div class="hero-actions">
+            <button class="btn btn-pri" id="openPanoBtn">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
+              打开运营全景图
+            </button>
+            <button class="btn" id="openMatrixBtn" style="background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25)">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+              查看组织矩阵
+            </button>
+          </div>
+        </div>
+
+        <div class="sec-head" style="margin-top:26px">
+          <div class="sec-title"><span class="bar"></span>运营路径总览</div>
+          <div class="sec-sub">点击任一环节可直接跳转到对应模块</div>
+        </div>
+        <div class="path-strip">
+          <div class="path-node" data-goto="learn">
+            <div class="pn-no">STEP 01</div>
+            <div class="pn-ico" style="background:var(--brand-bg);color:var(--brand)"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M16.2 7.8l-2.1 6.3-6.3 2.1 2.1-6.3z"/></svg></div>
+            <div class="pn-name">了解 sig 运营</div>
+            <div class="pn-desc">认知运营全景、支撑组织与协作角色</div>
+          </div>
+          <div class="path-node" data-goto="launch">
+            <div class="pn-no">STEP 02</div>
+            <div class="pn-ico" style="background:var(--purple-bg);color:var(--purple)"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg></div>
+            <div class="pn-name">sig 上线</div>
+            <div class="pn-desc">发起社区公告、新闻稿、短视频、直播推广</div>
+          </div>
+          <div class="path-node" data-goto="repo">
+            <div class="pn-no">STEP 03</div>
+            <div class="pn-ico" style="background:var(--orange-bg);color:var(--orange)"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2.5"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="9" r="2.5"/><path d="M6 8.5v7M18 11.5c0 4-4 4.5-8 4.5"/></svg></div>
+            <div class="pn-name">仓开源</div>
+            <div class="pn-desc">仓库开源推广与协作资源申请</div>
+          </div>
+          <div class="path-node" data-goto="resource">
+            <div class="pn-no">STEP 04</div>
+            <div class="pn-ico" style="background:var(--teal-bg);color:var(--teal-d)"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="17" rx="2.5"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/><path d="M8 14h4M8 17h7"/></svg></div>
+            <div class="pn-name">运营资源申请</div>
+            <div class="pn-desc">按日历申请渠道推广资源与奖品</div>
+          </div>
+          <div class="path-node" data-goto="plan">
+            <div class="pn-no">STEP 05</div>
+            <div class="pn-ico" style="background:var(--green-bg);color:var(--green)"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/></svg></div>
+            <div class="pn-name">计划与目标管理</div>
+            <div class="pn-desc">制定运营计划，跟踪目标与关键结果</div>
+          </div>
+        </div>
+
+        <div class="cols-2" style="margin-top:22px">
+          <div class="card card-pad">
+            <div class="sec-title" style="margin-bottom:6px"><span class="bar"></span>为什么要做 sig 运营</div>
+            <div class="small muted" style="margin-bottom:14px">社区运营团队与 SIG 协作的共识基础</div>
+            <div style="display:flex;flex-direction:column;gap:14px">
+              <div style="display:flex;gap:12px">
+                <div style="width:34px;height:34px;border-radius:9px;background:var(--brand-bg);color:var(--brand);display:flex;align-items:center;justify-content:center;flex:none"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-3.5 8-10V5l-8-3-8 3v7c0 6.5 8 10 8 10z"/></svg></div>
+                <div><div style="font-size:13.5px;font-weight:700">统一的运营入口</div><div style="font-size:12.5px;color:var(--muted);line-height:1.7;margin-top:3px">所有 SIG 的推广诉求在同一平台发起，资源与节奏可统一管理，避免信息分散在群聊和邮件里。</div></div>
+              </div>
+              <div style="display:flex;gap:12px">
+                <div style="width:34px;height:34px;border-radius:9px;background:var(--teal-bg);color:var(--teal-d);display:flex;align-items:center;justify-content:center;flex:none"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-6"/></svg></div>
+                <div><div style="font-size:13.5px;font-weight:700">明确的协作与审核</div><div style="font-size:12.5px;color:var(--muted);line-height:1.7;margin-top:3px">每一类推广内容都有固定的审核链（SIG Maintainer / 运营负责人 / 营销负责人），通过后统一进入待发布清单。</div></div>
+              </div>
+              <div style="display:flex;gap:12px">
+                <div style="width:34px;height:34px;border-radius:9px;background:var(--amber-bg);color:var(--amber);display:flex;align-items:center;justify-content:center;flex:none"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="17" rx="2.5"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/><path d="M9 14.5h6M12 11.5v6"/></svg></div>
+                <div><div style="font-size:13.5px;font-weight:700">可量化的运营成果</div><div style="font-size:12.5px;color:var(--muted);line-height:1.7;margin-top:3px">运营计划、目标与关键结果在同一处沉淀，社区运营的价值可以被记录、复盘与放大。</div></div>
+              </div>
+            </div>
+          </div>
+          <div class="card card-pad">
+            <div class="sec-title" style="margin-bottom:6px"><span class="bar"></span>资源与支撑组织矩阵</div>
+            <div class="small muted" style="margin-bottom:10px">运营平台背后的协作组织，成员均支持邮件联系</div>
+            <div class="matrix-row">
+              <div class="m-org"><div class="on"><span class="res-dot r-blue"></span>SIG Maintainer</div><span class="ot">技术审核</span></div>
+              <div class="m-duty"><div class="d-t">职责</div>维护 SIG 技术方向，审核上线内容的技术准确性，为直播等技术活动提供内容支持。</div>
+              <div class="m-mail"><div class="mn">吴彦霖</div><a class="ml" href="mailto:sig-maintainer@cann.community?subject=CANN%20SIG%20运营协作">sig-maintainer@cann.community</a></div>
+            </div>
+            <div class="matrix-row">
+              <div class="m-org"><div class="on"><span class="res-dot r-teal"></span>运营负责人</div><span class="ot">运营统筹</span></div>
+              <div class="m-duty"><div class="d-t">职责</div>统筹社区运营节奏，审核发布排期，分配公众号、视频号、媒体等渠道资源。</div>
+              <div class="m-mail"><div class="mn">李沐晨</div><a class="ml" href="mailto:ops@cann.community?subject=CANN%20SIG%20运营协作">ops@cann.community</a></div>
+            </div>
+            <div class="matrix-row">
+              <div class="m-org"><div class="on"><span class="res-dot r-purple"></span>营销负责人</div><span class="ot">营销审核</span></div>
+              <div class="m-duty"><div class="d-t">职责</div>把关营销口径与传播素材，审核新闻稿、短视频等对外传播内容的合规与质量。</div>
+              <div class="m-mail"><div class="mn">张予安</div><a class="ml" href="mailto:mkt@cann.community?subject=CANN%20SIG%20运营协作">mkt@cann.community</a></div>
+            </div>
+            <div class="matrix-row">
+              <div class="m-org"><div class="on"><span class="res-dot r-cyan"></span>社区管理员</div><span class="ot">平台与发布</span></div>
+              <div class="m-duty"><div class="d-t">职责</div>负责平台权限、公告栏与待发布清单的最终发布执行，维护社区秩序。</div>
+              <div class="m-mail"><div class="mn">刘书瑶</div><a class="ml" href="mailto:community@cann.community?subject=CANN%20SIG%20运营协作">community@cann.community</a></div>
+            </div>
+            <div class="matrix-row">
+              <div class="m-org"><div class="on"><span class="res-dot r-orange"></span>技术支持</div><span class="ot">活动保障</span></div>
+              <div class="m-duty"><div class="d-t">职责</div>为技术直播、线上演示等活动提供平台与设备保障，支撑内容制作。</div>
+              <div class="m-mail"><div class="mn">陈宇杭</div><a class="ml" href="mailto:tech@cann.community?subject=CANN%20SIG%20运营协作">tech@cann.community</a></div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="view hidden" id="view-launch">
+        <div class="card card-pad" style="margin-bottom:20px">
+          <div class="sec-head" style="margin-bottom:10px">
+            <div class="sec-title"><span class="bar"></span>sig 上线 · 推广基础文案</div>
+            <span class="badge badge-blue">运营路径 / 第 2 步</span>
+          </div>
+          <p class="small" style="color:var(--ink-2);line-height:1.9;max-width:900px">新 SIG 的成立是社区生态的重要节点。统一、专业的上线推广能够：<b style="color:var(--ink)">对外宣告 SIG 定位与价值</b>，让潜在贡献者第一时间找到入口；<b style="color:var(--ink)">沉淀首批物料</b>，为后续仓开源、技术直播等活动积累传播资产；<b style="color:var(--ink)">明确运营节奏</b>，让社区、运营、营销三方在同一视图下协作。以下四类资源任选其一或组合申请，提交后将进入多角色审核流程。</p>
+          <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap">
+            <div style="display:flex;gap:8px;align-items:center;padding:8px 14px;background:#F8FAFD;border:1px solid var(--line-2);border-radius:10px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--brand)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><span class="small muted">标题长度、正文建议项按资源模板自动校验</span></div>
+            <div style="display:flex;gap:8px;align-items:center;padding:8px 14px;background:#F8FAFD;border:1px solid var(--line-2);border-radius:10px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-6"/></svg><span class="small muted">必需审核全部通过后进入「待发布清单」</span></div>
+          </div>
+        </div>
+
+        <div class="card card-pad" style="margin-bottom:20px">
+          <div class="sec-head">
+            <div class="sec-title"><span class="bar"></span>发起上线推广</div>
+            <div class="small muted">选择资源类型，按模板填写内容后提交</div>
+          </div>
+          <div class="tabs" id="launchTabs">
+            <div class="tab active" data-res="announce"><span class="res-dot r-blue"></span>社区公告</div>
+            <div class="tab" data-res="news"><span class="res-dot r-purple"></span>新闻稿</div>
+            <div class="tab" data-res="video"><span class="res-dot r-orange"></span>短视频</div>
+            <div class="tab" data-res="live"><span class="res-dot r-teal"></span>技术直播</div>
+          </div>
+
+          <!-- 社区公告表单 -->
+          <div id="form-announce">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+              <div>
+                <div class="field">
+                  <label>公告标题 <span class="req">*</span> <span class="hint">限 10 个字符，建议「SIG 名 + 动作」</span></label>
+                  <input class="input" id="anTitle" maxlength="10" placeholder="例：AscendC SIG 成立">
+                  <div class="char-count" id="anTitleCount">0 / 10</div>
+                </div>
+                <div class="field">
+                  <label>公告正文 <span class="req">*</span> <span class="hint">点击下方建议项可插入模板片段</span></label>
+                  <textarea class="textarea" id="anBody" placeholder="向社区介绍这个 SIG 是谁、做什么、为什么值得加入……"></textarea>
+                  <div class="suggest-chips" id="anSuggest">
+                    <span class="suggest-chip" data-s="【SIG 功能】本 SIG 聚焦于……">+ SIG 功能</span>
+                    <span class="suggest-chip" data-s="【核心价值】为社区带来……">+ 核心价值</span>
+                    <span class="suggest-chip" data-s="【成员与分工】Maintainer：……，Contributor：……">+ 成员与分工</span>
+                    <span class="suggest-chip" data-s="【近期计划】Q4 将完成……">+ 近期计划</span>
+                    <span class="suggest-chip" data-s="【SIG 链接】gitee.com/cann-community/……">+ SIG 链接</span>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div class="field">
+                  <label>公告周期 <span class="req">*</span> <span class="hint">公告在社区公告栏展示的时长</span></label>
+                  <select class="select" id="anPeriod">
+                    <option value="7 天">7 天（一周，适合成立公告）</option>
+                    <option value="14 天" selected>14 天（两周，适合重点 SIG）</option>
+                    <option value="30 天">30 天（长期置顶，适合旗舰 SIG）</option>
+                    <option value="自定义">自定义</option>
+                  </select>
+                </div>
+                <div class="field hidden" id="anCustomWrap">
+                  <label>自定义周期</label>
+                  <div style="display:flex;gap:10px;align-items:center">
+                    <input type="date" class="input" id="anStart"> <span class="muted small">至</span> <input type="date" class="input" id="anEnd">
+                  </div>
+                </div>
+                <div class="field">
+                  <label>公告渠道</label>
+                  <div class="check-group">
+                    <label class="check-box on"><input type="checkbox" checked>社区公告栏</label>
+                    <label class="check-box on"><input type="checkbox" checked>SIG 邮件列表</label>
+                    <label class="check-box"><input type="checkbox">开发者社区首页</label>
+                  </div>
+                </div>
+                <div class="field">
+                  <label>关联素材</label>
+                  <div class="attach-list" id="anAttach"></div>
+                  <label style="display:inline-flex;align-items:center;gap:7px;margin-top:8px;padding:7px 13px;border:1px dashed #C7D4EC;border-radius:8px;font-size:12.5px;color:var(--brand);cursor:pointer">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg>
+                    上传附件（可选）
+                    <input type="file" hidden id="anFile" multiple>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="form-actions">
+              <button class="btn btn-sec" id="anPreviewBtn">预览公告</button>
+              <button class="btn btn-pri" id="anSubmitBtn">提交审核</button>
+            </div>
+          </div>
+
+          <!-- 新闻稿表单 -->
+          <div id="form-news" class="hidden">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+              <div>
+                <div class="field">
+                  <label>新闻稿标题 <span class="req">*</span> <span class="hint">限 30 个字符</span></label>
+                  <input class="input" id="nwTitle" maxlength="30" placeholder="例：CANN 社区宣布全新 xxx SIG 正式上线">
+                  <div class="char-count" id="nwTitleCount">0 / 30</div>
+                </div>
+                <div class="field">
+                  <label>导语 <span class="req">*</span> <span class="hint">一段话概括事件，限 100 字符</span></label>
+                  <textarea class="textarea" id="nwLead" maxlength="100" style="min-height:64px" placeholder="例：CANN 社区今日宣布……"></textarea>
+                </div>
+                <div class="field">
+                  <label>正文要点 <span class="req">*</span> <span class="hint">建议覆盖：背景 / 进展 / 数据 / 展望</span></label>
+                  <textarea class="textarea" id="nwBody" placeholder="分点描述新闻稿正文的核心内容……"></textarea>
+                </div>
+              </div>
+              <div>
+                <div class="field">
+                  <label>发布渠道</label>
+                  <div class="check-group" id="nwChannels">
+                    <label class="check-box on"><input type="checkbox" checked>官网新闻</label>
+                    <label class="check-box on"><input type="checkbox" checked>社区公众号</label>
+                    <label class="check-box"><input type="checkbox">合作媒体</label>
+                  </div>
+                </div>
+                <div class="field">
+                  <label>期望发布时间 <span class="req">*</span></label>
+                  <input type="date" class="input" id="nwDate">
+                </div>
+                <div class="field">
+                  <label>新闻稿附件 <span class="req">*</span> <span class="hint">需附完整成稿或素材包</span></label>
+                  <div class="attach-list" id="nwAttach"></div>
+                  <label style="display:inline-flex;align-items:center;gap:7px;margin-top:8px;padding:7px 13px;border:1px dashed #C7D4EC;border-radius:8px;font-size:12.5px;color:var(--purple);cursor:pointer">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg>
+                    上传成稿 / 素材包
+                    <input type="file" hidden id="nwFile" multiple>
+                  </label>
+                </div>
+                <div class="field">
+                  <label>下载模板</label>
+                  <button class="btn btn-sec btn-sm" data-tpl="新闻稿模板（标题/导语/正文结构）">获取新闻稿模板</button>
+                </div>
+              </div>
+            </div>
+            <div class="form-actions">
+              <button class="btn btn-sec" id="nwPreviewBtn">预览成稿结构</button>
+              <button class="btn btn-pri" id="nwSubmitBtn">提交审核</button>
+            </div>
+          </div>
+
+          <!-- 短视频表单 -->
+          <div id="form-video" class="hidden">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+              <div>
+                <div class="field">
+                  <label>视频主题 <span class="req">*</span> <span class="hint">限 30 个字符</span></label>
+                  <input class="input" id="vdTitle" maxlength="30" placeholder="例：1 分钟看懂 AscendC SIG">
+                  <div class="char-count" id="vdTitleCount">0 / 30</div>
+                </div>
+                <div class="field">
+                  <label>目标受众</label>
+                  <select class="select" id="vdAud">
+                    <option>开发者 / 工程师</option>
+                    <option>高校学生与研究者</option>
+                    <option>生态伙伴与 ISV</option>
+                    <option>社区全体成员</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label>视频时长</label>
+                  <select class="select" id="vdLen">
+                    <option>30 秒以内（快闪片）</option>
+                    <option selected>30 秒 – 1 分钟（介绍片）</option>
+                    <option>1 – 3 分钟（深度讲解）</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label>脚本要点 <span class="req">*</span></label>
+                  <textarea class="textarea" id="vdScript" style="min-height:120px" placeholder="分镜 / 旁白 / 关键画面逐条描述……"></textarea>
+                </div>
+              </div>
+              <div>
+                <div class="field">
+                  <label>发布渠道</label>
+                  <div class="check-group" id="vdChannels">
+                    <label class="check-box on"><input type="checkbox" checked>社区视频号</label>
+                    <label class="check-box on"><input type="checkbox" checked>B 站</label>
+                    <label class="check-box"><input type="checkbox">抖音</label>
+                  </div>
+                </div>
+                <div class="field">
+                  <label>期望上线时间 <span class="req">*</span></label>
+                  <input type="date" class="input" id="vdDate">
+                </div>
+                <div class="field">
+                  <label>视频素材 <span class="req">*</span> <span class="hint">成片 / 分镜脚本 / 封面图</span></label>
+                  <div class="attach-list" id="vdAttach"></div>
+                  <label style="display:inline-flex;align-items:center;gap:7px;margin-top:8px;padding:7px 13px;border:1px dashed #C7D4EC;border-radius:8px;font-size:12.5px;color:var(--orange);cursor:pointer">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg>
+                    上传成片 / 脚本
+                    <input type="file" hidden id="vdFile" multiple>
+                  </label>
+                </div>
+                <div class="field">
+                  <label>下载模板</label>
+                  <button class="btn btn-sec btn-sm" data-tpl="短视频分镜脚本模板（镜头/时长/旁白）">获取分镜脚本模板</button>
+                </div>
+              </div>
+            </div>
+            <div class="form-actions">
+              <button class="btn btn-pri" id="vdSubmitBtn">提交审核</button>
+            </div>
+          </div>
+
+          <!-- 技术直播表单 -->
+          <div id="form-live" class="hidden">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+              <div>
+                <div class="field">
+                  <label>直播主题 <span class="req">*</span> <span class="hint">限 30 个字符</span></label>
+                  <input class="input" id="lvTitle" maxlength="30" placeholder="例：AscendC SIG 技术公开课 · 第一期">
+                  <div class="char-count" id="lvTitleCount">0 / 30</div>
+                </div>
+                <div class="field">
+                  <label>讲师 / 嘉宾 <span class="req">*</span></label>
+                  <input class="input" id="lvSpeaker" placeholder="例：吴彦霖（SIG Maintainer）">
+                </div>
+                <div class="field">
+                  <label>直播形式</label>
+                  <select class="select" id="lvForm">
+                    <option>主题演讲</option>
+                    <option selected>实操演示</option>
+                    <option>圆桌讨论</option>
+                    <option>访谈</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label>预估时长</label>
+                  <select class="select" id="lvLen">
+                    <option>30 分钟</option>
+                    <option selected>60 分钟</option>
+                    <option>90 分钟</option>
+                    <option>120 分钟</option>
+                  </select>
+                </div>
+              </div>
+              <div>
+                <div class="field">
+                  <label>面向人群</label>
+                  <select class="select" id="lvAud">
+                    <option>开发者 / 工程师</option>
+                    <option>高校学生与研究者</option>
+                    <option>生态伙伴与 ISV</option>
+                    <option>社区全体成员</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label>期望直播时间 <span class="req">*</span></label>
+                  <div style="display:flex;gap:10px">
+                    <input type="date" class="input" id="lvDate" style="flex:1">
+                    <input type="time" class="input" id="lvTime" style="flex:.6" value="19:00">
+                  </div>
+                </div>
+                <div class="field">
+                  <label>直播素材 <span class="hint">课件 / 演示环境说明 / 预告图</span></label>
+                  <div class="attach-list" id="lvAttach"></div>
+                  <label style="display:inline-flex;align-items:center;gap:7px;margin-top:8px;padding:7px 13px;border:1px dashed #C7D4EC;border-radius:8px;font-size:12.5px;color:var(--teal-d);cursor:pointer">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg>
+                    上传课件 / 预告图
+                    <input type="file" hidden id="lvFile" multiple>
+                  </label>
+                </div>
+                <div class="field">
+                  <label>下载模板</label>
+                  <button class="btn btn-sec btn-sm" data-tpl="技术直播方案模板（主题/嘉宾/议程/保障）">获取直播方案模板</button>
+                </div>
+              </div>
+            </div>
+            <div class="form-actions">
+              <button class="btn btn-pri" id="lvSubmitBtn">提交审核</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="sec-head card-pad" style="padding-bottom:14px;margin-bottom:0;border-bottom:1px solid var(--line-2)">
+            <div class="sec-title"><span class="bar"></span>我的 sig 上线申请</div>
+            <span class="badge badge-gray" id="launchCntBadge">0 条</span>
+          </div>
+          <div id="launchList" style="padding:8px 20px 14px"></div>
+        </div>
+      </section>
+      <section class="view hidden" id="view-repo">
+        <div class="card card-pad" style="margin-bottom:20px">
+          <div class="sec-head" style="margin-bottom:10px">
+            <div class="sec-title"><span class="bar"></span>仓开源 · 推广基础文案</div>
+            <span class="badge badge-orange">运营路径 / 第 3 步</span>
+          </div>
+          <p class="small" style="color:var(--ink-2);line-height:1.9;max-width:900px">代码仓库开源是 SIG 从「宣告存在」走向「真正共建」的关键一跃。<b style="color:var(--ink)">开源即承诺</b>——把代码、文档与 Roadmap 公开，社区才具备可信的协作基础；<b style="color:var(--ink)">开源即招募</b>——高质量的仓库是吸引 Contributor 与 Maintainer 最直接的入口；<b style="color:var(--ink)">开源即传播</b>——配合公告、新闻稿、短视频与直播，让仓库在开源生态中被持续看见。仓开源推广的资源申请流程与 sig 上线完全一致。</p>
+        </div>
+
+        <div class="card card-pad" style="margin-bottom:20px">
+          <div class="sec-head">
+            <div class="sec-title"><span class="bar"></span>发起仓开源推广</div>
+            <div class="small muted">与 sig 上线相同的四类资源与审核流程</div>
+          </div>
+          <div id="repoFormArea"></div>
+        </div>
+
+        <div class="card">
+          <div class="sec-head card-pad" style="padding-bottom:14px;margin-bottom:0;border-bottom:1px solid var(--line-2)">
+            <div class="sec-title"><span class="bar"></span>我的仓开源申请</div>
+            <span class="badge badge-gray" id="repoCntBadge">0 条</span>
+          </div>
+          <div id="repoList" style="padding:8px 20px 14px"></div>
+        </div>
+      </section>
+      <section class="view hidden" id="view-resource">
+        <div class="card card-pad" style="margin-bottom:20px">
+          <div class="sec-head" style="margin-bottom:10px">
+            <div class="sec-title"><span class="bar"></span>运营资源申请</div>
+            <span class="badge badge-teal">运营路径 / 第 4 步</span>
+          </div>
+          <p class="small" style="color:var(--ink-2);line-height:1.9;max-width:900px">通过日历选择排期，可一次勾选一天或多天，为 SIG 申请<b style="color:var(--ink)">公众号、视频号、媒体渠道</b>等推广资源，也可以申请<b style="color:var(--ink)">奖品</b>用于社区激励。提交申请时需附上对应资源的附件（附件要求随资源类型变化）。申请将进入运营负责人与营销负责人的审核链，审核通过后由运营专员在后台统一发布。</p>
+        </div>
+
+        <div class="cols-2" style="align-items:flex-start">
+          <div class="card card-pad">
+            <div class="sec-head" style="margin-bottom:6px">
+              <div class="sec-title"><span class="bar"></span>选择排期日期</div>
+              <span class="small muted" id="calCount">已选 0 天</span>
+            </div>
+            <div class="cal-toolbar" style="margin-bottom:4px">
+              <div class="cal-toggle" id="calMode">
+                <button class="on" data-mode="month">月历</button>
+                <button data-mode="year">全年</button>
+              </div>
+              <div class="cal-nav">
+                <button class="icon-btn" id="calPrev" aria-label="上个月"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+                <span class="ym" id="calYm">2026 年 9 月</span>
+                <button class="icon-btn" id="calNext" aria-label="下个月"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
+              </div>
+            </div>
+            <div class="cal-dow-grid" id="calDow"></div>
+            <div class="cal-grid" id="calMonth"></div>
+            <div class="year-grid hidden" id="calYear"></div>
+            <div class="sel-summary" id="calChips"></div>
+            <div style="margin-top:10px;display:flex;justify-content:flex-end">
+              <button class="btn btn-sec btn-sm" id="calClear">清空已选</button>
+            </div>
+          </div>
+
+          <div>
+            <div class="card card-pad">
+              <div class="sec-head" style="margin-bottom:14px">
+                <div class="sec-title"><span class="bar"></span>选择资源</div>
+                <div class="small muted">资源类型决定附件要求</div>
+              </div>
+              <div class="res-cards" id="resCards">
+                <div class="res-card sel" data-res="wechat">
+                  <div class="rc-check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
+                  <div class="rc-ico" style="background:var(--green-bg)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.9 8.9 0 0 1-3.5-.7L3 21l1.8-5.2a8 8 0 0 1-1-3.8A8.4 8.4 0 0 1 12.4 3.5 8.4 8.4 0 0 1 21 11.5z"/></svg></div>
+                  <div class="rc-name"><span class="res-dot r-green"></span>公众号推文</div>
+                  <div class="rc-desc">社区公众号渠道发布推文，需附成稿或图文素材</div>
+                </div>
+                <div class="res-card" data-res="shipin">
+                  <div class="rc-check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
+                  <div class="rc-ico" style="background:var(--rose-bg)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--rose)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="14" height="14" rx="3"/><path d="M22 8.5v7L16 12z"/></svg></div>
+                  <div class="rc-name"><span class="res-dot r-rose"></span>视频号</div>
+                  <div class="rc-desc">社区视频号发布短视频，需附成片与封面</div>
+                </div>
+                <div class="res-card" data-res="media">
+                  <div class="rc-check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
+                  <div class="rc-ico" style="background:var(--cyan-bg)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M7 12h10M10 18h4"/><rect x="2" y="3" width="20" height="18" rx="2.5"/></svg></div>
+                  <div class="rc-name"><span class="res-dot r-cyan"></span>媒体渠道</div>
+                  <div class="rc-desc">合作科技媒体发布稿件，需附新闻通稿</div>
+                </div>
+                <div class="res-card" data-res="prize">
+                  <div class="rc-check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
+                  <div class="rc-ico" style="background:var(--amber-bg)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="6"/><path d="M9 14.5L7.5 21l4.5-2.5L16.5 21 15 14.5"/></svg></div>
+                  <div class="rc-name"><span class="res-dot r-amber"></span>奖品</div>
+                  <div class="rc-desc">社区周边、书籍、开发板等激励物资，需附清单</div>
+                </div>
+              </div>
+
+              <div class="res-panel" id="resPanelArea"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:20px">
+          <div class="sec-head card-pad" style="padding-bottom:14px;margin-bottom:0;border-bottom:1px solid var(--line-2)">
+            <div class="sec-title"><span class="bar"></span>我的资源申请</div>
+            <span class="badge badge-gray" id="resCntBadge">0 条</span>
+          </div>
+          <div id="resList" style="padding:8px 20px 14px"></div>
+        </div>
+      </section>
+      <section class="view hidden" id="view-plan">
+        <div class="sec-head" style="margin-bottom:16px">
+          <div class="sec-title"><span class="bar"></span>运营计划与目标管理</div>
+          <div class="small muted">围绕季度目标制定计划，跟踪关键结果与运营数据</div>
+        </div>
+        <div class="stat-cards">
+          <div class="stat-card"><div class="sc-l"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--brand)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="17" rx="2.5"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/></svg>本季度运营计划</div><div class="sc-v" id="statPlan">8</div></div>
+          <div class="stat-card"><div class="sc-l"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/></svg>年度运营目标</div><div class="sc-v" id="statGoal">4</div></div>
+          <div class="stat-card"><div class="sc-l"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/><circle cx="12" cy="12" r="5"/></svg>平均完成率</div><div class="sc-v" id="statRate" style="color:var(--amber)">62%</div></div>
+          <div class="stat-card"><div class="sc-l"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--purple)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5l7.5 3v6c0 5-3.2 8.4-7.5 10-4.3-1.6-7.5-5-7.5-10v-6z"/><path d="M8.8 12l2.2 2.2 4.2-4.4"/></svg>待发布内容</div><div class="sc-v" id="statPending" style="color:var(--purple)">2</div></div>
+        </div>
+
+        <div class="cols-2" style="align-items:flex-start">
+          <div class="card">
+            <div class="sec-head card-pad" style="padding-bottom:14px;margin-bottom:0;border-bottom:1px solid var(--line-2)">
+              <div class="sec-title"><span class="bar"></span>年度运营目标</div>
+              <button class="btn btn-sec btn-sm" id="addGoalBtn">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+                新增目标
+              </button>
+            </div>
+            <div id="goalList" style="padding:6px 20px 16px"></div>
+          </div>
+          <div class="card">
+            <div class="sec-head card-pad" style="padding-bottom:14px;margin-bottom:0;border-bottom:1px solid var(--line-2)">
+              <div class="sec-title"><span class="bar"></span>运营计划</div>
+              <button class="btn btn-sec btn-sm" id="addPlanBtn">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+                新增计划
+              </button>
+            </div>
+            <div id="planList" style="padding:8px 18px 16px"></div>
+            <div class="card-pad" style="padding-top:0">
+              <div class="divider"></div>
+              <div class="sec-title" style="font-size:14px;margin-bottom:10px"><span class="bar"></span>季度节奏（Q4）</div>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <div style="display:flex;align-items:center;gap:10px;font-size:12.5px"><span class="badge badge-blue">10 月</span><span class="small" style="color:var(--ink-2)">重点 SIG 集中上线 · 双周技术直播启动</span></div>
+                <div style="display:flex;align-items:center;gap:10px;font-size:12.5px"><span class="badge badge-teal">11 月</span><span class="small" style="color:var(--ink-2)">仓开源推广月 · 媒体渠道集中投放</span></div>
+                <div style="display:flex;align-items:center;gap:10px;font-size:12.5px"><span class="badge badge-purple">12 月</span><span class="small" style="color:var(--ink-2)">年度成果复盘 · 贡献者激励发放</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="view hidden" id="view-review">
+        <div class="sec-head" style="margin-bottom:16px">
+          <div class="sec-title"><span class="bar"></span><span id="reviewTitle">审核中心 / 后台</span></div>
+          <div class="small muted" id="reviewSub">以当前视角展示待办审核或待发布内容</div>
+        </div>
+        <div id="reviewContent"></div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<div id="modalRoot"></div>
+<div class="toast-root" id="toastRoot"></div>
+
+<script>
+/* ================= 数据与工具 ================= */
+const $ = id => document.getElementById(id);
+const esc = s => String(s==null?'':s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pad = n => String(n).padStart(2,'0');
+const dkey = (y,m,d) => `${y}-${pad(m+1)}-${pad(d)}`;
+
+const ROLE_META = {
+  ops:{name:'运营专员', user:'王思远'}, sig:{name:'SIG Maintainer', user:'吴彦霖'},
+  op:{name:'运营负责人', user:'李沐晨'}, mkt:{name:'营销负责人', user:'张予安'}, comm:{name:'社区管理员', user:'刘书瑶'}
+};
+const RES_META = {
+  announce:{name:'社区公告', dot:'r-blue', badge:'badge-blue'},
+  news:{name:'新闻稿', dot:'r-purple', badge:'badge-purple'},
+  video:{name:'短视频', dot:'r-orange', badge:'badge-orange'},
+  live:{name:'技术直播', dot:'r-teal', badge:'badge-teal'},
+  wechat:{name:'公众号推文', dot:'r-green', badge:'badge-green'},
+  shipin:{name:'视频号', dot:'r-rose', badge:'badge-rose'},
+  media:{name:'媒体渠道', dot:'r-cyan', badge:'badge-cyan'},
+  prize:{name:'奖品', dot:'r-amber', badge:'badge-amber'}
+};
+const CHAINS = {
+  announce:[['sig','SIG Maintainer',true],['op','运营负责人',true],['mkt','营销负责人',false]],
+  news:[['sig','SIG Maintainer',true],['op','运营负责人',true],['mkt','营销负责人',true]],
+  video:[['sig','SIG Maintainer',true],['op','运营负责人',true],['mkt','营销负责人',true]],
+  live:[['sig','SIG Maintainer',true],['op','运营负责人',true],['mkt','营销负责人',false]],
+  wechat:[['op','运营负责人',true],['mkt','营销负责人',true]],
+  shipin:[['op','运营负责人',true],['mkt','营销负责人',true]],
+  media:[['op','运营负责人',true],['mkt','营销负责人',true]],
+  prize:[['op','运营负责人',true],['mkt','营销负责人',false],['fin','财务核销',false]]
+};
+const MODULE_META = {launch:{name:'sig 上线', badge:'badge-blue'}, repo:{name:'仓开源', badge:'badge-orange'}, resource:{name:'资源申请', badge:'badge-teal'}};
+const STATUS_META = {
+  reviewing:{text:'审核中', cls:'badge-amber'}, pending:{text:'待发布', cls:'badge-blue'},
+  published:{text:'已发布', cls:'badge-green'}, rejected:{text:'已驳回', cls:'badge-red'}
+};
+
+function computeStatus(app){
+  if(app.published) return 'published';
+  const chain = CHAINS[app.res];
+  let anyReject = false, allReq = true;
+  chain.forEach(([k,,req])=>{ if(app.reviews[k]==='reject') anyReject = true; if(req && app.reviews[k]!=='pass') allReq = false; });
+  if(anyReject) return 'rejected';
+  if(allReq) return 'pending';
+  return 'reviewing';
+}
+function chainHTML(app){
+  return CHAINS[app.res].map(([k,label,req])=>{
+    const r = app.reviews[k];
+    const cls = r==='pass'?'pass':(r==='reject'?'fail':'');
+    const icon = r==='pass'?'✓':(r==='reject'?'✕':'○');
+    const rb = req?'<span class="req-b">必需</span>':'<span class="req-b">建议</span>';
+    return `<span class="rev-node ${cls}">${icon} ${label}${rb}</span>`;
+  }).join('<span class="rev-arrow">→</span>');
+}
+function statusBadge(app){ const s = STATUS_META[computeStatus(app)]; return `<span class="badge ${s.cls}">${s.text}</span>`; }
+
+let APP_SEQ = 100;
+const NOW = '2026-09-24';
+const SEED = [
+  {id:'LA-2026-001', module:'launch', res:'announce', title:'AscendC SIG 成立', submitTime:'2026-09-20 10:15',
+    summary:'公告周期 14 天 · 正文含 SIG 功能、核心价值、成员分工、近期计划与仓库链接', reviews:{sig:'pass',op:'pass',mkt:'pass'}, published:false,
+    meta:{period:'14 天', channels:'社区公告栏、SIG 邮件列表'}},
+  {id:'LA-2026-002', module:'launch', res:'live', title:'SIG 技术公开课首播', submitTime:'2026-09-22 14:40',
+    summary:'讲师：吴彦霖 · 实操演示 · 60 分钟 · 拟于 10-15 19:00 播出', reviews:{sig:'pass',op:'pass',mkt:'wait'}, published:false,
+    meta:{speaker:'吴彦霖', form:'实操演示', time:'2026-10-15 19:00'}},
+  {id:'RP-2026-001', module:'repo', res:'news', title:'CANN 算子库正式开源', submitTime:'2026-09-23 09:05',
+    summary:'官网新闻 + 社区公众号 + 合作媒体 · 附件：新闻稿成稿 v2', reviews:{sig:'wait',op:'wait',mkt:'wait'}, published:false,
+    meta:{channels:'官网新闻、社区公众号、合作媒体', date:'2026-10-08'}},
+  {id:'RS-2026-001', module:'resource', res:'wechat', title:'公众号推文 · 新 SIG 探营系列', submitTime:'2026-09-22 11:20',
+    summary:'CANN 社区公众号 · 排期 10-12 ~ 10-14 · 附件：推文文稿、长图', reviews:{op:'pass',mkt:'wait'}, published:false,
+    meta:{dates:['2026-10-12','2026-10-13','2026-10-14'], channel:'CANN 社区公众号'}},
+  {id:'RS-2026-002', module:'resource', res:'prize', title:'奖品 · 贡献者季度激励', submitTime:'2026-09-24 09:30',
+    summary:'技术书籍 ×20 + 社区周边 ×50 · 用于季度贡献激励发放', reviews:{op:'wait',mkt:'wait',fin:'wait'}, published:false,
+    meta:{dates:['2026-09-26'], types:'技术书籍、社区周边'}}
+];
+const SEED_GOALS = [
+  {id:'G1', tag:'O1', name:'Q4 完成 6 个重点 SIG 上线', color:'#2F6BFF', krs:[{n:'完成 6 场上线推广（公告 / 新闻稿）',p:50},{n:'沉淀 3 份上线推广模板',p:100}]},
+  {id:'G2', tag:'O2', name:'仓开源贡献者净增 300 人', color:'#0FB5A6', krs:[{n:'完成 4 个仓库开源',p:50},{n:'新增外部 Contributor 150 人',p:30}]},
+  {id:'G3', tag:'O3', name:'技术直播常态化，月均 2 场', color:'#7C5CE0', krs:[{n:'累计播出 6 场直播',p:33},{n:'场均观看 800+',p:60}]},
+  {id:'G4', tag:'O4', name:'运营数据可度量可复盘', color:'#E8930C', krs:[{n:'建立运营看板并周更',p:80},{n:'输出季度复盘报告',p:10}]}
+];
+const SEED_PLANS = [
+  {name:'Q4 新 SIG 上线计划', owner:'运营组 · 李沐晨', period:'2026-10-01 ~ 12-31', status:'进行中', prog:45},
+  {name:'仓开源推广月（11 月）', owner:'营销组 · 张予安', period:'2026-11-01 ~ 11-30', status:'未开始', prog:0},
+  {name:'技术直播双周档', owner:'技术支持 · 陈宇杭', period:'2026-10-08 ~ 12-24', status:'进行中', prog:25},
+  {name:'年度贡献者激励', owner:'运营组 · 王思远', period:'2026-12-01 ~ 12-20', status:'未开始', prog:0},
+  {name:'社区内容模板沉淀', owner:'运营组 · 李沐晨', period:'2026-09-01 ~ 10-15', status:'已完成', prog:100},
+  {name:'SIG 运营手册编制', owner:'运营组 · 全员', period:'2026-08-15 ~ 09-30', status:'已完成', prog:100},
+  {name:'媒体渠道拓展', owner:'营销组 · 张予安', period:'2026-10-01 ~ 12-31', status:'进行中', prog:30},
+  {name:'开发者体验优化专项', owner:'SIG Maintainer · 吴彦霖', period:'2026-10-15 ~ 12-31', status:'未开始', prog:0}
+];
+const NOTICES = [
+  {t:'RP-2026-001 仓开源新闻稿等待审核', d:'SIG Maintainer 待办 · 2 分钟前', read:false},
+  {t:'RS-2026-002 奖品申请已进入审核链', d:'运营系统 · 1 小时前', read:false},
+  {t:'LA-2026-001 公告已通过审核，进入待发布清单', d:'运营系统 · 昨天', read:false}
+];
+
+const S = {role:'ops', view:'learn', apps:[...SEED], goals:JSON.parse(JSON.stringify(SEED_GOALS)), plans:[...SEED_PLANS], notices:JSON.parse(JSON.stringify(NOTICES))};
+let CAL = {mode:'month', view:new Date(2026,8,1), selected:new Set(['2026-09-25','2026-09-28'])};
+
+function toast(msg, type='ok'){
+  const icons = {ok:'✓', err:'✕', info:'i'};
+  const el = document.createElement('div');
+  el.className = `toast ${type}`;
+  el.innerHTML = `<span class="t-ico">${icons[type]||'i'}</span><span>${esc(msg)}</span>`;
+  $('toastRoot').appendChild(el);
+  setTimeout(()=>{ el.classList.add('out'); setTimeout(()=>el.remove(), 260); }, 3000);
+}
+function openModal(html, size='modal-lg'){
+  $('modalRoot').innerHTML = `<div class="modal-overlay" id="mo"><div class="modal ${size}">${html}</div></div>`;
+  $('mo').addEventListener('click', e=>{ if(e.target.id==='mo') closeModal(); });
+  document.querySelectorAll('.modal-close').forEach(b=>b.addEventListener('click', closeModal));
+}
+function closeModal(){ $('modalRoot').innerHTML=''; }
+function modalShell(headHTML, bodyHTML, footHTML=''){
+  return `<div class="modal-head"><h3>${headHTML}</h3><button class="modal-close" aria-label="关闭"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div><div class="modal-body">${bodyHTML}</div>${footHTML?`<div class="modal-foot">${footHTML}</div>`:''}`;
+}
+function attachFilesHTML(files){
+  return files.map(f=>`<div class="attach-file"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--brand)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5-5 5 5"/><path d="M12 5v12"/></svg><span class="fn">${esc(f.name)}</span><span class="fs">${(f.size/1024).toFixed(0)} KB</span></div>`).join('');
+}
+function bindAttach(inputId, listId){
+  const inp = $(inputId), list = $(listId);
+  if(!inp||!list) return;
+  inp.addEventListener('change', ()=>{ list.innerHTML += attachFilesHTML([...inp.files]); inp.value=''; });
+}
+
+/* ================= 视图导航与外壳 ================= */
+const VIEW_META = {
+  learn:{title:'了解 sig 运营', crumb:'运营路径 / 第 1 步'},
+  launch:{title:'sig 上线', crumb:'运营路径 / 第 2 步'},
+  repo:{title:'仓开源', crumb:'运营路径 / 第 3 步'},
+  resource:{title:'运营资源申请', crumb:'运营路径 / 第 4 步'},
+  plan:{title:'运营计划与目标管理', crumb:'运营路径 / 第 5 步'},
+  review:{title:'审核中心 / 后台', crumb:'协作与后台'}
+};
+function showView(name){
+  S.view = name;
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active', n.dataset.view===name));
+  document.querySelectorAll('.view').forEach(v=>v.classList.add('hidden'));
+  $('view-'+name).classList.remove('hidden');
+  $('pageTitle').textContent = VIEW_META[name].title;
+  $('pageCrumb').textContent = VIEW_META[name].crumb;
+  if(name==='launch') renderPromoList('launch');
+  if(name==='repo') renderPromoList('repo');
+  if(name==='resource') renderResList();
+  if(name==='plan'){ renderGoals(); renderPlans(); }
+  if(name==='review') renderReview();
+  window.scrollTo(0,0);
+  try{ history.replaceState(null,'','#/'+name); }catch(e){}
+}
+function updateRoleUI(){
+  const meta = ROLE_META[S.role];
+  $('userName').textContent = meta.user;
+  $('userRole').textContent = meta.name;
+  $('userAvatar').textContent = meta.user[0];
+  $('roleSelect').value = S.role;
+  updateNavBadge();
+  if(S.view==='review') renderReview();
+}
+function roleKeyOf(){ return S.role; }
+function pendingForRole(){
+  if(S.role==='ops'||S.role==='comm') return S.apps.filter(a=>computeStatus(a)==='pending').length;
+  return S.apps.filter(a=>a.reviews[S.role]==='wait' && computeStatus(a)!=='rejected').length;
+}
+function updateNavBadge(){
+  const n = pendingForRole();
+  const b = $('reviewNavCnt');
+  b.textContent = n; b.classList.toggle('hidden', n===0);
+}
+function renderBell(){
+  const unread = S.notices.filter(n=>!n.read).length;
+  $('bellBdg').textContent = unread; $('bellBdg').style.display = unread? 'flex':'none';
+  $('bellPanel').innerHTML = `<div class="bp-head">通知 <span class="small muted">${unread} 条未读</span></div>` +
+    S.notices.map((n,i)=>`<div class="bp-item ${n.read?'read':''}" data-i="${i}"><span class="dot"></span><div><div class="t">${esc(n.t)}</div><div class="d">${esc(n.d)}</div></div></div>`).join('') +
+    `<div class="bp-item" style="color:var(--muted);justify-content:center;font-size:12px;cursor:default">通知在原型中仅作演示</div>`;
+  $('bellPanel').querySelectorAll('.bp-item[data-i]').forEach(el=>el.addEventListener('click', ()=>{
+    S.notices[+el.dataset.i].read = true; renderBell();
+    closeModal(); $('bellPanel').classList.add('hidden');
+    if(S.view!=='review') showView('review'); else renderReview();
+  }));
+}
+
+/* ================= 登录 ================= */
+$('loginBtn').addEventListener('click', ()=>{
+  $('loginWrap').classList.add('hidden');
+  $('app').classList.remove('hidden');
+  S.role = $('loginRole').value;
+  updateRoleUI();
+  showView('learn');
+  setTimeout(()=>{
+    openModal(modalShell(
+      '欢迎 · 了解 CANN 社区 sig 运营',
+      `<div style="display:flex;gap:16px;align-items:flex-start">
+        <div style="width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,#2F6BFF,#0FB5A6);display:flex;align-items:center;justify-content:center;flex:none">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M12 2 21 7v10l-9 5-9-5V7z" fill="rgba(255,255,255,.25)"/><path d="M12 5.5 18 9v6l-6 3.5L6 15V9z" fill="#fff"/><circle cx="12" cy="12" r="2.2" fill="#0FB5A6"/></svg>
+        </div>
+        <div style="font-size:13.5px;color:var(--ink-2);line-height:1.9">欢迎回到 <b>${esc(ROLE_META[S.role].user)}</b>（${esc(ROLE_META[S.role].name)}）。这里是 <b>CANN 社区 sig 运营</b> 的协作入口：你可以查看运营全景图与支撑组织矩阵，也可以从「sig 上线」开始发起运营协作。<br><span class="small muted">点击下方按钮打开运营全景图与组织矩阵。</span></div>
+      </div>`,
+      `<button class="btn btn-sec" onclick="closeModal()">稍后再说</button>
+       <button class="btn btn-pri" onclick="closeModal();openPano()">打开运营全景图</button>`
+    ), 'modal-md');
+  }, 350);
+});
+
+/* ================= 导航 / 角色 / 通知 ================= */
+document.querySelectorAll('.nav-item').forEach(n=>n.addEventListener('click', ()=>showView(n.dataset.view)));
+document.querySelectorAll('.path-node[data-goto]').forEach(n=>n.addEventListener('click', ()=>showView(n.dataset.goto)));
+$('roleSelect').addEventListener('change', e=>{
+  S.role = e.target.value;
+  updateRoleUI();
+  toast(`已切换为「${ROLE_META[S.role].name}」视角`);
+});
+$('bellBtn').addEventListener('click', e=>{
+  e.stopPropagation();
+  renderBell();
+  $('bellPanel').classList.toggle('hidden');
+});
+document.addEventListener('click', e=>{ if(!e.target.closest('.bell-btn') && !e.target.closest('.bell-panel')) $('bellPanel').classList.add('hidden'); });
+$('openPanoBtn').addEventListener('click', openPano);
+$('openMatrixBtn').addEventListener('click', openPano.bind(null, 'matrix'));
+
+/* ================= sig 上线 / 仓开源 推广表单 ================= */
+function bindTitleCount(inputId, countId, max){
+  const inp = $(inputId), cnt = $(countId);
+  if(!inp||!cnt) return;
+  const upd = ()=>{ cnt.textContent = `${inp.value.length} / ${max}`; cnt.classList.toggle('over', inp.value.length>=max); };
+  inp.addEventListener('input', upd); upd();
+}
+function bindSuggest(areaId, chipsId){
+  const area = $(areaId);
+  if(!area) return;
+  document.querySelectorAll('#'+chipsId+' .suggest-chip').forEach(c=>c.addEventListener('click', ()=>{
+    const v = area.value.trim();
+    area.value = (v? v+'\n' : '') + c.dataset.s + '\n';
+    area.focus();
+  }));
+}
+function bindPeriodToggle(selId, wrapId){
+  const sel = $(selId), wrap = $(wrapId);
+  if(!sel||!wrap) return;
+  sel.addEventListener('change', e=>wrap.classList.toggle('hidden', e.target.value!=='自定义'));
+}
+function bindCheckGroup(rootId){
+  const root = $(rootId);
+  if(!root) return;
+  root.addEventListener('click', e=>{
+    const box = e.target.closest('.check-box');
+    if(box){ const inp = box.querySelector('input'); inp.checked = !inp.checked; box.classList.toggle('on', inp.checked); }
+  });
+}
+function bindTemplateBtns(scope){
+  scope.querySelectorAll('[data-tpl]').forEach(b=>b.addEventListener('click', ()=>toast(`演示环境：已生成「${b.dataset.tpl}」示例，正式环境可下载模板文件`, 'info')));
+}
+function createPromoApp(module, res, title, summary, meta){
+  const reviews = {}; CHAINS[res].forEach(([k])=>reviews[k]='wait');
+  S.apps.unshift({id:(module==='launch'?'LA':'RP')+'-2026-'+String(++APP_SEQ).padStart(3,'0'), module, res, title, summary,
+    submitTime:NOW+' '+new Date().toTimeString().slice(0,5), reviews, published:false, meta});
+  renderPromoList(module);
+  updateNavBadge();
+  toast(`提交成功 · 已进入审核阶段（${RES_META[res].name}）`);
+}
+
+function appListHTML(module){
+  const list = S.apps.filter(a=>a.module===module);
+  if(!list.length) return `<div class="empty-state"><div class="es-ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 15h6M9 11h2"/></svg></div>暂无申请<br><span class="small muted">填写上方表单，发起第一条${module==='launch'?' sig 上线':'仓开源'}推广申请</span></div>`;
+  return `<div style="overflow-x:auto"><table class="table"><colgroup><col style="width:13%"><col style="width:22%"><col style="width:24%"><col style="width:17%"><col style="width:10%"><col style="width:14%"></colgroup>
+    <thead><tr><th>编号 / 资源</th><th>标题</th><th>审核链</th><th>内容摘要</th><th>状态</th><th>操作</th></tr></thead><tbody>
+    ${list.map(a=>`<tr>
+      <td><div class="t-title" style="font-size:12.5px">${a.id}</div><div class="t-sub" style="margin-top:4px"><span class="res-dot ${RES_META[a.res].dot}" style="display:inline-block;margin-right:5px"></span>${RES_META[a.res].name}</div></td>
+      <td><div class="t-title">${esc(a.title)}</div><div class="t-sub">${a.submitTime}</div></td>
+      <td><div style="display:flex;flex-wrap:wrap;gap:4px">${chainHTML(a)}</div></td>
+      <td class="small muted" style="line-height:1.7">${esc(a.summary)}</td>
+      <td>${statusBadge(a)}</td>
+      <td><div style="display:flex;gap:6px">
+        <button class="btn btn-ghost btn-sm" data-detail="${a.id}">详情</button>
+        ${computeStatus(a)==='rejected'?`<button class="btn btn-ghost btn-sm" data-resub="${a.id}" style="color:var(--amber)">重新提交</button>`:''}
+      </div></td>
+    </tr>`).join('')}
+  </tbody></table></div>`;
+}
+function renderPromoList(module){
+  const root = module==='launch'? $('launchList') : $('repoList');
+  root.innerHTML = appListHTML(module);
+  $((module==='launch'?'launchCntBadge':'repoCntBadge')).textContent = S.apps.filter(a=>a.module===module).length + ' 条';
+  root.querySelectorAll('[data-detail]').forEach(b=>b.addEventListener('click', ()=>openAppDetail(b.dataset.detail)));
+  root.querySelectorAll('[data-resub]').forEach(b=>b.addEventListener('click', ()=>{
+    const app = S.apps.find(x=>x.id===b.dataset.resub);
+    CHAINS[app.res].forEach(([k])=>app.reviews[k]='wait'); app.published=false;
+    renderPromoList(app.module); updateNavBadge();
+    toast('已重新提交 · 审核链已重置');
+  }));
+}
+function openAppDetail(id){
+  const a = S.apps.find(x=>x.id===id);
+  if(!a) return;
+  const st = STATUS_META[computeStatus(a)].text;
+  const metaRows = a.meta? Object.entries(a.meta).map(([k,v])=>({k,v})) : [];
+  const keyNames = {period:'公告周期', channels:'发布渠道', speaker:'讲师', form:'直播形式', time:'直播时间', date:'期望时间', dates:'排期日期', channel:'公众号渠道', types:'奖品类型'};
+  openModal(modalShell(
+    `${a.id} · 申请详情`,
+    `<div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:16px">
+      <span class="res-dot ${RES_META[a.res].dot}" style="width:12px;height:12px"></span>
+      <span class="badge ${MODULE_META[a.module].badge}">${MODULE_META[a.module].name}</span>
+      <span class="badge ${RES_META[a.res].badge}">${RES_META[a.res].name}</span>
+      <b style="font-size:16px">${esc(a.title)}</b>
+      ${statusBadge(a)}
+    </div>
+    <div style="font-size:13px;color:var(--muted);margin-bottom:14px">提交于 ${a.submitTime}</div>
+    <div class="sec-title" style="font-size:14px;margin-bottom:10px"><span class="bar"></span>审核进度</div>
+    <div class="prog-track">${chainHTML(a)}</div>
+    ${a.reason?`<div style="margin-top:12px;padding:10px 14px;background:var(--red-bg);border-radius:9px;font-size:12.5px;color:var(--red)"><b>驳回理由：</b>${esc(a.reason)}</div>`:''}
+    ${metaRows.length?`<div class="divider"></div><div class="sec-title" style="font-size:14px;margin-bottom:10px"><span class="bar"></span>申请内容</div>
+      <div style="display:flex;flex-direction:column;gap:8px">${metaRows.map(({k,v})=>`<div style="display:flex;gap:10px;font-size:13px"><span class="muted" style="width:86px;flex:none">${keyNames[k]||k}</span><span style="color:var(--ink-2)">${esc(Array.isArray(v)?v.join('、'):v)}</span></div>`).join('')}</div>`:''}
+    <div class="divider"></div>
+    <div style="font-size:13px;color:var(--ink-2);line-height:1.9">${esc(a.summary)}</div>`,
+    `<button class="btn btn-sec" onclick="closeModal()">关闭</button>`
+  ), 'modal-md');
+}
+
+/* ---- 仓开源：复用模板生成四类表单 ---- */
+function promoFormsHTML(p){
+  return `<div class="tabs" id="${p}tabs">
+      <div class="tab active" data-res="announce"><span class="res-dot r-blue"></span>社区公告</div>
+      <div class="tab" data-res="news"><span class="res-dot r-purple"></span>新闻稿</div>
+      <div class="tab" data-res="video"><span class="res-dot r-orange"></span>短视频</div>
+      <div class="tab" data-res="live"><span class="res-dot r-teal"></span>技术直播</div>
+    </div>
+    <div id="${p}form-announce">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+        <div>
+          <div class="field"><label>公告标题 <span class="req">*</span> <span class="hint">限 10 个字符，建议「仓库名 + 动作」</span></label>
+            <input class="input" id="${p}anTitle" maxlength="10" placeholder="例：AscendC 算子库开源">
+            <div class="char-count" id="${p}anTitleCount">0 / 10</div></div>
+          <div class="field"><label>公告正文 <span class="req">*</span> <span class="hint">点击建议项插入模板片段</span></label>
+            <textarea class="textarea" id="${p}anBody" placeholder="向社区介绍这个仓库开源的意义与内容……"></textarea>
+            <div class="suggest-chips" id="${p}anSuggest">
+              <span class="suggest-chip" data-s="【仓库功能】本仓库提供……">+ 仓库功能</span>
+              <span class="suggest-chip" data-s="【开源价值】面向社区开放……">+ 开源价值</span>
+              <span class="suggest-chip" data-s="【贡献方式】如何提交 Issue / PR……">+ 贡献方式</span>
+              <span class="suggest-chip" data-s="【Roadmap】后续版本规划……">+ Roadmap</span>
+              <span class="suggest-chip" data-s="【仓库链接】gitee.com/cann-community/……">+ 仓库链接</span>
+            </div></div>
+        </div>
+        <div>
+          <div class="field"><label>公告周期 <span class="req">*</span></label>
+            <select class="select" id="${p}anPeriod"><option value="7 天">7 天</option><option value="14 天" selected>14 天</option><option value="30 天">30 天</option><option value="自定义">自定义</option></select></div>
+          <div class="field hidden" id="${p}anCustomWrap"><label>自定义周期</label><div style="display:flex;gap:10px;align-items:center"><input type="date" class="input" id="${p}anStart"> <span class="muted small">至</span> <input type="date" class="input" id="${p}anEnd"></div></div>
+          <div class="field"><label>公告渠道</label><div class="check-group" id="${p}anChannels">
+            <label class="check-box on"><input type="checkbox" checked>社区公告栏</label>
+            <label class="check-box on"><input type="checkbox" checked>SIG 邮件列表</label>
+            <label class="check-box"><input type="checkbox">开发者社区首页</label></div></div>
+          <div class="field"><label>关联素材</label><div class="attach-list" id="${p}anAttach"></div>
+            <label style="display:inline-flex;align-items:center;gap:7px;margin-top:8px;padding:7px 13px;border:1px dashed #C7D4EC;border-radius:8px;font-size:12.5px;color:var(--brand);cursor:pointer">上传附件（可选）
+            <input type="file" hidden id="${p}anFile" multiple></label></div>
+        </div>
+      </div>
+      <div class="form-actions"><button class="btn btn-sec" id="${p}anPreviewBtn">预览公告</button><button class="btn btn-pri" id="${p}anSubmitBtn">提交审核</button></div>
+    </div>
+    <div id="${p}form-news" class="hidden">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+        <div>
+          <div class="field"><label>新闻稿标题 <span class="req">*</span> <span class="hint">限 30 个字符</span></label>
+            <input class="input" id="${p}nwTitle" maxlength="30" placeholder="例：CANN 社区宣布 xxx 仓库正式开源">
+            <div class="char-count" id="${p}nwTitleCount">0 / 30</div></div>
+          <div class="field"><label>导语 <span class="req">*</span></label><textarea class="textarea" id="${p}nwLead" maxlength="100" style="min-height:64px" placeholder="一段话概括开源事件……"></textarea></div>
+          <div class="field"><label>正文要点 <span class="req">*</span></label><textarea class="textarea" id="${p}nwBody" placeholder="背景 / 进展 / 数据 / 展望……"></textarea></div>
+        </div>
+        <div>
+          <div class="field"><label>发布渠道</label><div class="check-group" id="${p}nwChannels">
+            <label class="check-box on"><input type="checkbox" checked>官网新闻</label>
+            <label class="check-box on"><input type="checkbox" checked>社区公众号</label>
+            <label class="check-box"><input type="checkbox">合作媒体</label></div></div>
+          <div class="field"><label>期望发布时间 <span class="req">*</span></label><input type="date" class="input" id="${p}nwDate"></div>
+          <div class="field"><label>新闻稿附件 <span class="req">*</span></label><div class="attach-list" id="${p}nwAttach"></div>
+            <label style="display:inline-flex;align-items:center;gap:7px;margin-top:8px;padding:7px 13px;border:1px dashed #C7D4EC;border-radius:8px;font-size:12.5px;color:var(--purple);cursor:pointer">上传成稿 / 素材包
+            <input type="file" hidden id="${p}nwFile" multiple></label></div>
+          <div class="field"><label>下载模板</label><button class="btn btn-sec btn-sm" data-tpl="新闻稿模板（标题/导语/正文结构）">获取新闻稿模板</button></div>
+        </div>
+      </div>
+      <div class="form-actions"><button class="btn btn-pri" id="${p}nwSubmitBtn">提交审核</button></div>
+    </div>
+    <div id="${p}form-video" class="hidden">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+        <div>
+          <div class="field"><label>视频主题 <span class="req">*</span> <span class="hint">限 30 个字符</span></label>
+            <input class="input" id="${p}vdTitle" maxlength="30" placeholder="例：1 分钟看懂 xxx 仓库">
+            <div class="char-count" id="${p}vdTitleCount">0 / 30</div></div>
+          <div class="field"><label>目标受众</label><select class="select" id="${p}vdAud"><option>开发者 / 工程师</option><option>高校学生与研究者</option><option>生态伙伴与 ISV</option><option>社区全体成员</option></select></div>
+          <div class="field"><label>视频时长</label><select class="select" id="${p}vdLen"><option>30 秒以内（快闪片）</option><option selected>30 秒 – 1 分钟（介绍片）</option><option>1 – 3 分钟（深度讲解）</option></select></div>
+          <div class="field"><label>脚本要点 <span class="req">*</span></label><textarea class="textarea" id="${p}vdScript" style="min-height:120px" placeholder="分镜 / 旁白 / 关键画面……"></textarea></div>
+        </div>
+        <div>
+          <div class="field"><label>发布渠道</label><div class="check-group" id="${p}vdChannels">
+            <label class="check-box on"><input type="checkbox" checked>社区视频号</label>
+            <label class="check-box on"><input type="checkbox" checked>B 站</label>
+            <label class="check-box"><input type="checkbox">抖音</label></div></div>
+          <div class="field"><label>期望上线时间 <span class="req">*</span></label><input type="date" class="input" id="${p}vdDate"></div>
+          <div class="field"><label>视频素材 <span class="req">*</span></label><div class="attach-list" id="${p}vdAttach"></div>
+            <label style="display:inline-flex;align-items:center;gap:7px;margin-top:8px;padding:7px 13px;border:1px dashed #C7D4EC;border-radius:8px;font-size:12.5px;color:var(--orange);cursor:pointer">上传成片 / 脚本
+            <input type="file" hidden id="${p}vdFile" multiple></label></div>
+          <div class="field"><label>下载模板</label><button class="btn btn-sec btn-sm" data-tpl="短视频分镜脚本模板（镜头/时长/旁白）">获取分镜脚本模板</button></div>
+        </div>
+      </div>
+      <div class="form-actions"><button class="btn btn-pri" id="${p}vdSubmitBtn">提交审核</button></div>
+    </div>
+    <div id="${p}form-live" class="hidden">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+        <div>
+          <div class="field"><label>直播主题 <span class="req">*</span> <span class="hint">限 30 个字符</span></label>
+            <input class="input" id="${p}lvTitle" maxlength="30" placeholder="例：xxx 仓库技术公开课">
+            <div class="char-count" id="${p}lvTitleCount">0 / 30</div></div>
+          <div class="field"><label>讲师 / 嘉宾 <span class="req">*</span></label><input class="input" id="${p}lvSpeaker" placeholder="例：吴彦霖（SIG Maintainer）"></div>
+          <div class="field"><label>直播形式</label><select class="select" id="${p}lvForm"><option>主题演讲</option><option selected>实操演示</option><option>圆桌讨论</option><option>访谈</option></select></div>
+          <div class="field"><label>预估时长</label><select class="select" id="${p}lvLen"><option>30 分钟</option><option selected>60 分钟</option><option>90 分钟</option><option>120 分钟</option></select></div>
+        </div>
+        <div>
+          <div class="field"><label>面向人群</label><select class="select" id="${p}lvAud"><option>开发者 / 工程师</option><option>高校学生与研究者</option><option>生态伙伴与 ISV</option><option>社区全体成员</option></select></div>
+          <div class="field"><label>期望直播时间 <span class="req">*</span></label><div style="display:flex;gap:10px"><input type="date" class="input" id="${p}lvDate" style="flex:1"><input type="time" class="input" id="${p}lvTime" style="flex:.6" value="19:00"></div></div>
+          <div class="field"><label>直播素材 <span class="hint">课件 / 演示环境说明 / 预告图</span></label><div class="attach-list" id="${p}lvAttach"></div>
+            <label style="display:inline-flex;align-items:center;gap:7px;margin-top:8px;padding:7px 13px;border:1px dashed #C7D4EC;border-radius:8px;font-size:12.5px;color:var(--teal-d);cursor:pointer">上传课件 / 预告图
+            <input type="file" hidden id="${p}lvFile" multiple></label></div>
+          <div class="field"><label>下载模板</label><button class="btn btn-sec btn-sm" data-tpl="技术直播方案模板（主题/嘉宾/议程/保障）">获取直播方案模板</button></div>
+        </div>
+      </div>
+      <div class="form-actions"><button class="btn btn-pri" id="${p}lvSubmitBtn">提交审核</button></div>
+    </div>`;
+}
+
+function bindPromoForms(p, module){
+  document.querySelectorAll('#'+p+'tabs .tab').forEach(t=>t.addEventListener('click', ()=>{
+    document.querySelectorAll('#'+p+'tabs .tab').forEach(x=>x.classList.toggle('active', x===t));
+    ['announce','news','video','live'].forEach(r=>$(p+'form-'+r).classList.toggle('hidden', r!==t.dataset.res));
+  }));
+  ['announce','news','video','live'].forEach(r=>bindTemplateBtns($(p+'form-'+r)));
+  bindTitleCount(p+'anTitle', p+'anTitleCount', 10);
+  bindTitleCount(p+'nwTitle', p+'nwTitleCount', 30);
+  bindTitleCount(p+'vdTitle', p+'vdTitleCount', 30);
+  bindTitleCount(p+'lvTitle', p+'lvTitleCount', 30);
+  bindSuggest(p+'anBody', p+'anSuggest');
+  bindPeriodToggle(p+'anPeriod', p+'anCustomWrap');
+  bindCheckGroup(p+'anChannels'); bindCheckGroup(p+'nwChannels'); bindCheckGroup(p+'vdChannels');
+  bindAttach(p+'anFile', p+'anAttach'); bindAttach(p+'nwFile', p+'nwAttach');
+  bindAttach(p+'vdFile', p+'vdAttach'); bindAttach(p+'lvFile', p+'lvAttach');
+  const get = id=>$(id)? $(id).value.trim() : '';
+  const req = (cond, msg)=>{ if(!cond){ toast(msg, 'err'); return false; } return true; };
+  const summaryOf = (res, t, extra)=>`${RES_META[res].name} · ${t}${extra? ' · '+extra:''}`;
+  const metaOf = (res)=>{
+    if(res==='announce') return {period: get(p+'anPeriod'), channels: '社区公告栏等'};
+    if(res==='news') return {channels: '官网新闻、社区公众号等', date: get(p+'nwDate')};
+    if(res==='video') return {len: $(p+'vdLen').value, date: get(p+'vdDate')};
+    return {speaker: get(p+'lvSpeaker'), form: $(p+'lvForm').value, time: get(p+'lvDate')+' '+get(p+'lvTime')};
+  };
+  $(p+'anPreviewBtn').addEventListener('click', ()=>{
+    const t = get(p+'anTitle'), b = get(p+'anBody'), per = get(p+'anPeriod');
+    if(!req(t&&b, '请填写公告标题与正文')) return;
+    openModal(modalShell('公告预览', `<div style="border:1px solid var(--line);border-radius:12px;overflow:hidden">
+      <div style="background:linear-gradient(120deg,#0C1B2E,#14305A);color:#fff;padding:22px 26px"><div class="small" style="color:#8FB0E8;letter-spacing:1px">CANN 社区公告</div><div style="font-size:20px;font-weight:800;margin-top:6px">${esc(t)}</div></div>
+      <div style="padding:20px 26px;font-size:13.5px;line-height:2;color:var(--ink-2);white-space:pre-wrap">${esc(b)}</div>
+      <div style="padding:12px 26px;border-top:1px solid var(--line-2);font-size:12px;color:var(--muted)">公告周期：${esc(per)} · 展示于社区公告栏</div>
+    </div>`, `<button class="btn btn-sec" onclick="closeModal()">关闭</button>`), 'modal-md');
+  });
+  $(p+'anSubmitBtn').addEventListener('click', ()=>{
+    const t = get(p+'anTitle'), b = get(p+'anBody'), per = get(p+'anPeriod');
+    if(!req(t, '请填写公告标题')) return;
+    if(!req(b, '请填写公告正文')) return;
+    createPromoApp(module, 'announce', t, summaryOf('announce', t, '公告周期 '+per), metaOf('announce'));
+    $(p+'anTitle').value=''; $(p+'anBody').value=''; bindTitleCount(p+'anTitle', p+'anTitleCount', 10);
+    $((module==='launch'?'launchList':'repoList')).scrollIntoView({behavior:'smooth'});
+  });
+  $(p+'nwSubmitBtn').addEventListener('click', ()=>{
+    const t = get(p+'nwTitle'), lead = get(p+'nwLead'), body = get(p+'nwBody'), dt = get(p+'nwDate');
+    if(!req(t, '请填写新闻稿标题')) return;
+    if(!req(lead, '请填写导语')) return;
+    if(!req(body, '请填写正文要点')) return;
+    if(!req(dt, '请选择期望发布时间')) return;
+    createPromoApp(module, 'news', t, summaryOf('news', t, '拟于 '+dt+' 发布'), metaOf('news'));
+    $((module==='launch'?'launchList':'repoList')).scrollIntoView({behavior:'smooth'});
+  });
+  $(p+'vdSubmitBtn').addEventListener('click', ()=>{
+    const t = get(p+'vdTitle'), script = get(p+'vdScript'), dt = get(p+'vdDate');
+    if(!req(t, '请填写视频主题')) return;
+    if(!req(script, '请填写脚本要点')) return;
+    if(!req(dt, '请选择期望上线时间')) return;
+    createPromoApp(module, 'video', t, summaryOf('video', t, '拟于 '+dt+' 上线'), metaOf('video'));
+    $((module==='launch'?'launchList':'repoList')).scrollIntoView({behavior:'smooth'});
+  });
+  $(p+'lvSubmitBtn').addEventListener('click', ()=>{
+    const t = get(p+'lvTitle'), sp = get(p+'lvSpeaker'), dt = get(p+'lvDate');
+    if(!req(t, '请填写直播主题')) return;
+    if(!req(sp, '请填写讲师 / 嘉宾')) return;
+    if(!req(dt, '请选择期望直播时间')) return;
+    createPromoApp(module, 'live', t, summaryOf('live', t, sp+' · '+dt), metaOf('live'));
+    $((module==='launch'?'launchList':'repoList')).scrollIntoView({behavior:'smooth'});
+  });
+}
+
+/* ---- sig 上线（静态表单）---- */
+function bindLaunchForms(){
+  const t = document.querySelectorAll('#launchTabs .tab');
+  t.forEach(tab=>tab.addEventListener('click', ()=>{
+    t.forEach(x=>x.classList.toggle('active', x===tab));
+    ['announce','news','video','live'].forEach(r=>$('form-'+r).classList.toggle('hidden', r!==tab.dataset.res));
+  }));
+  bindTitleCount('anTitle','anTitleCount',10);
+  bindTitleCount('nwTitle','nwTitleCount',30);
+  bindTitleCount('vdTitle','vdTitleCount',30);
+  bindTitleCount('lvTitle','lvTitleCount',30);
+  bindSuggest('anBody','anSuggest');
+  bindPeriodToggle('anPeriod','anCustomWrap');
+  bindCheckGroup('anChannels'); bindCheckGroup('nwChannels'); bindCheckGroup('vdChannels');
+  bindAttach('anFile','anAttach'); bindAttach('nwFile','nwAttach'); bindAttach('vdFile','vdAttach'); bindAttach('lvFile','lvAttach');
+  bindTemplateBtns(document.querySelector('#view-launch'));
+  const get = id=>$(id)? $(id).value.trim() : '';
+  const req = (c,m)=>{ if(!c){ toast(m,'err'); return false; } return true; };
+  $('anPreviewBtn').addEventListener('click', ()=>{
+    const title = get('anTitle'), body = get('anBody'), per = get('anPeriod');
+    if(!req(title&&body, '请填写公告标题与正文')) return;
+    openModal(modalShell('公告预览', `<div style="border:1px solid var(--line);border-radius:12px;overflow:hidden">
+      <div style="background:linear-gradient(120deg,#0C1B2E,#14305A);color:#fff;padding:22px 26px"><div class="small" style="color:#8FB0E8;letter-spacing:1px">CANN 社区公告</div><div style="font-size:20px;font-weight:800;margin-top:6px">${esc(title)}</div></div>
+      <div style="padding:20px 26px;font-size:13.5px;line-height:2;color:var(--ink-2);white-space:pre-wrap">${esc(body)}</div>
+      <div style="padding:12px 26px;border-top:1px solid var(--line-2);font-size:12px;color:var(--muted)">公告周期：${esc(per)} · 展示于社区公告栏</div>
+    </div>`, `<button class="btn btn-sec" onclick="closeModal()">关闭</button>`), 'modal-md');
+  });
+  $('anSubmitBtn').addEventListener('click', ()=>{
+    const title = get('anTitle'), body = get('anBody'), per = get('anPeriod');
+    if(!req(title, '请填写公告标题')) return;
+    if(!req(body, '请填写公告正文')) return;
+    createPromoApp('launch', 'announce', title, `公告周期 ${per} · 正文含 SIG 功能、价值、成员、计划与链接`, {period:per, channels:'社区公告栏、SIG 邮件列表'});
+    $('anTitle').value=''; $('anBody').value=''; bindTitleCount('anTitle','anTitleCount',10);
+    $('launchList').scrollIntoView({behavior:'smooth'});
+  });
+  $('nwSubmitBtn').addEventListener('click', ()=>{
+    const title = get('nwTitle'), lead = get('nwLead'), body = get('nwBody'), dt = get('nwDate');
+    if(!req(title, '请填写新闻稿标题')) return;
+    if(!req(lead, '请填写导语')) return;
+    if(!req(body, '请填写正文要点')) return;
+    if(!req(dt, '请选择期望发布时间')) return;
+    createPromoApp('launch', 'news', title, `拟于 ${dt} 发布 · 导语：${lead.slice(0,30)}…`, {channels:'官网新闻、社区公众号等', date:dt});
+    $('launchList').scrollIntoView({behavior:'smooth'});
+  });
+  $('vdSubmitBtn').addEventListener('click', ()=>{
+    const title = get('vdTitle'), script = get('vdScript'), dt = get('vdDate');
+    if(!req(title, '请填写视频主题')) return;
+    if(!req(script, '请填写脚本要点')) return;
+    if(!req(dt, '请选择期望上线时间')) return;
+    createPromoApp('launch', 'video', title, `拟于 ${dt} 上线 · 脚本要点已填写`, {len:$('vdLen').value, date:dt});
+    $('launchList').scrollIntoView({behavior:'smooth'});
+  });
+  $('lvSubmitBtn').addEventListener('click', ()=>{
+    const title = get('lvTitle'), sp = get('lvSpeaker'), dt = get('lvDate');
+    if(!req(title, '请填写直播主题')) return;
+    if(!req(sp, '请填写讲师 / 嘉宾')) return;
+    if(!req(dt, '请选择期望直播时间')) return;
+    createPromoApp('launch', 'live', title, `${sp} · ${dt} ${get('lvTime')} · ${$('lvForm').value}`, {speaker:sp, form:$('lvForm').value, time:dt+' '+get('lvTime')});
+    $('launchList').scrollIntoView({behavior:'smooth'});
+  });
+}
+$('repoFormArea').innerHTML = promoFormsHTML('r');
+bindPromoForms('r', 'repo');
+bindLaunchForms();
+renderPromoList('launch');
+renderPromoList('repo');
+
+/* ================= 运营资源申请：日历 + 资源面板 ================= */
+const DOW = ['一','二','三','四','五','六','日'];
+function fmtCN(date){ return `${date.getFullYear()} 年 ${date.getMonth()+1} 月`; }
+function daysInMonth(y,m){ return new Date(y, m+1, 0).getDate(); }
+function sortedSel(){ return [...CAL.selected].sort(); }
+function renderCalChips(){
+  const list = sortedSel();
+  $('calCount').textContent = `已选 ${list.length} 天`;
+  $('calChips').innerHTML = list.length? list.map(d=>{
+    const [y,m,dd] = d.split('-').map(Number);
+    return `<span class="sel-chip">${y}.${pad(m)}.${pad(dd)}<span class="x" data-d="${d}" aria-label="移除">✕</span></span>`;
+  }).join('') : `<span class="small muted">未选择日期 · 点击日历中的日期可多选</span>`;
+  $('calChips').querySelectorAll('.x').forEach(x=>x.addEventListener('click', ()=>{
+    CAL.selected.delete(x.dataset.d); renderCal();
+  }));
+}
+function renderCal(){
+  $('calYm').textContent = fmtCN(CAL.view);
+  const y = CAL.view.getFullYear(), m = CAL.view.getMonth();
+  const firstDow = (new Date(y,m,1).getDay()+6)%7;
+  const dim = daysInMonth(y,m);
+  const prevDim = daysInMonth(y, m-1<0?11:m-1);
+  const prevY = m===0? y-1 : y, prevM = m===0? 11 : m-1;
+  const nextY = m===11? y+1 : y, nextM = m===11? 0 : m+1;
+  const today = '2026-09-24';
+  let html = '';
+  for(let i=0;i<firstDow;i++){
+    const d = prevDim - firstDow + 1 + i;
+    const k = dkey(prevY, prevM, d);
+    html += `<div class="cal-day other ${CAL.selected.has(k)?'sel':''}" data-k="${k}" data-nav="1">${d}</div>`;
+  }
+  for(let d=1;d<=dim;d++){
+    const k = dkey(y,m,d);
+    html += `<div class="cal-day ${CAL.selected.has(k)?'sel':''} ${k===today?'today':''}" data-k="${k}">${d}</div>`;
+  }
+  let trail = 7 - ((firstDow+dim)%7); if(trail===7) trail=0;
+  for(let d=1;d<=trail;d++){
+    const k = dkey(nextY, nextM, d);
+    html += `<div class="cal-day other ${CAL.selected.has(k)?'sel':''}" data-k="${k}" data-nav="1">${d}</div>`;
+  }
+  $('calMonth').innerHTML = html;
+  $('calMonth').querySelectorAll('.cal-day').forEach(el=>el.addEventListener('click', ()=>{
+    const k = el.dataset.k;
+    if(el.dataset.nav){
+      const [yy,mm] = k.split('-').map(Number);
+      CAL.view = new Date(yy, mm-1, 1);
+    }
+    if(CAL.selected.has(k)) CAL.selected.delete(k); else CAL.selected.add(k);
+    renderCal();
+  }));
+  renderCalYear();
+  renderCalChips();
+}
+function renderCalYear(){
+  const y = CAL.view.getFullYear();
+  const today = '2026-09-24';
+  let html = '';
+  for(let m=0;m<12;m++){
+    const firstDow = (new Date(y,m,1).getDay()+6)%7;
+    const dim = daysInMonth(y,m);
+    let cells = DOW.map(d=>`<span class="mini-dow">${d}</span>`).join('');
+    for(let i=0;i<firstDow;i++) cells += `<span></span>`;
+    for(let d=1;d<=dim;d++){
+      const k = dkey(y,m,d);
+      cells += `<span class="mini-day ${CAL.selected.has(k)?'sel':''} ${k===today?'today':''}" data-k="${k}">${d}</span>`;
+    }
+    html += `<div class="mini-month"><div class="mm-head" data-m="${m}">${m+1} 月</div><div class="mini-grid">${cells}</div></div>`;
+  }
+  $('calYear').innerHTML = html;
+  $('calYear').querySelectorAll('.mm-head').forEach(h=>h.addEventListener('click', ()=>{
+    CAL.mode='month';
+    $('calMode').querySelectorAll('button').forEach(b=>b.classList.toggle('on', b.dataset.mode==='month'));
+    CAL.view = new Date(y, +h.dataset.m, 1);
+    $('calYear').classList.add('hidden'); $('calMonth').classList.remove('hidden'); $('calDow').classList.remove('hidden');
+    renderCal();
+  }));
+  $('calYear').querySelectorAll('.mini-day').forEach(el=>el.addEventListener('click', ()=>{
+    const k = el.dataset.k;
+    if(CAL.selected.has(k)) CAL.selected.delete(k); else CAL.selected.add(k);
+    renderCalYear(); renderCalChips();
+  }));
+}
+function bindCalendar(){
+  const setMode = mode=>{
+    CAL.mode = mode;
+    $('calMode').querySelectorAll('button').forEach(b=>b.classList.toggle('on', b.dataset.mode===mode));
+    $('calMonth').classList.toggle('hidden', mode!=='month');
+    $('calDow').classList.toggle('hidden', mode!=='month');
+    $('calYear').classList.toggle('hidden', mode!=='year');
+  };
+  $('calMode').querySelectorAll('button').forEach(b=>b.addEventListener('click', ()=>setMode(b.dataset.mode)));
+  $('calPrev').addEventListener('click', ()=>{
+    if(CAL.mode==='year'){ CAL.view = new Date(CAL.view.getFullYear()-1, 0, 1); }
+    else { CAL.view = new Date(CAL.view.getFullYear(), CAL.view.getMonth()-1, 1); }
+    renderCal();
+  });
+  $('calNext').addEventListener('click', ()=>{
+    if(CAL.mode==='year'){ CAL.view = new Date(CAL.view.getFullYear()+1, 0, 1); }
+    else { CAL.view = new Date(CAL.view.getFullYear(), CAL.view.getMonth()+1, 1); }
+    renderCal();
+  });
+  $('calClear').addEventListener('click', ()=>{ CAL.selected.clear(); renderCal(); toast('已清空所选日期', 'info'); });
+  $('calDow').innerHTML = DOW.map(d=>`<span class="cal-dow">${d}</span>`).join('');
+  renderCal();
+}
+
+/* ---- 资源面板 ---- */
+const RS_TPL = {
+  wechat:`<div class="sec-title" style="font-size:14px;margin-bottom:14px"><span class="res-dot r-green"></span>公众号推文</div>
+    <div class="field"><label>发布渠道 <span class="req">*</span></label><select class="select" id="rsWcChannel"><option>CANN 社区公众号</option><option>昇腾计算公众号</option></select></div>
+    <div class="field"><label>推文主题 <span class="req">*</span> <span class="hint">限 20 字符</span></label><input class="input" id="rsWcTopic" maxlength="20" placeholder="例：探营新 SIG · 第一期"><div class="char-count" id="rsWcTopicCount">0 / 20</div></div>
+    <div class="field"><label>内容简述 <span class="req">*</span></label><textarea class="textarea" id="rsWcBody" style="min-height:90px" placeholder="推文结构与要点……"></textarea></div>
+    <div class="field"><label>附件要求 <span class="req">*</span> <span class="hint">推文成稿 / 长图 / 头图</span></label><div class="attach-list" id="rsWcAttach"></div>
+      <label style="display:inline-flex;align-items:center;gap:7px;margin-top:8px;padding:7px 13px;border:1px dashed #C7D4EC;border-radius:8px;font-size:12.5px;color:var(--green);cursor:pointer">上传推文素材<input type="file" hidden id="rsWcFile" multiple></label></div>
+    <button class="btn btn-sec btn-sm" data-tpl="公众号推文模板（标题/导语/图文结构）">获取推文模板</button>`,
+  shipin:`<div class="sec-title" style="font-size:14px;margin-bottom:14px"><span class="res-dot r-rose"></span>视频号</div>
+    <div class="field"><label>视频类型 <span class="req">*</span></label><select class="select" id="rsSfType"><option>横版（16:9）</option><option>竖版（9:16）</option></select></div>
+    <div class="field"><label>素材来源 <span class="req">*</span></label><input class="input" id="rsSfSource" placeholder="例：SIG 技术公开课剪辑片段"></div>
+    <div class="field"><label>内容说明 <span class="req">*</span></label><textarea class="textarea" id="rsSfBody" style="min-height:90px" placeholder="视频主题、看点与文案……"></textarea></div>
+    <div class="field"><label>附件要求 <span class="req">*</span> <span class="hint">成片视频 / 封面图</span></label><div class="attach-list" id="rsSfAttach"></div>
+      <label style="display:inline-flex;align-items:center;gap:7px;margin-top:8px;padding:7px 13px;border:1px dashed #C7D4EC;border-radius:8px;font-size:12.5px;color:var(--rose);cursor:pointer">上传成片 / 封面<input type="file" hidden id="rsSfFile" multiple></label></div>
+    <button class="btn btn-sec btn-sm" data-tpl="视频号素材规范（时长/封面/文案）">获取素材规范</button>`,
+  media:`<div class="sec-title" style="font-size:14px;margin-bottom:14px"><span class="res-dot r-cyan"></span>媒体渠道</div>
+    <div class="field"><label>目标媒体</label><div class="check-group" id="rsMdSites">
+      <label class="check-box on"><input type="checkbox" checked>开源中国</label>
+      <label class="check-box on"><input type="checkbox" checked>CSDN</label>
+      <label class="check-box"><input type="checkbox">InfoQ</label>
+      <label class="check-box"><input type="checkbox">51CTO</label></div></div>
+    <div class="field"><label>稿件类型 <span class="req">*</span></label><select class="select" id="rsMdType"><option>新闻通稿</option><option>深度报道</option><option>创始人 / Maintainer 专访</option></select></div>
+    <div class="field"><label>稿件说明 <span class="req">*</span></label><textarea class="textarea" id="rsMdBody" style="min-height:90px" placeholder="拟传播的核心信息与口径……"></textarea></div>
+    <div class="field"><label>附件要求 <span class="req">*</span> <span class="hint">新闻通稿 / 媒体素材包</span></label><div class="attach-list" id="rsMdAttach"></div>
+      <label style="display:inline-flex;align-items:center;gap:7px;margin-top:8px;padding:7px 13px;border:1px dashed #C7D4EC;border-radius:8px;font-size:12.5px;color:var(--cyan);cursor:pointer">上传通稿 / 素材包<input type="file" hidden id="rsMdFile" multiple></label></div>
+    <button class="btn btn-sec btn-sm" data-tpl="媒体通稿模板（背景/亮点/数据）">获取通稿模板</button>`,
+  prize:`<div class="sec-title" style="font-size:14px;margin-bottom:14px"><span class="res-dot r-amber"></span>奖品</div>
+    <div class="field"><label>奖品类型</label><div class="check-group" id="rsPzTypes">
+      <label class="check-box on"><input type="checkbox" checked>社区周边</label>
+      <label class="check-box on"><input type="checkbox" checked>技术书籍</label>
+      <label class="check-box"><input type="checkbox">开发板</label>
+      <label class="check-box"><input type="checkbox">云资源券</label></div></div>
+    <div class="field"><label>数量 <span class="req">*</span></label><input class="input" id="rsPzNum" type="number" min="1" placeholder="例：50"></div>
+    <div class="field"><label>用途 <span class="req">*</span></label><select class="select" id="rsPzUse"><option>活动抽奖</option><option selected>贡献者激励</option><option>直播互动</option><option>社区问答奖励</option></select></div>
+    <div class="field"><label>发放说明</label><textarea class="textarea" id="rsPzNote" style="min-height:70px" placeholder="发放方式、时间与对接人……"></textarea></div>
+    <div class="field"><label>附件要求 <span class="req">*</span> <span class="hint">奖品清单表（品名 / 数量 / 单价）</span></label><div class="attach-list" id="rsPzAttach"></div>
+      <label style="display:inline-flex;align-items:center;gap:7px;margin-top:8px;padding:7px 13px;border:1px dashed #C7D4EC;border-radius:8px;font-size:12.5px;color:var(--amber);cursor:pointer">上传奖品清单<input type="file" hidden id="rsPzFile" multiple></label></div>
+    <button class="btn btn-sec btn-sm" data-tpl="奖品清单模板（品名/数量/单价/预算）">获取清单模板</button>`
+};
+const RS_META = {
+  wechat:{label:'公众号推文', file:'rsWcFile', attach:'rsWcAttach'}, shipin:{label:'视频号', file:'rsSfFile', attach:'rsSfAttach'},
+  media:{label:'媒体渠道', file:'rsMdFile', attach:'rsMdAttach'}, prize:{label:'奖品', file:'rsPzFile', attach:'rsPzAttach'}
+};
+let RS_CUR = 'wechat';
+function renderResPanel(){
+  $('resPanelArea').innerHTML = RS_TPL[RS_CUR] +
+    `<div class="form-actions" style="margin-top:16px;border-top:1px solid var(--line-2);padding-top:16px">
+      <button class="btn btn-pri" id="rsSubmitBtn">提交申请（进入审核）</button>
+    </div>`;
+  bindTemplateBtns($('resPanelArea'));
+  bindCheckGroup('rsMdSites'); bindCheckGroup('rsPzTypes');
+  bindAttach(RS_META[RS_CUR].file, RS_META[RS_CUR].attach);
+  bindTitleCount('rsWcTopic','rsWcTopicCount',20);
+  $('rsSubmitBtn').addEventListener('click', submitResApp);
+}
+function collectResData(){
+  const get = id=>$(id)? $(id).value.trim():'';
+  if(RS_CUR==='wechat') return {title:get('rsWcTopic'), extra:`${get('rsWcChannel')} · ${get('rsWcBody').slice(0,40)}`, reqOk:!!(get('rsWcTopic')&&get('rsWcBody')), err:'请填写推文主题与内容简述'};
+  if(RS_CUR==='shipin') return {title:get('rsSfSource'), extra:`${get('rsSfType')} · ${get('rsSfBody').slice(0,40)}`, reqOk:!!(get('rsSfSource')&&get('rsSfBody')), err:'请填写素材来源与内容说明'};
+  if(RS_CUR==='media') return {title:get('rsMdType'), extra:`${get('rsMdBody').slice(0,40)} · 目标媒体已选`, reqOk:!!get('rsMdBody'), err:'请填写稿件说明'};
+  return {title:`${get('rsPzUse')} ×${get('rsPzNum')||0}`, extra:get('rsPzNote').slice(0,40)||'未填写发放说明', reqOk:!!get('rsPzNum'), err:'请填写奖品数量'};
+}
+function submitResApp(){
+  const data = collectResData();
+  const files = $(RS_META[RS_CUR].file).files;
+  if(!CAL.selected.size){ toast('请先在日历中选择排期日期（可多选）', 'err'); return; }
+  if(!data.reqOk){ toast(data.err, 'err'); return; }
+  if(!files.length){ toast(`请上传${RS_META[RS_CUR].label}对应的附件`, 'err'); return; }
+  const reviews = {}; CHAINS[RS_CUR].forEach(([k])=>reviews[k]='wait');
+  S.apps.unshift({id:'RS-2026-'+String(++APP_SEQ).padStart(3,'0'), module:'resource', res:RS_CUR, title:data.title,
+    summary:`${data.extra} · 排期 ${sortedSel().length} 天 · 附件 ${files.length} 份`,
+    submitTime:NOW+' '+new Date().toTimeString().slice(0,5), reviews, published:false,
+    meta:{dates:sortedSel(), resource:RES_META[RS_CUR].name}});
+  renderResList(); updateNavBadge();
+  CAL.selected.clear(); renderCal();
+  $('resList').scrollIntoView({behavior:'smooth'});
+  toast('资源申请已提交 · 进入运营 / 营销审核链');
+}
+function renderResList(){
+  const list = S.apps.filter(a=>a.module==='resource');
+  $('resCntBadge').textContent = list.length + ' 条';
+  if(!list.length){
+    $('resList').innerHTML = `<div class="empty-state"><div class="es-ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="17" rx="2.5"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/><path d="M9 15h6M12 12v6"/></svg></div>暂无资源申请<br><span class="small muted">选择排期与资源类型后提交申请</span></div>`;
+    return;
+  }
+  $('resList').innerHTML = `<div style="overflow-x:auto"><table class="table"><colgroup><col style="width:14%"><col style="width:21%"><col style="width:22%"><col style="width:18%"><col style="width:10%"><col style="width:15%"></colgroup>
+    <thead><tr><th>编号 / 资源</th><th>申请内容</th><th>排期日期</th><th>审核链</th><th>状态</th><th>操作</th></tr></thead><tbody>
+    ${list.map(a=>`<tr>
+      <td><div class="t-title" style="font-size:12.5px">${a.id}</div><div class="t-sub" style="margin-top:4px"><span class="res-dot ${RES_META[a.res].dot}" style="display:inline-block;margin-right:5px"></span>${RES_META[a.res].name}</div></td>
+      <td><div class="t-title">${esc(a.title)}</div><div class="t-sub">${esc(a.summary)}</div></td>
+      <td class="small">${(a.meta.dates||[]).map(d=>{const [y,m,dd]=d.split('-');return `${y}.${m}.${dd}`;}).join('<br>')}</td>
+      <td><div style="display:flex;flex-wrap:wrap;gap:4px">${chainHTML(a)}</div></td>
+      <td>${statusBadge(a)}</td>
+      <td><div style="display:flex;gap:6px">
+        <button class="btn btn-ghost btn-sm" data-detail="${a.id}">详情</button>
+        ${computeStatus(a)==='rejected'?`<button class="btn btn-ghost btn-sm" data-resub="${a.id}" style="color:var(--amber)">重新提交</button>`:''}
+      </div></td>
+    </tr>`).join('')}
+  </tbody></table></div>`;
+  $('resList').querySelectorAll('[data-detail]').forEach(b=>b.addEventListener('click', ()=>openAppDetail(b.dataset.detail)));
+  $('resList').querySelectorAll('[data-resub]').forEach(b=>b.addEventListener('click', ()=>{
+    const app = S.apps.find(x=>x.id===b.dataset.resub);
+    CHAINS[app.res].forEach(([k])=>app.reviews[k]='wait'); app.published=false;
+    renderResList(); updateNavBadge(); toast('已重新提交 · 审核链已重置');
+  }));
+}
+$('resCards').querySelectorAll('.res-card').forEach(c=>c.addEventListener('click', ()=>{
+  $('resCards').querySelectorAll('.res-card').forEach(x=>x.classList.toggle('sel', x===c));
+  RS_CUR = c.dataset.res;
+  renderResPanel();
+}));
+bindCalendar();
+renderResPanel();
+renderResList();
+
+/* ================= 审核中心 / 后台 ================= */
+function renderReview(){
+  const isBackend = S.role==='ops' || S.role==='comm';
+  $('reviewTitle').textContent = isBackend? '管理后台 · 待发布清单' : '审核中心 · 我的待办';
+  $('reviewSub').textContent = isBackend? '所有必需审核已通过的内容在此统一发布' : `以「${ROLE_META[S.role].name}」视角查看待审核申请，通过后流转至下一环节`;
+  $('reviewContent').innerHTML = isBackend? backendHTML() : reviewerHTML();
+  bindReviewActions();
+}
+function backendHTML(){
+  const pending = S.apps.filter(a=>computeStatus(a)==='pending');
+  const done = S.apps.filter(a=>a.published);
+  const pendBlock = pending.length? `<div style="overflow-x:auto"><table class="table"><colgroup><col style="width:15%"><col style="width:13%"><col style="width:22%"><col style="width:16%"><col style="width:16%"><col style="width:18%"></colgroup>
+    <thead><tr><th>编号</th><th>模块 / 资源</th><th>内容</th><th>提交时间</th><th>审核链</th><th>操作</th></tr></thead><tbody>
+    ${pending.map(a=>`<tr>
+      <td><div class="t-title" style="font-size:12.5px">${a.id}</div><div class="t-sub">${esc(a.submitTime)}</div></td>
+      <td><span class="badge ${MODULE_META[a.module].badge}">${MODULE_META[a.module].name}</span><div class="t-sub" style="margin-top:4px"><span class="res-dot ${RES_META[a.res].dot}" style="display:inline-block;margin-right:5px"></span>${RES_META[a.res].name}</div></td>
+      <td><div class="t-title">${esc(a.title)}</div><div class="t-sub">${esc(a.summary)}</div></td>
+      <td class="small">${a.module==='resource'?(a.meta.dates||[]).map(d=>d.slice(5).replace('-','.')).join('、'):'—'}</td>
+      <td><div style="display:flex;flex-wrap:wrap;gap:4px">${chainHTML(a)}</div></td>
+      <td><button class="btn btn-pri btn-sm" data-publish="${a.id}">发布</button></td>
+    </tr>`).join('')}
+    </tbody></table></div>` : `<div class="empty-state"><div class="es-ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5l7.5 3v6c0 5-3.2 8.4-7.5 10-4.3-1.6-7.5-5-7.5-10v-6z"/><path d="M8.8 12l2.2 2.2 4.2-4.4"/></svg></div>暂无待发布内容<br><span class="small muted">审核全部通过的内容会出现在这里</span></div>`;
+  const doneBlock = done.length? `<div style="overflow-x:auto"><table class="table"><colgroup><col style="width:18%"><col style="width:14%"><col style="width:30%"><col style="width:22%"><col style="width:16%"></colgroup>
+    <thead><tr><th>编号</th><th>模块</th><th>内容</th><th>提交时间</th><th>状态</th></tr></thead><tbody>
+    ${done.map(a=>`<tr><td class="small">${a.id}</td><td>${MODULE_META[a.module].name}</td><td><div class="t-title">${esc(a.title)}</div><div class="t-sub">${RES_META[a.res].name}</div></td><td class="small">${esc(a.submitTime)}</td><td>${statusBadge(a)}</td></tr>`).join('')}
+    </tbody></table></div>` : '';
+  return `<div class="sec-head" style="margin-bottom:12px"><div class="sec-title"><span class="bar"></span>待发布清单 <span class="badge badge-blue" style="margin-left:6px">${pending.length}</span></div></div>${pendBlock}
+    ${done.length? `<div class="divider"></div><div class="sec-head" style="margin-bottom:12px"><div class="sec-title"><span class="bar"></span>已发布记录 <span class="badge badge-green" style="margin-left:6px">${done.length}</span></div></div>${doneBlock}`:''}`;
+}
+function reviewerHTML(){
+  const key = S.role;
+  const pending = S.apps.filter(a=>a.reviews[key]==='wait' && computeStatus(a)!=='rejected');
+  const cards = pending.length? pending.map(a=>`
+    <div class="review-item">
+      <div class="ri-head">
+        <span class="badge ${MODULE_META[a.module].badge}">${MODULE_META[a.module].name}</span>
+        <span class="res-dot ${RES_META[a.res].dot}" style="width:9px;height:9px"></span>
+        <span class="ri-title">${esc(a.title)}</span>
+        <span class="ri-meta">${a.id} · ${esc(a.submitTime)}</span>
+        ${statusBadge(a)}
+      </div>
+      <div class="ri-body">${esc(a.summary)}</div>
+      <div class="prog-track" style="margin-top:12px">${chainHTML(a)}</div>
+      <div style="margin-top:14px;display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap">
+        <button class="btn btn-pri btn-sm" data-approve="${a.id}">通过</button>
+        <button class="btn btn-danger btn-sm" data-rejopen="${a.id}">驳回</button>
+      </div>
+      <div class="reason-box hidden">
+        <textarea class="textarea" placeholder="请填写驳回理由（必填），申请方可据此修改后重新提交……"></textarea>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-danger btn-sm" data-rej="${a.id}">确认驳回</button>
+          <button class="btn btn-sec btn-sm" data-rejcancel="1">取消</button>
+        </div>
+      </div>
+    </div>`).join('') : `<div class="empty-state"><div class="es-ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg></div>暂无待您审核的申请<br><span class="small muted">新申请提交后将出现在这里</span></div>`;
+  const all = S.apps.filter(a=>a.reviews[key]);
+  return `<div class="sec-head" style="margin-bottom:12px"><div class="sec-title"><span class="bar"></span>待我审核 <span class="badge badge-amber" style="margin-left:6px">${pending.length}</span></div></div>${cards}
+    <div class="divider"></div>
+    <div class="sec-head" style="margin-bottom:12px"><div class="sec-title"><span class="bar"></span>全部审核记录 <span class="badge badge-gray" style="margin-left:6px">${all.length}</span></div></div>
+    <div class="card"><div style="overflow-x:auto"><table class="table"><colgroup><col style="width:15%"><col style="width:15%"><col style="width:30%"><col style="width:20%"><col style="width:20%"></colgroup>
+      <thead><tr><th>编号</th><th>模块</th><th>内容</th><th>提交时间</th><th>我的审核</th></tr></thead><tbody>
+      ${all.map(a=>{const r=a.reviews[key];return `<tr>
+        <td class="small">${a.id}</td><td>${MODULE_META[a.module].name} · ${RES_META[a.res].name}</td>
+        <td><div class="t-title">${esc(a.title)}</div></td>
+        <td class="small">${esc(a.submitTime)}</td>
+        <td><span class="badge ${r==='pass'?'badge-green':r==='reject'?'badge-red':'badge-gray'}">${r==='pass'?'已通过':r==='reject'?'已驳回':'待审核'}</span></td>
+      </tr>`;}).join('')}
+      </tbody></table></div></div>`;
+}
+function bindReviewActions(){
+  const c = $('reviewContent');
+  c.querySelectorAll('[data-publish]').forEach(b=>b.addEventListener('click', ()=>{
+    const app = S.apps.find(x=>x.id===b.dataset.publish);
+    app.published = true;
+    renderReview(); updateNavBadge();
+    toast(`已发布：${app.id} ${app.title}`);
+  }));
+  c.querySelectorAll('[data-approve]').forEach(b=>b.addEventListener('click', ()=>{
+    const app = S.apps.find(x=>x.id===b.dataset.approve);
+    app.reviews[S.role] = 'pass';
+    const st = computeStatus(app);
+    renderReview(); updateNavBadge();
+    toast(st==='pending'? '审核通过 · 内容已进入待发布清单' : '已通过 · 流转至下一审核环节');
+  }));
+  c.querySelectorAll('[data-rejopen]').forEach(b=>b.addEventListener('click', ()=>{
+    const box = b.closest('.review-item').querySelector('.reason-box');
+    box.classList.toggle('hidden');
+  }));
+  c.querySelectorAll('[data-rejcancel]').forEach(b=>b.addEventListener('click', ()=>b.closest('.reason-box').classList.add('hidden')));
+  c.querySelectorAll('[data-rej]').forEach(b=>b.addEventListener('click', ()=>{
+    const app = S.apps.find(x=>x.id===b.dataset.rej);
+    const inp = b.closest('.reason-box').querySelector('textarea');
+    if(!inp.value.trim()){ toast('请填写驳回理由', 'err'); return; }
+    app.reviews[S.role] = 'reject';
+    app.reason = inp.value.trim();
+    renderReview(); updateNavBadge();
+    toast('已驳回 · 申请方可在列表中重新提交');
+  }));
+}
+
+/* ================= 计划与目标管理 ================= */
+function renderGoals(){
+  $('goalList').innerHTML = S.goals.map(g=>{
+    const avg = Math.round(g.krs.reduce((s,k)=>s+k.p,0)/g.krs.length);
+    return `<div class="goal-card">
+      <div class="gc-head">
+        <div class="gc-tag" style="background:${g.color}">${esc(g.tag)}</div>
+        <div style="flex:1"><div style="font-size:14.5px;font-weight:700">${esc(g.name)}</div>
+          <div style="font-size:11.5px;color:var(--muted);margin-top:3px">${g.krs.length} 个关键结果 · 平均完成率 ${avg}%</div></div>
+        <span class="badge ${avg>=80?'badge-green':avg>=40?'badge-blue':'badge-amber'}">${avg}%</span>
+      </div>
+      <div style="margin-top:12px">${g.krs.map(k=>`<div class="kr-row"><span class="kr-name">${esc(k.n)}</span><div class="progress"><i style="width:${k.p}%"></i></div><span class="kr-pct">${k.p}%</span></div>`).join('')}</div>
+    </div>`;
+  }).join('');
+  $('statGoal').textContent = S.goals.length;
+  const all = S.goals.flatMap(g=>g.krs.map(k=>k.p));
+  $('statRate').textContent = all.length? Math.round(all.reduce((a,b)=>a+b,0)/all.length)+'%' : '0%';
+  $('statPending').textContent = S.apps.filter(a=>computeStatus(a)==='pending').length;
+}
+function renderPlans(){
+  $('planList').innerHTML = S.plans.map(p=>{
+    const cls = p.status==='已完成'?'badge-green':p.status==='进行中'?'badge-blue':'badge-gray';
+    return `<div class="plan-row">
+      <div style="width:22px;height:22px;border-radius:7px;background:${p.prog>=100?'var(--green-bg)':p.prog>0?'var(--brand-bg)':'#EEF2F7'};display:flex;align-items:center;justify-content:center;flex:none;color:${p.prog>=100?'var(--green)':p.prog>0?'var(--brand)':'var(--muted)'};font-weight:700;font-size:12px">${p.prog>=100?'✓':'·'}</div>
+      <div class="pl-name"><div class="pn">${esc(p.name)}</div><div class="pd">${esc(p.owner)} · ${esc(p.period)}</div></div>
+      <span class="badge ${cls}">${p.status}</span>
+      <div class="progress" style="width:120px"><i style="width:${p.prog}%"></i></div>
+      <span style="width:40px;text-align:right;font-weight:700;font-size:12.5px">${p.prog}%</span>
+    </div>`;
+  }).join('');
+  $('statPlan').textContent = S.plans.length;
+}
+$('addGoalBtn').addEventListener('click', ()=>{
+  openModal(modalShell('新增年度目标',
+    `<div class="field"><label>目标名称 <span class="req">*</span></label><input class="input" id="ngName" placeholder="例：Q4 完成 3 个重点 SIG 上线"></div>
+     <div class="field"><label>目标标签</label><input class="input" id="ngTag" maxlength="3" placeholder="例：O5"></div>
+     <div class="field"><label>标识色</label>
+       <div class="check-group" id="ngColor">
+         ${['#2F6BFF','#0FB5A6','#7C5CE0','#E8930C','#E4576C','#16A34A'].map((c,i)=>`<label class="check-box ${i===0?'on':''}" style="width:40px;height:40px;padding:0;border-radius:10px;justify-content:center;background:${c};border-color:${c}"><input type="radio" name="ngc" value="${c}" ${i===0?'checked':''}></label>`).join('')}
+       </div></div>
+     <div class="field"><label>关键结果 1 <span class="req">*</span></label><input class="input" id="ngKr1" placeholder="例：完成 4 场上线推广"><div style="display:flex;align-items:center;gap:10px;margin-top:8px"><span class="small muted">当前进度</span><input class="input" id="ngKr1p" type="number" min="0" max="100" value="0" style="width:110px"><span class="small muted">%</span></div></div>
+     <div class="field"><label>关键结果 2 <span class="req">*</span></label><input class="input" id="ngKr2" placeholder="例：新增外部 Contributor 50 人"><div style="display:flex;align-items:center;gap:10px;margin-top:8px"><span class="small muted">当前进度</span><input class="input" id="ngKr2p" type="number" min="0" max="100" value="0" style="width:110px"><span class="small muted">%</span></div></div>`,
+    `<button class="btn btn-sec" onclick="closeModal()">取消</button><button class="btn btn-pri" id="ngSave">保存目标</button>`), 'modal-md');
+  $('ngColor').querySelectorAll('.check-box').forEach(b=>b.addEventListener('click', ()=>{
+    $('ngColor').querySelectorAll('.check-box').forEach(x=>x.classList.toggle('on', x===b));
+  }));
+  $('ngSave').addEventListener('click', ()=>{
+    const name = $('ngName').value.trim(), kr1 = $('ngKr1').value.trim(), kr2 = $('ngKr2').value.trim();
+    if(!name||!kr1||!kr2){ toast('请填写目标名称与两个关键结果', 'err'); return; }
+    const color = $('ngColor input:checked').value;
+    S.goals.push({id:'G'+Date.now(), tag: $('ngTag').value.trim()||'O'+S.goals.length, name, color,
+      krs:[{n:kr1,p:+$('ngKr1p').value||0},{n:kr2,p:+$('ngKr2p').value||0}]});
+    closeModal(); renderGoals(); toast('年度目标已新增');
+  });
+});
+$('addPlanBtn').addEventListener('click', ()=>{
+  openModal(modalShell('新增运营计划',
+    `<div class="field"><label>计划名称 <span class="req">*</span></label><input class="input" id="npName" placeholder="例：10 月新 SIG 上线专项"></div>
+     <div class="field"><label>负责人</label><input class="input" id="npOwner" placeholder="例：运营组 · 王思远"></div>
+     <div class="field"><label>周期</label><div style="display:flex;gap:10px;align-items:center"><input type="date" class="input" id="npStart" style="flex:1"><span class="muted small">至</span><input type="date" class="input" id="npEnd" style="flex:1"></div></div>
+     <div class="field"><label>状态</label><select class="select" id="npStatus"><option>未开始</option><option>进行中</option><option>已完成</option></select></div>
+     <div class="field"><label>当前进度</label><div style="display:flex;align-items:center;gap:10px"><input class="input" id="npProg" type="number" min="0" max="100" value="0" style="width:110px"><span class="small muted">%</span></div></div>`,
+    `<button class="btn btn-sec" onclick="closeModal()">取消</button><button class="btn btn-pri" id="npSave">保存计划</button>`), 'modal-md');
+  $('npSave').addEventListener('click', ()=>{
+    const name = $('npName').value.trim();
+    if(!name){ toast('请填写计划名称', 'err'); return; }
+    S.plans.push({name, owner:$('npOwner').value.trim()||'未指定', period:`${$('npStart').value||'待定'} ~ ${$('npEnd').value||'待定'}`, status:$('npStatus').value, prog:+$('npProg').value||0});
+    closeModal(); renderPlans(); toast('运营计划已新增');
+  });
+});
+
+/* ================= 运营全景图（模态） ================= */
+const PANO_INFO = {
+  goal:{name:'总体目标', tag:'共同愿景', color:'#2F6BFF', desc:'从 0 到 1 共建 CANN 开放生态：让每个 SIG 快速上线、持续获得运营资源、形成可衡量的运营成果，最终沉淀为社区的共同资产。'},
+  s1:{name:'了解 sig 运营', tag:'路径层 · 第 1 步', color:'#2F6BFF', desc:'登录平台即进入本环节。这里展示运营全景图与资源支撑组织矩阵，帮助你明确：运营路径有哪些环节、每一环节找谁协作、通过什么流程完成。'},
+  s2:{name:'sig 上线', tag:'路径层 · 第 2 步', color:'#7C5CE0', desc:'面向社区宣告 SIG 成立。可发起社区公告、新闻稿、短视频、技术直播四类推广，填写模板化内容后进入审核链，通过后进入待发布清单。'},
+  s3:{name:'仓开源', tag:'路径层 · 第 3 步', color:'#EA7A2E', desc:'代码仓库开源推广。与 sig 上线共用同一套资源与审核流程，让仓库被看见、被使用、被共建。'},
+  s4:{name:'运营资源申请', tag:'路径层 · 第 4 步', color:'#0FB5A6', desc:'通过年 / 月日历选择排期（可多选），申请公众号、视频号、媒体渠道等推广资源与奖品，按资源类型附上对应附件后提交审核。'},
+  s5:{name:'运营计划与目标管理', tag:'路径层 · 第 5 步', color:'#16A34A', desc:'将运营动作沉淀为目标、关键结果与计划清单，季度复盘、数据度量，让社区运营从经验驱动走向数据驱动。'},
+  ra:{name:'社区公告', tag:'上线推广资源', color:'#2F6BFF', desc:'标题限 10 字符，正文建议含 SIG 功能、价值、成员、计划与链接；设定公告周期后提交审核。'},
+  rn:{name:'新闻稿', tag:'上线推广资源', color:'#7C5CE0', desc:'面向官网与媒体的正式稿件：标题、导语、正文要点，附完整成稿后进入审核。'},
+  rv:{name:'短视频', tag:'上线推广资源', color:'#EA7A2E', desc:'面向视频号的短视频推广：主题、受众、时长与脚本要点，附成片或分镜脚本。'},
+  rl:{name:'技术直播', tag:'上线推广资源', color:'#0FB5A6', desc:'技术公开课与圆桌：主题、讲师、形式、时长，确定期望直播时间后提交。'},
+  rw:{name:'公众号推文', tag:'资源申请渠道', color:'#16A34A', desc:'在选定的排期日申请公众号推文位，附推文成稿 / 长图 / 头图。'},
+  rs:{name:'视频号', tag:'资源申请渠道', color:'#E4576C', desc:'申请视频号发布位，附成片视频与封面图。'},
+  rm:{name:'媒体渠道', tag:'资源申请渠道', color:'#0EA5E9', desc:'申请合作科技媒体发布位，附新闻通稿与素材包。'},
+  rp:{name:'奖品', tag:'资源申请物资', color:'#E8930C', desc:'申请社区周边、书籍、开发板等激励物资，附奖品清单表。'},
+  o1:{name:'SIG Maintainer', tag:'技术审核', color:'#2F6BFF', desc:'维护 SIG 技术方向，审核上线内容的技术准确性，为技术活动提供内容支持。'},
+  o2:{name:'运营负责人', tag:'运营统筹', color:'#0FB5A6', desc:'统筹社区运营节奏与资源分配，审核发布排期与资源申请。'},
+  o3:{name:'营销负责人', tag:'营销审核', color:'#7C5CE0', desc:'把关营销口径与传播素材，审核新闻稿、短视频等对外传播内容。'},
+  o4:{name:'社区管理员', tag:'平台与发布', color:'#0EA5E9', desc:'负责平台权限、公告栏与待发布清单的最终发布执行。'}
+};
+function panoMapSVG(){
+  const arrow = (x1,x2)=>`<line x1="${x1}" y1="105" x2="${x2-5}" y2="105" stroke="#8FA8D8" stroke-width="1.4"/><path d="M${x2-2} 99.5 L${x2+1} 105 L${x2-2} 110.5" fill="none" stroke="#8FA8D8" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>`;
+  const dash = (x,y1,y2)=>`<line x1="${x}" y1="${y1}" x2="${x}" y2="${y2}" stroke="#B9C9E8" stroke-width="1.2" stroke-dasharray="4 4"/>`;
+  const stage = s=>`<g class="pano-node" data-k="${s.k}" onclick="panoSel('${s.k}')" style="cursor:pointer"><rect x="${s.x}" y="78" width="118" height="54" rx="10" fill="#16427E"/><text x="${s.x+12}" y="98" font-size="9.5" fill="#7FA0D0" font-weight="700">STEP ${s.no}</text><text x="${s.x+12}" y="116" class="label" font-size="13.5">${s.l1}</text><text x="${s.x+12}" y="129" font-size="10.5" fill="#9DB9E6">${s.l2}</text></g>`;
+  const chip = c=>`<g class="pano-chip" data-k="${c.k}" onclick="panoSel('${c.k}')" style="cursor:pointer"><rect x="${c.x}" y="${c.y}" width="122" height="32" rx="8" fill="#fff" stroke="#E3E8F0"/><text x="${c.x+12}" y="${c.y+20.5}" class="cl">${c.label}</text></g>`;
+  const org = o=>`<g class="pano-node" data-k="${o.k}" onclick="panoSel('${o.k}')" style="cursor:pointer"><rect x="${o.x}" y="330" width="180" height="42" rx="9" fill="#F4F8FF" stroke="#D8E2F7"/><text x="${o.x+90}" y="348" text-anchor="middle" font-size="13" font-weight="600" fill="#0F1F33">${o.label}</text><text x="${o.x+90}" y="362" text-anchor="middle" font-size="10" fill="#66788D">${o.sub}</text></g>`;
+  const stages = [
+    {k:'s1', no:'01', x:20,  l1:'了解', l2:'sig 运营'},
+    {k:'s2', no:'02', x:170, l1:'sig 上线', l2:'宣告与推广'},
+    {k:'s3', no:'03', x:320, l1:'仓开源', l2:'代码共建'},
+    {k:'s4', no:'04', x:470, l1:'运营资源', l2:'申请排期'},
+    {k:'s5', no:'05', x:620, l1:'计划与目标', l2:'管理复盘'}
+  ];
+  const chipsA = [
+    {k:'ra', x:170, y:184, label:'社区公告'},{k:'rn', x:300, y:184, label:'新闻稿'},
+    {k:'rv', x:170, y:224, label:'短视频'},{k:'rl', x:300, y:224, label:'技术直播'}
+  ];
+  const chipsB = [
+    {k:'rw', x:470, y:184, label:'公众号推文'},{k:'rs', x:592, y:184, label:'视频号'},
+    {k:'rm', x:470, y:224, label:'媒体渠道'},{k:'rp', x:592, y:224, label:'奖品'}
+  ];
+  const orgs = [
+    {k:'o1', x:20,  label:'SIG Maintainer', sub:'技术审核'},
+    {k:'o2', x:200, label:'运营负责人', sub:'运营统筹'},
+    {k:'o3', x:380, label:'营销负责人', sub:'营销审核'},
+    {k:'o4', x:560, label:'社区管理员', sub:'平台与发布'}
+  ];
+  const arrowNodes = stages.slice(0,4).map((s,i)=>arrow(s.x+118, stages[i+1].x)).join('');
+  const dashNodes = dash(360,52,78) + dash(79,132,330) + dash(679,132,330) + dash(229,132,184) + dash(379,132,184) + dash(529,132,184) + dash(229,256,330) + dash(529,256,330);
+  return `<svg viewBox="0 0 760 392" style="width:100%;height:auto;min-width:640px" font-family="'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif">
+    <g class="pano-node" data-k="goal" onclick="panoSel('goal')" style="cursor:pointer">
+      <rect x="170" y="12" width="420" height="40" rx="10" fill="#0C1B2E"/>
+      <rect x="170" y="12" width="5" height="40" rx="2.5" fill="#0FB5A6"/>
+      <text x="192" y="37" font-size="15" font-weight="700" fill="#fff">目标：从 0 到 1 共建 CANN 开放生态</text>
+    </g>
+    ${dashNodes}
+    <g>${stages.map(stage).join('')}</g>
+    <g>${arrowNodes}</g>
+    <text x="170" y="172" font-size="11" font-weight="600" fill="#5F7BA6">上线 / 仓开源 · 推广资源</text>
+    <text x="470" y="172" font-size="11" font-weight="600" fill="#5F7BA6">资源申请 · 渠道与物资</text>
+    <g>${chipsA.map(chip).join('')}</g>
+    <g>${chipsB.map(chip).join('')}</g>
+    <text x="20" y="308" font-size="11" font-weight="600" fill="#5F7BA6">支撑组织 · 资源与协作</text>
+    <g>${orgs.map(org).join('')}</g>
+    <text x="380" y="386" text-anchor="middle" font-size="10" fill="#9FB0C8">点击任意节点查看说明 · 组织成员可在「组织矩阵」中邮件联系</text>
+  </svg>`;
+}
+function matrixHTML(){
+  const rows = [
+    {dot:'r-blue', org:'SIG Maintainer', tag:'技术审核', duty:'维护 SIG 技术方向，审核上线内容的技术准确性，为直播等技术活动提供内容支持。', name:'吴彦霖', mail:'sig-maintainer@cann.community'},
+    {dot:'r-teal', org:'运营负责人', tag:'运营统筹', duty:'统筹社区运营节奏，审核发布排期，分配公众号、视频号、媒体等渠道资源。', name:'李沐晨', mail:'ops@cann.community'},
+    {dot:'r-purple', org:'营销负责人', tag:'营销审核', duty:'把关营销口径与传播素材，审核新闻稿、短视频等对外传播内容的合规与质量。', name:'张予安', mail:'mkt@cann.community'},
+    {dot:'r-cyan', org:'社区管理员', tag:'平台与发布', duty:'负责平台权限、公告栏与待发布清单的最终发布执行，维护社区秩序。', name:'刘书瑶', mail:'community@cann.community'},
+    {dot:'r-orange', org:'技术支持', tag:'活动保障', duty:'为技术直播、线上演示等活动提供平台与设备保障，支撑内容制作。', name:'陈宇杭', mail:'tech@cann.community'}
+  ];
+  return `<div class="card">${rows.map(r=>`<div class="matrix-row">
+      <div class="m-org"><div class="on"><span class="res-dot ${r.dot}"></span>${r.org}</div><span class="ot">${r.tag}</span></div>
+      <div class="m-duty"><div class="d-t">职责</div>${r.duty}</div>
+      <div class="m-mail"><div class="mn">${r.name}</div><a class="ml" href="mailto:${r.mail}?subject=CANN%20SIG%20运营协作">${r.mail}</a></div>
+    </div>`).join('')}</div>`;
+}
+function panoRender(tab){
+  const tabs = `<div class="pano-tabs">
+      <button class="${tab==='map'?'on':''}" onclick="panoTab('map')">运营全景图</button>
+      <button class="${tab==='matrix'?'on':''}" onclick="panoTab('matrix')">资源与支撑组织矩阵</button>
+    </div>`;
+  $('panoWrap').innerHTML = tabs + (tab==='map'? `<div class="pano-stage"><div class="pano-map" style="min-width:0;overflow-x:auto">${panoMapSVG()}</div><div class="pano-info" id="panoInfo"></div></div>` : `<div>${matrixHTML()}</div>`);
+  if(tab==='map') panoSel('goal');
+}
+function panoTab(tab){ panoRender(tab); }
+function panoSel(key){
+  document.querySelectorAll('.pano-node,.pano-chip').forEach(el=>el.classList.remove('clicked'));
+  document.querySelectorAll(`[data-k="${key}"]`).forEach(el=>el.classList.add('clicked'));
+  const info = PANO_INFO[key] || PANO_INFO.goal;
+  $('panoInfo').innerHTML = `<div class="info-card">
+    <div class="ic-ico" style="background:${info.color}1A;color:${info.color}">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
+    </div>
+    <h4>${info.name}</h4>
+    <span class="ic-tag">${info.tag}</span>
+    <p>${info.desc}</p>
+    <div class="ic-list"><ul style="padding-left:0">
+      <li>在左侧全景图中点击任意环节 / 资源 / 组织节点</li>
+      <li>在「组织矩阵」中可一键邮件联系支撑成员</li>
+      <li>本环节对应平台内的「了解 sig 运营」工作台</li>
+    </ul></div>
+  </div>`;
+}
+function openPano(tab='map'){
+  openModal(modalShell('运营全景图 · 资源与支撑组织', `<div id="panoWrap"></div>`), 'modal-lg');
+  panoRender(tab);
+}
+
+/* ================= 初始化 ================= */
+updateNavBadge();
+renderBell();
+renderGoals();
+renderPlans();
+renderReview();
+try{
+  const h = (location.hash||'').replace('#/','');
+  if(h && $('view-'+h)) showView(h);
+}catch(e){}
+</script>
+</body>
+</html>
+<!-- （注：内容由AI生成） -->
