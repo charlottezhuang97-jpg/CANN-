@@ -549,21 +549,41 @@ tr.gp-plan-page td{background:rgba(247,249,252,.6);padding:2px 12px 8px;border-t
 .ux-aside-title{font-size:14px;font-weight:700;margin-bottom:8px}
 .ux-aside p{font-size:12px;line-height:1.7;color:var(--ink-2)}
 .ux-context{display:inline-flex;align-items:center;gap:6px;color:var(--brand);background:rgba(20,118,255,.08);border-radius:6px;font-size:12px;font-weight:600;padding:6px 9px;margin-top:10px;align-self:flex-start}
-.ux-path{margin-top:16px;padding:18px 20px;background:rgba(255,255,255,.75);border:1px solid var(--line-2);border-radius:16px}
-.ux-path-head{display:flex;justify-content:space-between;gap:12px;align-items:baseline;margin-bottom:13px}
-.ux-path-head strong{font-size:15px}.ux-path-head span{font-size:12px;color:var(--muted)}
-.ux-steps{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px}
-.ux-step{border:1px solid var(--line);background:#fff;border-radius:9px;text-align:left;padding:11px 12px;min-width:0;min-height:78px;transition:border-color .15s,box-shadow .15s,transform .15s;cursor:pointer}
-.ux-step:hover{border-color:var(--brand-2);box-shadow:0 3px 12px rgba(20,118,255,.12);transform:translateY(-1px)}
-.ux-step-num{font-size:11px;font-weight:700;color:var(--brand);display:block;margin-bottom:5px}
-.ux-step-name{font-size:13px;font-weight:700;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ux-step-desc{font-size:11px;color:var(--muted);display:block;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ux-route-tip{font-size:12px;color:var(--ink-2);line-height:1.6;margin:13px 1px 0}
+.ux-path-hint{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-top:16px;padding-top:13px;border-top:1px solid rgba(20,118,255,.14);font-size:11.5px;color:var(--ink-2)}
+.ux-path-hint strong{color:var(--brand);font-size:11.5px}
+.ux-path-hint button{border:0;background:none;color:var(--brand);font:inherit;font-weight:700;cursor:pointer;padding:2px 0}
+.ux-path-hint button:hover{text-decoration:underline}
+.goal-carousel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:18px 0 10px}
+.goal-carousel-head strong{font-size:13px}.goal-carousel-head span{font-size:11.5px;color:var(--muted)}
+.goal-carousel-controls{display:flex;gap:6px}
+.goal-carousel-controls button{width:28px;height:28px;border:1px solid var(--line);border-radius:7px;background:#fff;color:var(--ink-2);font-size:18px;line-height:1;cursor:pointer}
+.goal-carousel-controls button:hover{border-color:var(--brand);color:var(--brand)}
+.goal-carousel{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x proximity;scrollbar-width:thin;padding:2px 2px 12px}
+.goal-slide{flex:0 0 268px;min-height:164px;scroll-snap-align:start;text-align:left;border:1px solid var(--line);border-radius:12px;background:#fff;padding:15px 16px;cursor:pointer;transition:border-color .15s,box-shadow .15s,transform .15s}
+.goal-slide:hover{border-color:#93bfff;transform:translateY(-1px)}
+.goal-slide.active{border-color:var(--brand);box-shadow:0 0 0 2px rgba(20,118,255,.11),0 6px 18px rgba(20,118,255,.08);background:linear-gradient(180deg,#f8fbff,#fff 56%)}
+.goal-slide-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.goal-slide-kind{display:inline-flex;align-items:center;gap:7px;color:var(--muted);font-size:11px}
+.goal-slide-kind i{width:7px;height:7px;border-radius:50%;flex:none}
+.goal-slide-count{font-size:11px;color:var(--brand);background:#edf5ff;border-radius:99px;padding:3px 7px}
+.goal-slide-title{display:block;margin:11px 0 7px;font-size:15px;font-weight:700;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.goal-slide-detail{display:block;font-size:11.5px;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;height:18px}
+.goal-slide-meta{display:flex;justify-content:space-between;gap:8px;color:var(--muted);font-size:11px;margin:11px 0 9px}
+.goal-slide-progress{display:flex;align-items:center;gap:8px;font-size:11.5px;font-weight:700}
+.goal-slide-progress .d-progress{flex:1;min-width:0}
+.selected-goal-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:10px 0 8px}
+.selected-goal-head strong{font-size:14px}.selected-goal-head span{font-size:11.5px;color:var(--muted)}
+.selected-goal-actions{display:flex;gap:5px}
+.goal-plan-table .d-table{min-width:760px}
+.goal-plan-table .d-table td{vertical-align:middle}
+.goal-plan-table .gp-plan-sub td{height:66px}
+.goal-plan-table .gp-plan-sub td:first-child{padding-left:18px}
+.goal-plan-note{font-size:11.5px;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
 .ux-note{font-size:12px;color:var(--ink-2);line-height:1.6;margin-top:12px;padding:9px 11px;border-left:3px solid var(--brand-2);background:rgba(20,118,255,.05)}
 .ux-flow-details{margin-top:9px}.ux-flow-details summary{font-size:12px;color:var(--brand);font-weight:600;cursor:pointer;list-style:auto}.ux-flow-details .fi-desc{margin-top:8px}
-.page-tab:focus-visible,.ux-step:focus-visible,.d-btn:focus-visible,.pill-tab:focus-visible,.ef-status-trigger:focus-visible,button:focus-visible{outline:2px solid var(--brand);outline-offset:3px}
-@media(max-width:1050px){.ux-intro{grid-template-columns:1fr}.ux-steps{grid-template-columns:repeat(3,minmax(0,1fr))}}
-@media(max-width:700px){.app-aside{display:none}.app-header{padding:0 12px}.top-menus{display:none}.app-main{padding:8px 12px 28px}.ux-steps{grid-template-columns:repeat(2,minmax(0,1fr))}.ux-hero h1{font-size:20px}.ux-path-head{display:block}.ux-path-head span{display:block;margin-top:4px}.glass-card{padding:14px}.page-tabs{flex-wrap:nowrap;gap:17px}.page-tab{white-space:nowrap}}
+.page-tab:focus-visible,.goal-slide:focus-visible,.d-btn:focus-visible,.pill-tab:focus-visible,.ef-status-trigger:focus-visible,button:focus-visible{outline:2px solid var(--brand);outline-offset:3px}
+@media(max-width:1050px){.ux-intro{grid-template-columns:1fr}}
+@media(max-width:700px){.app-aside{display:none}.app-header{padding:0 12px}.top-menus{display:none}.app-main{padding:8px 12px 28px}.ux-hero h1{font-size:20px}.glass-card{padding:14px}.page-tabs{flex-wrap:nowrap;gap:17px}.page-tab{white-space:nowrap}.goal-slide{flex-basis:236px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
 </style>
 </head>
@@ -891,24 +911,13 @@ tr.gp-plan-page td{background:rgba(247,249,252,.6);padding:2px 12px 8px;border-t
             <button type="button" class="d-btn d-btn-primary" data-ux-target="resource">发起资源申请 →</button>
             <button type="button" class="d-btn d-btn-secondary" data-ux-target="review">查看我的申请</button>
           </div>
+          <div class="ux-path-hint" aria-label="运营路径提示"><strong>运营路径</strong><span>了解 SIG → 发起推广 → 申请资源 → 执行协作 → 复盘目标</span><button type="button" data-ux-target="learn">查看完整指引 →</button></div>
         </div>
         <div class="ux-aside">
           <div><div class="ux-aside-title">当前工作视角</div><p id="uxRoleGuide">按当前角色展示可访问的运营任务与数据。</p></div>
           <span class="ux-context" id="uxContext">演示数据 · 仅用于流程走查</span>
         </div>
       </div>
-      <div class="ux-path" aria-label="五步运营路径">
-        <div class="ux-path-head"><strong>五步运营路径</strong><span>选择环节，进入对应的操作页面</span></div>
-        <div class="ux-steps">
-          <button type="button" class="ux-step" data-ux-target="learn"><span class="ux-step-num">01 / 认知</span><span class="ux-step-name">了解 SIG 运营</span><span class="ux-step-desc">看清协作角色与路径</span></button>
-          <button type="button" class="ux-step" data-ux-target="resource"><span class="ux-step-num">02 / 启动</span><span class="ux-step-name">SIG 上线</span><span class="ux-step-desc">发起上线推广</span></button>
-          <button type="button" class="ux-step" data-ux-target="resource"><span class="ux-step-num">03 / 共建</span><span class="ux-step-name">仓库开源</span><span class="ux-step-desc">发起开源传播</span></button>
-          <button type="button" class="ux-step" data-ux-target="resource"><span class="ux-step-num">04 / 协作</span><span class="ux-step-name">申请运营资源</span><span class="ux-step-desc">选方式、媒体与排期</span></button>
-          <button type="button" class="ux-step" data-ux-target="goals"><span class="ux-step-num">05 / 闭环</span><span class="ux-step-name">计划与目标</span><span class="ux-step-desc">看进度与推广效果</span></button>
-        </div>
-        <p class="ux-route-tip">上线和仓开源是推广场景，均由「资源申请」统一发起；审批、排期确认、执行和反馈在申请单内流转。</p>
-      </div>
-
       <div style="margin-top:16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
         <div style="display:flex;align-items:center;gap:8px">
           <span style="font-size:14px;font-weight:600;color:var(--ink-2)">所属 SIG</span>
@@ -4747,124 +4756,77 @@ $('promoSigTrigger').addEventListener('click', e=>{ e.stopPropagation(); $('prom
 document.addEventListener('click', e=>{ if(!e.target.closest('#promoSigTrigger') && !e.target.closest('#promoSigMenu')) $('promoSigMenu').classList.add('hidden'); });
 $('promoSigMenu').querySelectorAll('.status-menu-item').forEach(li=>li.addEventListener('click', ()=>{
   promoSig = li.dataset.sig;
-  promoDrill.clear(); promoDrillPage = {}; goalPage = 1; goalExpanded.clear(); planPageOf = {};
+  promoDrill.clear(); promoDrillPage = {}; selectedGoalId = null; planPageOf = {};
   $('promoSigName').textContent = promoSig==='all' ? '全部 SIG' : promoSig;
   $('promoSigMenu').classList.add('hidden');
   renderPromo();
 }));
 
-/* ================= 目标与计划（v1.74：目标即固定枚举——目标列 = 枚举名，新增 / 编辑弹窗目标为下拉选择 + 目标数量；目标表列 目标 / 责任人 / 起止日期 / 目标数量 / 进度 / 关联计划数 / 操作，分页每页 5 条；目标行下转展开关联计划——计划独立列表，自带表头 计划 / 责任人 / 起止日期 / 进展详情 / 进度 / 操作，分页每页 3 条；未关联目标的计划不在此展示） ================= */
-let goalPage = 1;
-const GOAL_PAGE_SIZE = 5;
+/* 目标卡片横向浏览，所选目标的关联计划在下方独立展示。 */
+let selectedGoalId = 'G2';
 const PLAN_PAGE_SIZE = 3;
-const goalExpanded = new Set();
 let planPageOf = {};
+function goalLinkedPlans(goalId){
+  return S.plans.filter(p=>p.sig===promoSig && (p.goalId===goalId || (Array.isArray(p.goalIds) && p.goalIds.includes(goalId))));
+}
 function renderGoals(){
+  const root = $('goalPlanList');
+  const oldScroll = root.querySelector('.goal-carousel')?.scrollLeft || 0;
   const goals = S.goals.filter(g=>g.sig===promoSig);
-  const plans = S.plans.filter(p=>p.sig===promoSig && p.goalId && goals.some(g=>g.id===p.goalId));
   if(!goals.length){
-    $('goalPlanList').innerHTML = `<div class="empty-state"><div class="es-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/></svg></div>该 SIG 暂无目标<br><span style="font-size:12px;color:var(--faint)">本 SIG Maintainer 或运营管理员可点击右上角「新增目标 / 新增计划」创建</span></div>`;
+    selectedGoalId = null;
+    root.innerHTML = `<div class="empty-state"><div class="es-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/></svg></div>该 SIG 暂无目标<br><span style="font-size:12px;color:var(--faint)">本 SIG Maintainer 或运营管理员可点击右上角「新增目标 / 新增计划」创建</span></div>`;
     return;
   }
-  const totalPages = Math.max(1, Math.ceil(goals.length / GOAL_PAGE_SIZE));
-  if(goalPage > totalPages) goalPage = totalPages;
-  const pageGoals = goals.slice((goalPage-1)*GOAL_PAGE_SIZE, goalPage*GOAL_PAGE_SIZE);
-  const chev = (open)=>`<svg class="gp-chevron ${open?'gp-open':''}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>`;
-  /* v1.69：计划下转独立列表——自带表头（不与目标共用列标题）+ 分页（每页 3 条，超过 1 页才显示翻页器）；v1.70：计划列 计划 / 责任人 / 起止日期 / 进展详情（跨 2 列）/ 进度 / 操作——状态移除（进度已表达），进展详情入列 */
-  const planHeadRow = `<tr class="gp-plan-head"><td>计划</td><td>责任人</td><td>起止日期</td><td colspan="2">进展详情</td><td>进度</td><td>操作</td></tr>`;
-  const planSubRow = (p)=>{
+  if(!goals.some(g=>g.id===selectedGoalId)) selectedGoalId = goals[0].id;
+  const selected = goals.find(g=>g.id===selectedGoalId);
+  const linked = goalLinkedPlans(selectedGoalId);
+  const pageCount = Math.max(1,Math.ceil(linked.length/PLAN_PAGE_SIZE));
+  const page = Math.min(planPageOf[selectedGoalId]||1,pageCount);
+  planPageOf[selectedGoalId] = page;
+  const cards = goals.map(g=>{
+    const count = goalLinkedPlans(g.id).length;
+    const kind = krTypeOf(g.type);
+    const detail = kind?.type==='objective' ? `目标 ${esc(g.target??'—')} ${esc(krTypeUnit(g.type))}` : (g.krs?.length ? `关键结果 ${g.krs.length} 条` : '暂无关键结果');
+    const progress = goalProgress(g);
+    return `<button type="button" class="goal-slide ${g.id===selectedGoalId?'active':''}" data-goal-select="${esc(g.id)}" aria-pressed="${g.id===selectedGoalId}" aria-controls="selectedGoalPlans" aria-label="${esc(krTypeName(g.type))}，进度 ${progress}%，关联计划 ${count} 条">
+      <span class="goal-slide-top"><span class="goal-slide-kind"><i style="background:${g.color}"></i>${kind?.type==='objective'?'数据目标':'方向目标'}</span><span class="goal-slide-count">${count} 个计划</span></span>
+      <span class="goal-slide-title" title="${esc(goalLabel(g))}">${esc(krTypeName(g.type))}</span>
+      <span class="goal-slide-detail" title="${esc(g.progNote||detail)}">${detail}</span>
+      <span class="goal-slide-meta"><span>负责人 ${esc(g.owner||'—')}</span><span>${esc(g.start||'—')} — ${esc(g.end||'—')}</span></span>
+      <span class="goal-slide-progress"><span class="d-progress"><i style="width:${progress}%;background:${g.color}"></i></span>${progress}%</span>
+    </button>`;
+  }).join('');
+  const rows = linked.slice((page-1)*PLAN_PAGE_SIZE,page*PLAN_PAGE_SIZE).map(p=>{
     const idx = S.plans.indexOf(p);
+    const progress = Math.max(0,Math.min(100,+p.prog||0));
     return `<tr class="gp-plan-sub">
-      <td><div class="gp-sub-indent" style="padding-left:26px"><div class="pl-name" style="flex:1;min-width:0"><div class="pn" style="font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:230px" title="${esc(p.name)}">${esc(p.name)}</div></div></div></td>
-      <td>${esc(p.owner)}</td>
+      <td><strong style="font-size:12.5px">${esc(p.name)}</strong></td>
+      <td>${esc(p.owner||'—')}</td>
       <td>${esc(p.start||'—')} ~ ${esc(p.end||'—')}</td>
-      <td colspan="2"><div style="font-size:11.5px;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%" title="${esc(p.note||'')}">${p.note ? esc(p.note) : '<span style="color:var(--faint)">—</span>'}</div></td>
-      <td><div style="display:flex;align-items:center;gap:8px"><div class="d-progress" style="width:80px"><i style="width:${p.prog}%"></i></div><span style="font-weight:700;font-size:12px">${p.prog}%</span></div></td>
+      <td><div class="goal-plan-note" title="${esc(p.note||'')}">${p.note?esc(p.note):'<span style="color:var(--faint)">—</span>'}</div></td>
+      <td><div style="display:flex;align-items:center;gap:8px"><div class="d-progress" style="width:80px"><i style="width:${progress}%"></i></div><strong style="font-size:12px">${progress}%</strong></div></td>
       <td><button class="d-btn d-btn-ghost d-btn-sm" data-plan-edit="${idx}">编辑</button><button class="d-btn d-btn-ghost d-btn-ghost-red d-btn-sm" data-plan-del="${idx}">删除</button></td>
     </tr>`;
-  };
-  let rows = '';
-  pageGoals.forEach(g=>{
-    const open = goalExpanded.has(g.id);
-    const linked = plans.filter(p=>p.goalId===g.id);
-    /* v1.74：目标即枚举——目标列显示枚举名；v2.01：主观类目标无目标数量，目标/关键结果列显示关键结果文本（悬停全文） */
-    const avg = goalProgress(g);
-    const kt = krTypeOf(g.type);
-    const isObj = kt && kt.type==='objective';
-    let targetCell;
-    if(isObj){
-      targetCell = `<td style="text-align:center;font-weight:700;font-size:12.5px">${g.target} ${krTypeUnit(g.type)}</td>`;
-    }else{
-      const krs = g.krs||[];
-      const shown = krs.slice(0,2);
-      targetCell = `<td style="font-size:11.5px;line-height:1.6"><div style="display:flex;flex-direction:column;gap:2px;min-width:0" title="${esc(krs.join('\n'))}">`
-        + (shown.length ? shown.map(k=>`<span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:210px">${esc(k)}</span>`).join('') : '')
-        + (krs.length>2 ? `<span style="color:var(--faint)">…共 ${krs.length} 条关键结果</span>` : (!krs.length ? '<span style="color:var(--faint)">—</span>' : ''))
-        + `</div></td>`;
-    }
-    rows += `<tr class="gp-goal-row" data-gp-toggle="${g.id}">
-      <td><div style="display:flex;align-items:center;gap:6px;min-width:0">${chev(open)}<span class="res-dot" style="background:${g.color};width:8px;height:8px;flex:none"></span><b style="font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px" title="${esc(goalLabel(g))}">${krTypeName(g.type)}</b></div></td>
-      <td style="font-size:12.5px">${esc(g.owner||'—')}</td>
-      <td style="font-size:12px">${esc(g.start||'—')} ~ ${esc(g.end||'—')}</td>
-      ${targetCell}
-      <td><div style="display:flex;flex-direction:column;gap:3px;min-width:0">
-        <div style="display:flex;align-items:center;gap:8px"><div class="d-progress" style="width:80px"><i style="width:${avg}%;background:${g.color}"></i></div><span style="font-weight:700;font-size:12px">${avg}%</span></div>
-        ${g.progNote?`<div style="font-size:11px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:200px" title="进展：${esc(g.progNote)}">${esc(g.progNote)}</div>`:''}
-      </div></td>
-      <td style="text-align:center;font-weight:700;font-size:12.5px" title="点击目标行可展开关联计划">${linked.length}</td>
-      <td><button class="d-btn d-btn-ghost d-btn-sm" data-goal-edit="${g.id}">编辑</button><button class="d-btn d-btn-ghost d-btn-ghost-red d-btn-sm" data-goal-del="${g.id}">删除</button></td>
-    </tr>`;
-    if(open){
-      rows += planHeadRow;
-      if(linked.length){
-        const pTotal = Math.max(1, Math.ceil(linked.length / PLAN_PAGE_SIZE));
-        const pPage = Math.min(planPageOf[g.id]||1, pTotal);
-        planPageOf[g.id] = pPage;
-        rows += linked.slice((pPage-1)*PLAN_PAGE_SIZE, pPage*PLAN_PAGE_SIZE).map(planSubRow).join('');
-        if(pTotal>1){
-          let pBtns = '';
-          for(let p=1; p<=pTotal; p++){
-            pBtns += `<button class="page-btn ${p===pPage?'active':''}" data-pp-goal="${g.id}" data-pp-page="${p}">${p}</button>`;
-          }
-          rows += `<tr class="gp-plan-page"><td colspan="7"><div class="pagination" style="padding:6px 0 2px">
-            <span>共 ${linked.length} 条</span>
-            <button class="page-btn" ${pPage<=1?'disabled':''} data-pp-goal="${g.id}" data-pp-page="${pPage-1}"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
-            ${pBtns}
-            <button class="page-btn" ${pPage>=pTotal?'disabled':''} data-pp-goal="${g.id}" data-pp-page="${pPage+1}"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
-          </div></td></tr>`;
-        }
-      }else{
-        rows += `<tr class="gp-plan-sub"><td colspan="7" style="color:var(--faint);font-size:12px;padding-left:48px">暂无关联计划</td></tr>`;
-      }
-    }
-  });
-  let pageBtns = '';
-  for(let p=1; p<=totalPages; p++){
-    pageBtns += `<button class="page-btn ${p===goalPage?'active':''}" data-goal-page="${p}">${p}</button>`;
+  }).join('') || `<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:30px">该目标暂无关联计划，可点击右上角「新增计划」</td></tr>`;
+  let pages = '';
+  if(pageCount>1){
+    let pageBtns='';
+    for(let n=1;n<=pageCount;n++) pageBtns += `<button class="page-btn ${n===page?'active':''}" data-plan-page="${n}">${n}</button>`;
+    pages = `<div class="pagination"><span>共 ${linked.length} 条</span><button class="page-btn" ${page<=1?'disabled':''} data-plan-page="${page-1}" aria-label="上一页">‹</button>${pageBtns}<button class="page-btn" ${page>=pageCount?'disabled':''} data-plan-page="${page+1}" aria-label="下一页">›</button></div>`;
   }
-  $('goalPlanList').innerHTML = `<div class="table-wrap"><div class="table-scroll"><table class="d-table"><colgroup><col style="width:18%"><col style="width:8%"><col style="width:15%"><col style="width:22%"><col style="width:18%"><col style="width:10%"><col style="width:9%"></colgroup>
-    <thead><tr><th>目标</th><th>责任人</th><th>起止日期</th><th>目标 / 关键结果</th><th>进度 / 进展</th><th>关联计划数</th><th>操作</th></tr></thead><tbody>${rows}</tbody></table></div>
-    <div class="pagination"><span>共 ${goals.length} 条</span>
-      <button class="page-btn" ${goalPage<=1?'disabled':''} data-goal-page="${goalPage-1}"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
-      ${pageBtns}
-      <button class="page-btn" ${goalPage>=totalPages?'disabled':''} data-goal-page="${goalPage+1}"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
-    </div></div>`;
-  $('goalPlanList').querySelectorAll('[data-gp-toggle]').forEach(tr=>tr.addEventListener('click', e=>{
-    if(e.target.closest('button')) return;
-    const id = tr.dataset.gpToggle;
-    if(goalExpanded.has(id)) goalExpanded.delete(id); else goalExpanded.add(id);
-    renderGoals();
-  }));
-  $('goalPlanList').querySelectorAll('[data-pp-goal]').forEach(b=>b.addEventListener('click', e=>{
-    e.stopPropagation();
-    planPageOf[b.dataset.ppGoal] = +b.dataset.ppPage;
-    renderGoals();
-  }));
-  $('goalPlanList').querySelectorAll('[data-goal-page]').forEach(b=>b.addEventListener('click', ()=>{ goalPage = +b.dataset.goalPage; renderGoals(); }));
-  $('goalPlanList').querySelectorAll('[data-goal-edit]').forEach(b=>b.addEventListener('click', ()=>openGoalEditModal(b.dataset.goalEdit)));
-  $('goalPlanList').querySelectorAll('[data-goal-del]').forEach(b=>b.addEventListener('click', ()=>openGoalDeleteModal(b.dataset.goalDel)));
-  $('goalPlanList').querySelectorAll('[data-plan-edit]').forEach(b=>b.addEventListener('click', ()=>openPlanEditModal(+b.dataset.planEdit)));
-  $('goalPlanList').querySelectorAll('[data-plan-del]').forEach(b=>b.addEventListener('click', ()=>openPlanDeleteModal(+b.dataset.planDel)));
+  root.innerHTML = `<div class="goal-carousel-head"><div><strong>运营目标</strong> <span>选择目标，查看关联计划 · 共 ${goals.length} 个</span></div><div class="goal-carousel-controls"><button type="button" data-goal-scroll="-1" aria-label="向左浏览目标">‹</button><button type="button" data-goal-scroll="1" aria-label="向右浏览目标">›</button></div></div>
+    <div class="goal-carousel" aria-label="目标卡片列表">${cards}</div>
+    <div id="selectedGoalPlans"><div class="selected-goal-head"><div><strong>${esc(krTypeName(selected.type))} · 关联计划</strong> <span>共 ${linked.length} 条</span></div><div class="selected-goal-actions"><button class="d-btn d-btn-ghost d-btn-sm" data-goal-edit="${esc(selected.id)}">编辑目标</button><button class="d-btn d-btn-ghost d-btn-ghost-red d-btn-sm" data-goal-del="${esc(selected.id)}">删除目标</button></div></div>
+    <div class="table-wrap goal-plan-table"><div class="table-scroll"><table class="d-table"><colgroup><col style="width:18%"><col style="width:10%"><col style="width:19%"><col style="width:29%"><col style="width:13%"><col style="width:11%"></colgroup><thead><tr><th>计划</th><th>责任人</th><th>起止日期</th><th>进展详情</th><th>进度</th><th>操作</th></tr></thead><tbody>${rows}</tbody></table></div>${pages}</div></div>`;
+  root.querySelector('.goal-carousel').scrollLeft = oldScroll;
+  root.querySelectorAll('[data-goal-select]').forEach(b=>b.addEventListener('click',()=>{ selectedGoalId=b.dataset.goalSelect; renderGoals(); }));
+  root.querySelectorAll('[data-goal-scroll]').forEach(b=>b.addEventListener('click',()=>root.querySelector('.goal-carousel').scrollBy({left:+b.dataset.goalScroll*280,behavior:'smooth'})));
+  root.querySelectorAll('[data-plan-page]').forEach(b=>b.addEventListener('click',()=>{ planPageOf[selectedGoalId]=+b.dataset.planPage; renderGoals(); }));
+  root.querySelectorAll('[data-goal-edit]').forEach(b=>b.addEventListener('click',()=>openGoalEditModal(b.dataset.goalEdit)));
+  root.querySelectorAll('[data-goal-del]').forEach(b=>b.addEventListener('click',()=>openGoalDeleteModal(b.dataset.goalDel)));
+  root.querySelectorAll('[data-plan-edit]').forEach(b=>b.addEventListener('click',()=>openPlanEditModal(+b.dataset.planEdit)));
+  root.querySelectorAll('[data-plan-del]').forEach(b=>b.addEventListener('click',()=>openPlanDeleteModal(+b.dataset.planDel)));
 }
 /* v2.01：目标表单类型切换——客观类显示 目标数量；主观类（技术目标 / 仓代码应用及创新规模）无目标数量，显示 关键结果（每行一条文本） */
 function bindGoalTypeSwitch(selId, targetBoxId, krBoxId){
