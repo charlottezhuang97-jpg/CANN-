@@ -538,17 +538,17 @@ tr.gp-plan-page td{background:rgba(247,249,252,.6);padding:2px 12px 8px;border-t
 /* 优化层：沿用原稿的 DevUI 色彩、字体和组件变量 */
 [hidden]{display:none!important}
 :root{--fill-1:#f7f9fc}
-.ux-intro{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(280px,.65fr);gap:16px;margin-top:16px}
+.ux-intro{display:grid;grid-template-columns:minmax(0,1fr) 300px;align-items:start;gap:16px;margin-top:16px}
 .ux-hero{background:linear-gradient(118deg,#f7faff,#eaf2ff);border:1px solid rgba(20,118,255,.16);border-radius:16px;padding:22px 26px;min-width:0}
 .ux-eyebrow{color:var(--brand);font-weight:700;font-size:12px;letter-spacing:.08em}
 .ux-hero h1{font-size:24px;line-height:1.3;margin:7px 0 8px;font-weight:700}
 .ux-hero p{font-size:13px;color:var(--ink-2);line-height:1.7;max-width:680px}
 .ux-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
 .ux-actions .d-btn{min-height:36px}
-.ux-aside{background:rgba(255,255,255,.78);border:1px solid var(--line-2);border-radius:16px;padding:20px 22px;display:flex;flex-direction:column;justify-content:space-between}
-.ux-aside-title{font-size:14px;font-weight:700;margin-bottom:8px}
+.ux-aside{background:rgba(255,255,255,.78);border:1px solid var(--line-2);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;justify-content:flex-start;gap:9px}
+.ux-aside-title{font-size:13px;font-weight:700;margin-bottom:5px}
 .ux-aside p{font-size:12px;line-height:1.7;color:var(--ink-2)}
-.ux-context{display:inline-flex;align-items:center;gap:6px;color:var(--brand);background:rgba(20,118,255,.08);border-radius:6px;font-size:12px;font-weight:600;padding:6px 9px;margin-top:10px;align-self:flex-start}
+.ux-context{display:inline-flex;align-items:center;gap:6px;color:var(--brand);background:rgba(20,118,255,.08);border-radius:6px;font-size:11px;font-weight:600;padding:5px 8px;margin-top:0;align-self:flex-start}
 .ux-path-hint{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-top:16px;padding-top:13px;border-top:1px solid rgba(20,118,255,.14);font-size:11.5px;color:var(--ink-2)}
 .ux-path-hint strong{color:var(--brand);font-size:11.5px}
 .ux-path-hint button{border:0;background:none;color:var(--brand);font:inherit;font-weight:700;cursor:pointer;padding:2px 0}
@@ -583,7 +583,8 @@ tr.gp-plan-page td{background:rgba(247,249,252,.6);padding:2px 12px 8px;border-t
 .ux-note{font-size:12px;color:var(--ink-2);line-height:1.6;margin-top:12px;padding:9px 11px;border-left:3px solid var(--brand-2);background:rgba(20,118,255,.05)}
 .ux-flow-details{margin-top:9px}.ux-flow-details summary{font-size:12px;color:var(--brand);font-weight:600;cursor:pointer;list-style:auto}.ux-flow-details .fi-desc{margin-top:8px}
 .page-tab:focus-visible,.goal-slide:focus-visible,.d-btn:focus-visible,.pill-tab:focus-visible,.ef-status-trigger:focus-visible,button:focus-visible{outline:2px solid var(--brand);outline-offset:3px}
-@media(max-width:1050px){.ux-intro{grid-template-columns:1fr}}
+@media(max-width:1050px){.ux-intro{grid-template-columns:minmax(0,1fr) 280px}}
+@media(max-width:760px){.ux-intro{grid-template-columns:1fr}.ux-aside{flex-direction:row;align-items:center;justify-content:space-between;gap:12px}.ux-aside p{max-width:460px}}
 @media(max-width:700px){.app-aside{display:none}.app-header{padding:0 12px}.top-menus{display:none}.app-main{padding:8px 12px 28px}.ux-hero h1{font-size:20px}.glass-card{padding:14px}.page-tabs{flex-wrap:nowrap;gap:17px}.page-tab{white-space:nowrap}.goal-slide{flex-basis:236px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
 </style>
