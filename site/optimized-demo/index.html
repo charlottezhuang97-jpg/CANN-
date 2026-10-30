@@ -538,18 +538,15 @@ tr.gp-plan-page td{background:rgba(247,249,252,.6);padding:2px 12px 8px;border-t
 /* 优化层：沿用原稿的 DevUI 色彩、字体和组件变量 */
 [hidden]{display:none!important}
 :root{--fill-1:#f7f9fc}
-.ux-intro{display:grid;grid-template-columns:minmax(0,1fr) 300px;align-items:start;gap:16px;margin-top:16px}
-.ux-hero{background:linear-gradient(118deg,#f7faff,#eaf2ff);border:1px solid rgba(20,118,255,.16);border-radius:16px;padding:22px 26px;min-width:0}
+.ux-intro{display:block;margin-top:16px}
+.ux-hero{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:8px 20px;background:linear-gradient(118deg,#f7faff,#eaf2ff);border:1px solid rgba(20,118,255,.16);border-radius:14px;padding:14px 20px;min-width:0}
+.ux-hero-copy{min-width:0}
 .ux-eyebrow{color:var(--brand);font-weight:700;font-size:12px;letter-spacing:.08em}
-.ux-hero h1{font-size:24px;line-height:1.3;margin:7px 0 8px;font-weight:700}
-.ux-hero p{font-size:13px;color:var(--ink-2);line-height:1.7;max-width:680px}
-.ux-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.ux-hero h1{font-size:20px;line-height:1.3;margin:3px 0 4px;font-weight:700}
+.ux-hero p{font-size:12px;color:var(--ink-2);line-height:1.55;max-width:760px}
+.ux-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:0;justify-content:flex-end}
 .ux-actions .d-btn{min-height:36px}
-.ux-aside{background:rgba(255,255,255,.78);border:1px solid var(--line-2);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;justify-content:flex-start;gap:9px}
-.ux-aside-title{font-size:13px;font-weight:700;margin-bottom:5px}
-.ux-aside p{font-size:12px;line-height:1.7;color:var(--ink-2)}
-.ux-context{display:inline-flex;align-items:center;gap:6px;color:var(--brand);background:rgba(20,118,255,.08);border-radius:6px;font-size:11px;font-weight:600;padding:5px 8px;margin-top:0;align-self:flex-start}
-.ux-path-hint{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-top:16px;padding-top:13px;border-top:1px solid rgba(20,118,255,.14);font-size:11.5px;color:var(--ink-2)}
+.ux-path-hint{grid-column:1/-1;display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:0;padding-top:8px;border-top:1px solid rgba(20,118,255,.14);font-size:11px;color:var(--ink-2)}
 .ux-path-hint strong{color:var(--brand);font-size:11.5px}
 .ux-path-hint button{border:0;background:none;color:var(--brand);font:inherit;font-weight:700;cursor:pointer;padding:2px 0}
 .ux-path-hint button:hover{text-decoration:underline}
@@ -583,9 +580,8 @@ tr.gp-plan-page td{background:rgba(247,249,252,.6);padding:2px 12px 8px;border-t
 .ux-note{font-size:12px;color:var(--ink-2);line-height:1.6;margin-top:12px;padding:9px 11px;border-left:3px solid var(--brand-2);background:rgba(20,118,255,.05)}
 .ux-flow-details{margin-top:9px}.ux-flow-details summary{font-size:12px;color:var(--brand);font-weight:600;cursor:pointer;list-style:auto}.ux-flow-details .fi-desc{margin-top:8px}
 .page-tab:focus-visible,.goal-slide:focus-visible,.d-btn:focus-visible,.pill-tab:focus-visible,.ef-status-trigger:focus-visible,button:focus-visible{outline:2px solid var(--brand);outline-offset:3px}
-@media(max-width:1050px){.ux-intro{grid-template-columns:minmax(0,1fr) 280px}}
-@media(max-width:760px){.ux-intro{grid-template-columns:1fr}.ux-aside{flex-direction:row;align-items:center;justify-content:space-between;gap:12px}.ux-aside p{max-width:460px}}
-@media(max-width:700px){.app-aside{display:none}.app-header{padding:0 12px}.top-menus{display:none}.app-main{padding:8px 12px 28px}.ux-hero h1{font-size:20px}.glass-card{padding:14px}.page-tabs{flex-wrap:nowrap;gap:17px}.page-tab{white-space:nowrap}.goal-slide{flex-basis:236px}}
+@media(max-width:700px){.app-aside{display:none}.app-header{padding:0 12px}.top-menus{display:none}.app-main{padding:8px 12px 28px}.ux-hero{grid-template-columns:1fr;padding:14px 16px}.ux-actions{justify-content:flex-start}.ux-path-hint{grid-column:auto;line-height:1.6}.glass-card{padding:14px}.page-tabs{flex-wrap:nowrap;gap:17px}.page-tab{white-space:nowrap}.goal-slide{flex-basis:236px}}
+.section-icon{width:18px;height:18px;color:var(--brand);flex:none;vertical-align:-4px}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
 </style>
 </head>
@@ -906,18 +902,16 @@ tr.gp-plan-page td{background:rgba(247,249,252,.6);padding:2px 12px 8px;border-t
     <section class="page-view" id="view-promo">
       <div class="ux-intro" aria-label="运营工作入口">
         <div class="ux-hero">
-          <div class="ux-eyebrow">CANN 社区 · SIG 运营</div>
-          <h1>从发起推广到复盘成果</h1>
-          <p>先选所属 SIG，再围绕上线、仓开源或日常活动申请资源；申请进度在「申请与审批」中跟进，推广完成后回到总览查看目标和效果。</p>
+          <div class="ux-hero-copy">
+            <div class="ux-eyebrow">CANN 社区 · SIG 运营公告</div>
+            <h1>从发起推广到复盘成果</h1>
+            <p>围绕 SIG 上线、仓库开源和日常活动申请运营资源，并在总览跟进计划与成效。</p>
+          </div>
           <div class="ux-actions">
             <button type="button" class="d-btn d-btn-primary" data-ux-target="resource">发起资源申请 →</button>
             <button type="button" class="d-btn d-btn-secondary" data-ux-target="review">查看我的申请</button>
           </div>
           <div class="ux-path-hint" aria-label="运营路径提示"><strong>运营路径</strong><span>了解 SIG → 发起推广 → 申请资源 → 执行协作 → 复盘目标</span><button type="button" data-ux-target="learn">查看完整指引 →</button></div>
-        </div>
-        <div class="ux-aside">
-          <div><div class="ux-aside-title">当前工作视角</div><p id="uxRoleGuide">按当前角色展示可访问的运营任务与数据。</p></div>
-          <span class="ux-context" id="uxContext">演示数据 · 仅用于流程走查</span>
         </div>
       </div>
       <div style="margin-top:16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
@@ -944,7 +938,7 @@ tr.gp-plan-page td{background:rgba(247,249,252,.6);padding:2px 12px 8px;border-t
         <div class="glass-card" style="margin-top:16px">
           <div class="card-head">
             <div class="card-head-left">
-              <div class="card-title"><span class="title-bar"></span>目标与计划
+              <div class="card-title"><svg class="section-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.4"/></svg>目标与计划
               </div>
             </div>
             <div style="display:flex;gap:8px">
@@ -965,7 +959,7 @@ tr.gp-plan-page td{background:rgba(247,249,252,.6);padding:2px 12px 8px;border-t
         <div class="glass-card mt-16">
           <div class="card-head">
             <div class="card-head-left">
-              <div class="card-title"><span class="title-bar"></span>活动/资源汇总
+              <div class="card-title"><svg class="section-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 18-5-5 18-4-8-9-5Z"/><path d="M12 16 21 6"/></svg>活动/资源汇总
                 <svg class="help-icon" data-tip="点击方式行下转查看该方式的推广记录（申请中 + 已完成）；效果数据按各方式反馈指标（数字型）求和。" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6.5"/><path d="M6.2 6.2a1.9 1.9 0 0 1 3.7.6c0 1.3-1.9 1.5-1.9 2.7"/><path d="M8 11.6h.01"/></svg>
               </div>
               <div class="card-sub">点击方式行下转推广记录</div>
@@ -978,7 +972,7 @@ tr.gp-plan-page td{background:rgba(247,249,252,.6);padding:2px 12px 8px;border-t
         <div class="glass-card mt-16">
           <div class="card-head">
             <div class="card-head-left">
-              <div class="card-title"><span class="title-bar"></span>运营度量
+              <div class="card-title"><svg class="section-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5M4 19h17"/><path d="M8 16v-5M13 16V8M18 16v-9"/></svg>运营度量
                 <svg class="help-icon" data-tip="成员与贡献口径同「组织运营」页面；仓库与社区度量口径同「仓库度量」页面与站点统计。" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6.5"/><path d="M6.2 6.2a1.9 1.9 0 0 1 3.7.6c0 1.3-1.9 1.5-1.9 2.7"/><path d="M8 11.6h.01"/></svg>
               </div>
               <div class="card-sub">成员与贡献 · 仓库与社区度量</div>
@@ -994,7 +988,7 @@ tr.gp-plan-page td{background:rgba(247,249,252,.6);padding:2px 12px 8px;border-t
         <div class="glass-card" style="margin-top:16px">
           <div class="card-head">
             <div class="card-head-left">
-              <div class="card-title"><span class="title-bar"></span>目标与计划汇总</div>
+              <div class="card-title"><svg class="section-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.4"/></svg>目标与计划汇总</div>
               <div class="card-sub">全部 SIG 的运营目标与计划总览</div>
             </div>
           </div>
@@ -1004,7 +998,7 @@ tr.gp-plan-page td{background:rgba(247,249,252,.6);padding:2px 12px 8px;border-t
         <div class="glass-card mt-16">
           <div class="card-head">
             <div class="card-head-left">
-              <div class="card-title"><span class="title-bar"></span>活动/资源汇总</div>
+              <div class="card-title"><svg class="section-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 18-5-5 18-4-8-9-5Z"/><path d="M12 16 21 6"/></svg>活动/资源汇总</div>
               <div class="card-sub">点击方式行下转推广记录</div>
             </div>
           </div>
@@ -1022,7 +1016,7 @@ tr.gp-plan-page td{background:rgba(247,249,252,.6);padding:2px 12px 8px;border-t
         <div class="glass-card mt-16">
           <div class="card-head">
             <div class="card-head-left">
-              <div class="card-title"><span class="title-bar"></span>运营度量汇总
+              <div class="card-title"><svg class="section-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5M4 19h17"/><path d="M8 16v-5M13 16V8M18 16v-9"/></svg>运营度量汇总
                 <svg class="help-icon" data-tip="全部 SIG 的成员与贡献（总数 / 外部，口径同「组织运营」页面）与仓库 / 社区度量（Star / Watch / Fork / ISSUE / PR / 活跃开发者 / PV / UV）跨 SIG 汇总。" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6.5"/><path d="M6.2 6.2a1.9 1.9 0 0 1 3.7.6c0 1.3-1.9 1.5-1.9 2.7"/><path d="M8 11.6h.01"/></svg>
               </div>
               <div class="card-sub">全部 SIG 跨度汇总 · 成员与贡献 · 仓库与社区度量</div>
@@ -5044,14 +5038,7 @@ function renderSigDataOverview(){
 
 /* 优化版导航与角色提示；复用原稿的页面状态和权限判定。 */
 function uxUpdateGuide(){
-  const guide = document.getElementById('uxRoleGuide');
-  const context = document.getElementById('uxContext');
-  if(!guide || !context) return;
   const isAdmin = hasRole('运营管理员');
-  guide.textContent = isAdmin
-    ? '你可以跨 SIG 查看运营目标、代提资源申请，并跟进自己提交的申请。'
-    : '你可以查看所属 SIG 的目标与推广结果，并发起、跟进本 SIG 的资源申请。';
-  context.textContent = isAdmin ? '跨 SIG 视角 · 演示数据' : (CURRENT_USER.sig ? CURRENT_USER.sig + ' SIG · 演示数据' : '演示数据');
   document.querySelectorAll('[data-ux-target="resource"],[data-ux-target="review"]').forEach(btn=>{
     const allowed = canSeeView(btn.dataset.uxTarget);
     btn.hidden = !allowed;
